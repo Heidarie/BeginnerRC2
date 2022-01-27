@@ -26,10 +26,10 @@ namespace BeginnerWebApiRC1.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public async Task<OfferModel> GetOfferDetails(int id)
+        public async Task<OfferModel> GetOfferDetails(int offerId)
         {
             Claim userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "userId");
-            OfferModel offer = await DatabaseManager.GetOffer(id, userId.Value);
+            OfferModel offer = await DatabaseManager.GetOffer(offerId, userId.Value);
             return offer;
         }
 
@@ -51,10 +51,10 @@ namespace BeginnerWebApiRC1.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> UserApply(int id)
+        public async Task<IActionResult> UserApply(int offerId)
         {
             Claim userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "userId");
-            bool result = await DatabaseManager.AssignUserToOffer(userId.Value, id);
+            bool result = await DatabaseManager.AssignUserToOffer(userId.Value, offerId);
             if (result)
             {
                 return Ok("Zaaplikowano na ofertę!");

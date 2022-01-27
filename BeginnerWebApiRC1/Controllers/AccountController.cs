@@ -128,6 +128,31 @@ namespace BeginnerWebApiRC1.Controllers
             smtpClient.Dispose();
         }
 
+        private async void ResendConfirmationMail(string email, string username, string token)
+        {
+            MimeMessage message = new MimeMessage();
+            MailboxAddress from = new MailboxAddress("DoNotReply", "NoReply.Beginner@gmail.com");
+            message.From.Add(from);
+            MailboxAddress to = new MailboxAddress(username, email);
+            message.To.Add(to);
+
+            message.Subject = "Account Verification";
+
+            BodyBuilder bodyBuilder = new BodyBuilder();
+            bodyBuilder.HtmlBody = "<b>Enter this link to verify Your account:" +
+                " <a href=\"beginner.pl/Account/ConfirmAccount?verificationCode=\"" + token + ">Link</a><b>";
+
+            message.Body = bodyBuilder.ToMessageBody();
+
+
+            SmtpClient smtpClient = new SmtpClient();
+            smtpClient.Connect("smtp.gmail.com", 587, false);
+            smtpClient.Authenticate("NoReply.Beginner@gmail.com", "Beginner135");
+            await smtpClient.SendAsync(message);
+            smtpClient.Disconnect(true);
+            smtpClient.Dispose();
+        }
+
         [HttpPost]
         [Route("Login")]
         public async Task<IActionResult> Login([FromBody] AuthenticationModel model)
@@ -153,6 +178,7 @@ namespace BeginnerWebApiRC1.Controllers
                         if (user.StatusId == 1)
                         {
                             string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                            ResendConfirmationMail(user.Email, user.Name, token);
 
                             return Ok(new
                             {

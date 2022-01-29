@@ -196,7 +196,7 @@ namespace BeginnerWebApiRC1.Models
                 entity.Property(p => p.PersonalDataSerialized).HasColumnName("person_data");
 
                 entity.Property(e => e.CvFile)
-                    .HasMaxLength(200)
+                    .HasMaxLength(60000)
                     .HasColumnName("cv_file");
 
                 entity.Property(e => e.Email)

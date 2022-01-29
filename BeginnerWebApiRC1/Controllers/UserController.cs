@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -26,6 +27,7 @@ namespace BeginnerWebApiRC1.Controllers
 
         [HttpGet]
         [Route("[action]")]
+        [AllowAnonymous]
         public async Task<UserProfileModel> GetUserProfile(string userId = "")
         {
             if (ModelState.IsValid)
@@ -37,6 +39,7 @@ namespace BeginnerWebApiRC1.Controllers
                     {
                         userId = userIdClaim.Value;
                         UserProfileModel profileModel = await DatabaseManager.GetUserProfile(userId, true);
+                        profileModel.UserPictureConverted = ConvertImageToBase64(userId);
                         return profileModel;
                     }
                     return null;
@@ -44,6 +47,7 @@ namespace BeginnerWebApiRC1.Controllers
                 else
                 {
                     UserProfileModel profileModel = await DatabaseManager.GetUserProfile(userId, false);
+                    profileModel.UserPictureConverted = ConvertImageToBase64(userId);
                     return profileModel;
                 }
             }
@@ -57,6 +61,8 @@ namespace BeginnerWebApiRC1.Controllers
             try
             {
                 Claim userIdClaim = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "userId");
+                model.CvFileConverted = ConvertPDF(model.CvFile);
+                UploadImage(model.UserPicture, userIdClaim.Value);
                 bool result = await DatabaseManager.EditUserProfile(userIdClaim.Value, model);
                 if (result)
                     return Ok("Pomyślnie edytowano dane!");
@@ -67,6 +73,49 @@ namespace BeginnerWebApiRC1.Controllers
             {
                 Logger.Error(string.Format("Error on user profile edit: {0}",ex));
                 return Conflict("Wystąpił błąd podczas edycji profilu!");
+            }
+        }
+
+        private string ConvertPDF(IFormFile file)
+        {
+            string fileBytes = "";
+            if (file.Length > 0)
+            {
+                using(var ms = new MemoryStream())
+                {
+                    file.CopyTo(ms);
+                    var bytes = ms.ToArray();
+                    fileBytes = Convert.ToBase64String(bytes);
+                }
+            }
+            return fileBytes;
+        }
+
+        private string ConvertImageToBase64(string path)
+        {
+            try
+            {
+                path = Path.Combine("Content/Images/User", path + ".jpg");
+                string image = System.Convert.ToBase64String(System.IO.File.ReadAllBytes(path));
+                return image;
+            }
+            catch
+            {
+                Logger.Info(string.Format("Image not found", path));
+                return "";
+            }
+        }
+
+        private void UploadImage(IFormFile photo, string userId)
+        {
+            if(photo.Length > 0)
+            {
+                string fileName = userId + ".jpg";
+                string path = Path.Combine("Content/Images/User", fileName);
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    photo.CopyTo(stream);
+                }
             }
         }
     }

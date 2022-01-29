@@ -17,6 +17,7 @@ namespace BeginnerWebApiRC1.Controllers
     {
         [HttpGet]
         [Route("[Action]")]
+        [AllowAnonymous]
         public async Task<List<ShortOfferModel>> GetAllOffers()
         {
             List<ShortOfferModel> shortOfferModels = new List<ShortOfferModel>();
@@ -26,6 +27,7 @@ namespace BeginnerWebApiRC1.Controllers
 
         [HttpGet]
         [Route("[action]")]
+        [AllowAnonymous]
         public async Task<OfferModel> GetOfferDetails(int offerId)
         {
             Claim userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "userId");

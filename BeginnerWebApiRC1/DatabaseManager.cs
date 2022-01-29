@@ -180,7 +180,7 @@ namespace BeginnerWebApiRC1
             user.Name = model.Name;
             user.Surname = model.Surname;
             user.ProfessionId = prof.Id;
-            user.CvFile = model.CvFile;
+            user.CvFile = model.CvFileConverted;
             user.PersonData.UserAboutMe = model.AboutMe;
             user.PersonData.UserExperience = model.UserExperience;
             var result = await dbContext.SaveChangesAsync();

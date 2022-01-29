@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BeginnerWebApiRC1.Beginner;
 using BeginnerWebApiRC1.Models;
 using BeginnerWebApiRC1.Models.Offer;
+using BeginnerWebApiRC1.Models.User;
 using log4net;
 
 namespace BeginnerWebApiRC1
@@ -150,6 +151,45 @@ namespace BeginnerWebApiRC1
                 Logger.Error(string.Format("Assigning user to offer went wrong: {0}", ex));
                 return false;
             }
+        }
+
+        public async Task<UserProfileModel> GetUserProfile(string userId, bool isUserProfile)
+        {
+            BeginnerUser user = dbContext.Users.Where(u => u.Id == userId).FirstOrDefault();
+            Profession prof = dbContext.Professions.Where(p => p.Id == user.ProfessionId).First();
+            UserProfileModel userModel = new UserProfileModel(user, prof, isUserProfile);
+            return userModel;
+
+        } 
+
+        public async Task<bool> EditUserProfile(string userId, UserProfileModel model)
+        {
+            BeginnerUser user = dbContext.Users.Where(u => u.Id == userId).FirstOrDefault();
+            Profession prof = dbContext.Professions.Where(p => p.Profession1 == model.Profession).FirstOrDefault();
+            if(prof == null)
+            {
+                this.CreateProfession(model.Profession);
+                prof = dbContext.Professions.Where(p => p.Profession1 == model.Profession).FirstOrDefault();
+            }
+            user.Name = model.Name;
+            user.Surname = model.Surname;
+            user.ProfessionId = prof.Id;
+            user.CvFile = model.CvFile;
+            user.PersonData.UserAboutMe = model.AboutMe;
+            user.PersonData.UserExperience = model.UserExperience;
+            var result = await dbContext.SaveChangesAsync();
+            return result == 1 ? true : false;
+           
+        }
+
+        private void CreateProfession(string proffesionName)
+        {
+            Profession profession = new Profession();
+            int newId = (dbContext.Professions.OrderByDescending(x => x.Id).Select(k => k.Id).FirstOrDefault()) + 1;
+            profession.Id = newId;
+            profession.Profession1 = proffesionName;
+            dbContext.Professions.Add(profession);
+            dbContext.SaveChanges();
         }
 
         public void Dispose()

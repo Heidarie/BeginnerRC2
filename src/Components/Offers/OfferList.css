@@ -1,0 +1,19 @@
+.offer-listing {
+  cursor: pointer;
+  transition: all 0.3s;
+  background-color: #fff;
+}
+.offer-listing:hover {
+  -webkit-transform: scale(1.02);
+  -ms-transform: scale(1.02);
+  transform: scale(1.02);
+  background-color: #ffc107;
+  color: white;
+}
+#selected-offer-listing {
+  -webkit-transform: scale(1.02);
+  -ms-transform: scale(1.02);
+  transform: scale(1.02);
+  background-color: #ffc107;
+  color: white;
+}

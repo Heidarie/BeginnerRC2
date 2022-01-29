@@ -1,0 +1,165 @@
+{
+    "Offers": [
+        {
+            "id": 1000,
+            "offer_text": [
+                {
+                "title": "Junior Front-end Engineer ",
+                "company_name": "Brainly",
+                "street":"Taczaka 12/45",
+                "city": "Poznań",
+                "experience": "Junior",
+                "company_size": 400,
+                "company_image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Brainly_logo.svg/800px-Brainly_logo.svg.png",
+                "requirements":["obsługiwał/ła transakcje gotówkowe i bezgotówkowe,",
+                    "aktywnie sprzedawał/ła produkty finansowe iubezpieczenia,",
+                    "dbał/ła o wysoką jakość obsługi Klienta – równieżtelefonicznie,",
+                    "budował/ła długotrwałe relacje z Klientami"],
+                "languages":["react","git","c#"],
+                "body":"",
+                "description":""
+            }
+
+            ],
+            "salary_from": 4000,
+            "salary_to": 5000,
+            "CD": "24.01.2022",
+            "MD": "15.02.2022",
+            "FD": "18.03.2022",
+            "person_id": 1000,
+            "address_id": 1000,
+            "profession_id": 1000
+        },{
+            "id": 1001,
+            "offer_text": [
+                {
+                "title": "Junior Python Engineer",
+                "company_name": "WSB",
+                "street":"Taczaka 16/33",
+                "company_size": 500,
+                "city": "Łódź",
+                "experience": "Mid",
+                "company_image": "https://monikarozycka.pl/wp-content/uploads/2020/06/wsb-logo.png",
+                "requirements":["obsługiwał/ła transakcje gotówkowe i bezgotówkowe,",
+                    "aktywnie sprzedawał/ła produkty finansowe iubezpieczenia,",
+                    "dbał/ła o wysoką jakość obsługi Klienta – równieżtelefonicznie,",
+                    "budował/ła długotrwałe relacje z Klientami"],
+                "languages":["python","c++","jira"],
+                "body":"",
+                "description":""
+            }
+
+            ],
+            "salary_from": 4000,
+            "salary_to": 5000,
+            "CD": "24.01.2022",
+            "MD": "15.02.2022",
+            "FD": "18.03.2022",
+            "person_id": 1000,
+            "address_id": 1000,
+            "profession_id": 1000
+        }
+        ,{
+            "id": 1002,
+            "offer_text": [
+                {
+                "title": "Junior React Engineer",
+                "company_name": "WSB",
+                "street":"Taczaka 16/33",
+                "company_size": 500,
+                "city": "Warszawa",
+                "experience": "Mid",
+                "company_image": "https://monikarozycka.pl/wp-content/uploads/2020/06/wsb-logo.png",
+                "requirements":["obsługiwał/ła transakcje gotówkowe i bezgotówkowe,",
+                    "aktywnie sprzedawał/ła produkty finansowe iubezpieczenia,",
+                    "dbał/ła o wysoką jakość obsługi Klienta – równieżtelefonicznie,",
+                    "budował/ła długotrwałe relacje z Klientami"],
+                "languages":["python","c++","jira"],
+                "body":"",
+                "description":""
+            }
+
+            ],
+            "salary_from": 4000,
+            "salary_to": 5000,
+            "CD": "24.01.2022",
+            "MD": "15.02.2022",
+            "FD": "18.03.2022",
+            "person_id": 1000,
+            "address_id": 1000,
+            "profession_id": 1000
+        },{
+            "id": 1003,
+            "offer_text": [
+                {
+    "title": "Front-end Developer",
+    "shortDescription": "Jesteśmy firmą specjalizującą się w tworzeniu zaawansowanych systemów do sprzedaży online, która w zaledwie dwa lata urosła do ponad 50 osób.",
+    "street": "Wyspa Słodowa 7",
+    "city": "Wrocław",
+    "company_image": "https://bucket.justjoin.it/offers/company_logos/original/d9e23c792f8c6fc2fb678b2f263e210e7716783d.png?1631695389",
+    "company_name": "BitBag",
+    "postal_code": "87-800",
+    "company_size": "55",
+    "income_from": "4500",
+    "income_to": "8500",
+    "experience": "Junior",
+    "add_date": "2021-12-09",
+    "requirements": "praktycznej znajomości współczesnego użycia ECMAScript 6+ do tworzenia zaawansowanych aplikacji web\nco najmniej roku zawodowego doświadczenia w programowaniu\nbiegłej znajomości HTML5, CSS3\npraktycznej znajomości Vue.js\numiejętności wykorzystania responsive web design\nznajomości technik optymalizacji kodu oraz komunikacji z serwerem\npasji do programowania! ",
+    "duties": "At least 4y of experience in implementing Python-based applications & solutions.\nVery good knowledge of Core Python.\nGood knowledge of at least one web framework (ideally Flask, Django or fastAPI).\nExperience with SQL databases, including tuning and troubleshooting skills.\nGood knowledge of available NoSQL solutions.\nHands-on experience with cloud and tools like Docker.\nFluency in Python unit testing and testing frameworks.\nA solid foundation in computer science, good knowledge of data structures, strong analytical thinking skills and ability to solve algorithmic tasks.\nClean coding and refactoring skills.\nExpert knowledge of software development lifecycle.\nStrong, hands-on experience with agile methodologies (Scrum and Kanban).\nStrong written and verbal communication skills in English, desire to work as part of a global team, ability to explain technical concepts clearly and effectively.\nTeam player mentality.",
+    "apply_data": "red.1999@o2.pl",
+    "languages": ["Vue","React","HTML","JavaScript","CSS"],
+    "benefits": [
+        "26 dni płatnego urlopu",
+        "stawiamy na rozwój",
+        "realny wpływ na działania firmy",
+        "LuxMed",
+        "Multisport"
+    ],
+    "apply_option": "Email",
+    "image": null,
+    "job_type": "Zdalnie"
+}
+
+            ],
+            "salary_from": 4000,
+            "salary_to": 5000,
+            "CD": "24.01.2022",
+            "MD": "15.02.2022",
+            "FD": "18.03.2022",
+            "person_id": 1000,
+            "address_id": 1000,
+            "profession_id": 1000
+        }
+    ],
+    "Person": [
+        {
+            "id": 1000,
+            "profession_id": 2000,
+            "name": "Kacper",
+            "surname":"Kasprowy",
+            "CD": "24.01.2022",
+            "MD": "15.02.2022",
+            "person_data": "lorem ipsum",
+            "cv_file": "CV_XDD.PLIK",
+            "roles_id": 1000,
+            "profession_id1": 1000,
+            "subscription_types_id": 1000
+        }
+    ],"Address": [
+        {
+            "id": 1000,
+            "postal_code": "62-400",
+            "city":"Gliwice",
+            "street": "Gustawa Eiffela"
+        }
+    ],"Users": [
+        {
+            "id": 1000,
+            "email": "test@o2.pl",
+            "password":"testtest",
+            "activated": 1,
+            "person_id": 1000
+        }
+    ]
+    
+}

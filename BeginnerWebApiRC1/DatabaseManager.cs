@@ -101,6 +101,12 @@ namespace BeginnerWebApiRC1
         public async Task<bool> CreateOffer(OfferModel offer, string userId)
         {
             Offer highestIdOffer = dbContext.Offers.OrderByDescending(o => o.Id).FirstOrDefault();
+            Profession prof = dbContext.Professions.Where(x => x.Profession1 == offer.Profession).FirstOrDefault();
+            if(prof == null)
+            {
+                this.CreateProfession(offer.Profession);
+                prof = dbContext.Professions.Where(x => x.Profession1 == offer.Profession).FirstOrDefault();
+            }
             //var people = dbContext.Person.ToList();
             try
             {
@@ -116,10 +122,10 @@ namespace BeginnerWebApiRC1
                     SalaryTo = offer.SalaryTo,
                     City = offer.City,
                     Street = offer.Street,
-                    ProfessionId = dbContext.Professions.Where(x => x.Profession1 == offer.Profession).Select(o => o.Id).First(),
+                    ProfessionId = prof.Id,
                     StatusId = 1,
                     BeginnerUserId = userId,
-                    Profession = dbContext.Professions.Where(x => x.Profession1 == offer.Profession).FirstOrDefault(),
+                    Profession = prof,
                     Status = dbContext.Statuses.FirstOrDefault(s => s.Id == 1)
 
                 };

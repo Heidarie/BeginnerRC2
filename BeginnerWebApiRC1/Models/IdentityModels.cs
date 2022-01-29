@@ -224,8 +224,13 @@ namespace BeginnerWebApiRC1.Models
                     .HasConstraintName("fk_person_roles1");
             }
             );
+            modelBuilder.Entity<Beginner.Offer>(entity =>
+            {
+                entity.Property(e => e.AdditionalDataSerialized).HasColumnName("additional_data");
+            });
             modelBuilder.Entity<BeginnerUser>().Ignore(p => p.PersonData);
             modelBuilder.Entity<BeginnerUser>().Ignore(p => p.RefreshTokens);
+            modelBuilder.Entity<Beginner.Offer>().Ignore(p => p.AdditionalData);
 
 
         }

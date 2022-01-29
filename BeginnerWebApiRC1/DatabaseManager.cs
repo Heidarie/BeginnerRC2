@@ -96,7 +96,7 @@ namespace BeginnerWebApiRC1
                 BeginnerUser employer = dbContext.Users.Where(p => p.Id == offer.UserId).FirstOrDefault();
                 EmployeeApplication application = dbContext.EmployeeApplications.Where(a => a.UserId == userId && a.OffersId == offer.Id).FirstOrDefault();
                 Profession profession = dbContext.Professions.Where(p => p.Id == offer.ProfessionId).First();
-                OfferModel offerModel = new OfferModel(offer, employer, profession, application == null ? "brak" : dbContext.ApplicationStatuses.Where(a => a.Id == application.ApplicationStatusId).Select(a => a.Name).FirstOrDefault());
+                OfferModel offerModel = new OfferModel(offer, employer, profession, application == null ? "" : dbContext.ApplicationStatuses.Where(a => a.Id == application.ApplicationStatusId).Select(a => a.Name).FirstOrDefault());
                 return offerModel;
             }
             return null;
@@ -115,7 +115,7 @@ namespace BeginnerWebApiRC1
             return null;
         }
 
-        public async Task<bool> CreateOffer(OfferModel offer, string userId)
+        public async Task<bool> CreateOffer(OfferModel offer, string userId, string benefits, string languages)
         {
             Offer highestIdOffer = dbContext.Offers.OrderByDescending(o => o.Id).FirstOrDefault();
             Profession prof = dbContext.Professions.Where(x => x.Profession1 == offer.Profession).FirstOrDefault();
@@ -141,11 +141,18 @@ namespace BeginnerWebApiRC1
                     Street = offer.Street,
                     ProfessionId = prof.Id,
                     StatusId = 1,
+                    CompanySize = offer.CompanySize,
+                    ExperienceRequired = offer.Experience,
+                    Duties = offer.Duties,
+                    JobType = offer.JobType,
                     BeginnerUserId = userId,
                     Profession = prof,
                     Status = dbContext.Statuses.FirstOrDefault(s => s.Id == 1)
 
                 };
+                dbOffer.AdditionalData = new OfferAdditionalData();
+                dbOffer.AdditionalData.Languages = languages;
+                dbOffer.AdditionalData.Benefits = benefits;
                 var result = await dbContext.Offers.AddAsync(dbOffer);
                 var test = await dbContext.SaveChangesAsync();
                 return true;

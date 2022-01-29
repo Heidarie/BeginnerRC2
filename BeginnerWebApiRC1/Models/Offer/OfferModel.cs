@@ -1,4 +1,5 @@
 ﻿using BeginnerWebApiRC1.Beginner;
+using System.Collections.Generic;
 
 namespace BeginnerWebApiRC1.Models.Offer
 {
@@ -7,18 +8,24 @@ namespace BeginnerWebApiRC1.Models.Offer
         public OfferModel() { }
         public OfferModel(Beginner.Offer offer, BeginnerUser employer, Profession profession,string appStatusName)
         {
-            Id = offer.Id;
-            OfferName = offer.PostalCode;
-            Description = offer.OfferText;
-            EmployerName = employer.Name;
-            SalaryFrom = offer.SalaryFrom;
-            SalaryTo = offer.SalaryTo;
-            CreationDate = offer.Cd.ToShortDateString();
-            FinishDay = offer.Fd.ToShortDateString();
-            ApplicationStatus = appStatusName;
-            City = offer.City;
-            Street = offer.Street;
-            Profession = profession.Profession1;
+            this.Id = offer.Id;
+            this.OfferName = offer.PostalCode;
+            this.Description = offer.OfferText;
+            this.EmployerName = employer.Name;
+            this.SalaryFrom = offer.SalaryFrom;
+            this.SalaryTo = offer.SalaryTo;
+            this.CreationDate = offer.Cd.ToShortDateString();
+            this.FinishDay = offer.Fd.ToShortDateString();
+            this.ApplicationStatus = appStatusName;
+            this.City = offer.City;
+            this.Street = offer.Street;
+            this.Profession = profession.Profession1;
+            this.CompanySize = offer.CompanySize;
+            this.JobType = offer.JobType;
+            this.Experience = offer.ExperienceRequired;
+            this.Duties = offer.Duties;
+            this.Languages = new List<string>(offer.AdditionalData.Languages.Split(";"));
+            this.Benefits = new List<string>(offer.AdditionalData.Benefits.Split(";"));
         }
 
         public int? Id { get; set; }
@@ -33,5 +40,12 @@ namespace BeginnerWebApiRC1.Models.Offer
         public string City { get; set; }
         public string Street { get; set; }
         public string Profession { get; set; }
+        public int CompanySize { get; set; }
+        public string Experience { get; set; }
+        public string Duties { get; set; }
+        public string JobType { get; set; }
+        public List<string> Languages { get; set; }
+        public List<string> Benefits { get; set; }
+
     }
 }

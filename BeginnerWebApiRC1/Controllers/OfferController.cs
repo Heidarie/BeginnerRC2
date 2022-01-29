@@ -47,7 +47,9 @@ namespace BeginnerWebApiRC1.Controllers
         public async Task<IActionResult> AddOffer(OfferModel offer)
         {
             Claim userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "userId");
-            bool result = await DatabaseManager.CreateOffer(offer, userId.Value);
+            string benefits = string.Join(";", offer.Benefits);
+            string languages = string.Join(";", offer.Languages);
+            bool result = await DatabaseManager.CreateOffer(offer, userId.Value, benefits, languages);
             if (result)
             {
                 return Ok("Dodano ofertę");

@@ -32,9 +32,9 @@ namespace BeginnerWebApiRC1.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (string.IsNullOrEmpty(userId))
+                Claim userIdClaim = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "userId");
+                if (userIdClaim != null || string.IsNullOrEmpty(userId))
                 {
-                    Claim userIdClaim = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "userId");
                     if (userIdClaim != null)
                     {
                         userId = userIdClaim.Value;

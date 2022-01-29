@@ -31,7 +31,14 @@ namespace BeginnerWebApiRC1.Controllers
         public async Task<OfferModel> GetOfferDetails(int offerId)
         {
             Claim userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "userId");
-            OfferModel offer = await DatabaseManager.GetOffer(offerId, userId.Value);
+            OfferModel offer = new OfferModel();
+            if (userId != null)
+            {
+                offer = await DatabaseManager.GetOffer(offerId, userId.Value);
+            } else
+            {
+                offer = await DatabaseManager.GetOffer(offerId);
+            }
             return offer;
         }
 

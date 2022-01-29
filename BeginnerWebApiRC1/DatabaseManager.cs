@@ -91,11 +91,28 @@ namespace BeginnerWebApiRC1
         public async Task<OfferModel> GetOffer(int id, string userId)
         {
             Offer offer = dbContext.Offers.FirstOrDefault(o => o.Id == id);
-            BeginnerUser employer = dbContext.Users.Where(p => p.Id == offer.UserId).FirstOrDefault();
-            EmployeeApplication application = dbContext.EmployeeApplications.Where(a => a.UserId == userId && a.OffersId == offer.Id).FirstOrDefault();
-            Profession profession = dbContext.Professions.Where(p => p.Id == offer.ProfessionId).First();
-            OfferModel offerModel = new OfferModel(offer, employer, profession,application == null ? "brak" : dbContext.ApplicationStatuses.Where(a => a.Id == application.ApplicationStatusId).Select(a => a.Name).FirstOrDefault());
-            return offerModel;
+            if (offer != null)
+            {
+                BeginnerUser employer = dbContext.Users.Where(p => p.Id == offer.UserId).FirstOrDefault();
+                EmployeeApplication application = dbContext.EmployeeApplications.Where(a => a.UserId == userId && a.OffersId == offer.Id).FirstOrDefault();
+                Profession profession = dbContext.Professions.Where(p => p.Id == offer.ProfessionId).First();
+                OfferModel offerModel = new OfferModel(offer, employer, profession, application == null ? "brak" : dbContext.ApplicationStatuses.Where(a => a.Id == application.ApplicationStatusId).Select(a => a.Name).FirstOrDefault());
+                return offerModel;
+            }
+            return null;
+        }
+
+        public async Task<OfferModel> GetOffer(int id)
+        {
+            Offer offer = dbContext.Offers.FirstOrDefault(o => o.Id == id);
+            if (offer != null)
+            {
+                BeginnerUser employer = dbContext.Users.Where(p => p.Id == offer.UserId).FirstOrDefault();
+                Profession profession = dbContext.Professions.Where(p => p.Id == offer.ProfessionId).First();
+                OfferModel offerModel = new OfferModel(offer, employer, profession, "");
+                return offerModel;
+            }
+            return null;
         }
 
         public async Task<bool> CreateOffer(OfferModel offer, string userId)

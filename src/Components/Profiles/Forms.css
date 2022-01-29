@@ -1,0 +1,25 @@
+.background{
+    background-color: #eee;
+    font-size: 29px;
+}
+#main{
+    margin-left: 200px;
+}
+
+.Company{
+    margin: 20px 100px 20px 100px;
+}
+.Data{
+    margin: 20px 100px 20px 100px;
+}
+.Positions{
+    margin: 20px 100px 20px 100px;
+}
+.Description{
+    margin: 20px 100px 20px 100px;
+}
+
+.ss{
+    min-width: 150px;
+    margin: 100px 200px 0px 200px;
+}

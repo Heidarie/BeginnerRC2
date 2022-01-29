@@ -1,0 +1,352 @@
+.Profile_Section {
+  flex-direction: column;
+  justify-content: center;
+  background: #eee;
+  display: flex;
+}
+
+/* Panel witajacy */
+
+.Profile_Dashboard-Welcome {
+  margin-top: 10px;
+  background: #ffffff;
+  border-radius: 20px;
+  width: 1300px;
+  height: 400px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-wrap: nowrap;
+}
+.Profile_Dashboard-EDIT {
+  padding-left: 25px;
+  padding-top: 10px;
+}
+.Profile_Dashboard-Welcome-Picture {
+  width: 400px;
+  height: 400px;
+  padding-left: 50px;
+  padding-top: 50px;
+  border-radius: 20px;
+}
+.Profile_image {
+  height: 300px;
+  width: 300px;
+  border-radius: 10px;
+}
+.Profile_Dashboard-Welcome h2 {
+  font-family: Jost;
+  font-style: Bold;
+  font-size: 40px;
+  padding-left: 25px;
+  padding-top: 50px;
+}
+.Profile_Dashboard-Welcome ul li {
+  font-family: Jost;
+  font-style: normal;
+  font-size: 25px;
+  background: rgba(218, 218, 218, 0.51);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+.Profile_Info {
+  padding-left: 25px;
+  padding-top: 10px;
+}
+
+/* CV, dokumenty, doswiadczenie */
+
+.Profile_CV {
+  align-items: flex-start;
+  display: flex;
+}
+.Profile_CV h1 {
+  font-family: Jost;
+  font-style: Bold;
+  font-size: 30px;
+  text-align: center;
+  padding-top: 20px;
+}
+.Profile_CV-Experience {
+  margin-top: 30px;
+  background: #ffffff;
+  border-radius: 20px 0 0 20px;
+  width: 430px;
+  height: 700px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.Profile_CV-Education {
+  margin: 6px;
+  margin-top: 30px;
+  background: #ffffff;
+  border-radius: 0 0 0 0;
+  width: 430px;
+  height: 700px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.Profile_CV-Interested {
+  margin-top: 30px;
+  background: #ffffff;
+  border-radius: 0 20px 20px 0;
+  width: 430px;
+  height: 700px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* Opcje konta */
+
+.Profile_Options {
+  align-items: center;
+  display: flex;
+}
+.Profile_Options h1 {
+  font-family: Arial;
+  font-weight: bold;
+  font-size: 35px;
+  text-align: center;
+  padding-top: 20px;
+}
+.Profile_Options p {
+  font-family: Arial;
+  font-weight: bold;
+  font-size: 35px;
+  text-align: center;
+  padding-top: 20px;
+}
+.Profile_Options button {
+  border-radius: 15px;
+  width: 300px;
+  height: 40px;
+  font-size: 25px;
+  font-weight: bold;
+  font-family: Arial;
+  color: black;
+  border: 2px solid #505050;
+  margin: 0 auto;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+.Profile_Options button:hover {
+  background-color: rgb(255, 255, 255);
+  color: black;
+  border: 2px solid #000000;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+.Profile_Options-MyAplication {
+  margin-top: 30px;
+  margin-right: 20px;
+  background: #ffffff;
+  border-radius: 20px 20px 20px 20px;
+  width: 420px;
+  height: 400px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.Profile_Options-Image {
+  width: 390px;
+  height: 200px;
+  margin: 20px;
+  border-radius: 10px;
+}
+.Profile_Options-SaveOffer {
+  margin: 20px;
+  margin-top: 30px;
+  background: #ffffff;
+  border-radius: 20px 20px 20px 20px;
+  width: 420px;
+  height: 400px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.Profile_Options-Documents {
+  margin-top: 30px;
+  background: #ffffff;
+  border-radius: 20px 20px 20px 20px;
+  width: 420px;
+  height: 400px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* Ustawienia */
+
+.Profile_Settings {
+  align-items: flex-start;
+  display: flex;
+}
+.Profile_Settings h1 {
+  font-family: Arial;
+  font-weight: bold;
+  font-size: 35px;
+  text-align: center;
+  padding-top: 20px;
+}
+.Profile_Settings h4 {
+  font-family: Arial;
+  font-weight: bold;
+  font-size: 24px;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+.Profile_Settings p {
+  font-family: Arial;
+  font-weight: 400;
+  font-size: 14px;
+  padding-top: 2px;
+  padding-left: 10px;
+  color: #666666;
+}
+.Profile_Settings button {
+  font-family: Arial;
+  font-weight: bold;
+  width: 150px;
+  height: 30px;
+  font-size: 20px;
+  border-radius: 15px;
+  background: rgba(218, 218, 218, 0.63);
+  border: 1px solid #505050;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+.Profile_Settings-Account-Card button:hover {
+  background-color: rgb(255, 255, 255);
+  color: black;
+  border: 1px solid #000000;
+}
+
+.Profile_Settings-Account {
+  margin-top: 30px;
+  background: #ffffff;
+  border-radius: 20px;
+  width: 640px;
+  height: 540px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.Profile_Settings-Account-Card {
+  background: linear-gradient(
+    180deg,
+    rgba(210, 207, 228, 0.28) 0%,
+    rgba(74, 77, 100, 0.28) 100%
+  );
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  margin-top: 20px;
+  margin-left: 12px;
+  margin-right: 12px;
+  border-radius: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
+}
+.Profile_Settings-Account-Card-Info {
+  align-items: flex-start;
+  display: flex-start;
+  width: 400px;
+}
+.Profile_Settings-Account-Card-Button {
+  margin-left: auto;
+  padding: 20px;
+}
+.Profile_Settings-Security {
+  margin-top: 30px;
+  background: #ffffff;
+  border-radius: 20px;
+  width: 640px;
+  height: 540px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  margin-left: 20px;
+}
+
+/* Wsparcie techniczne */
+
+.Profile_ContactWithSupport {
+  margin-top: 20px;
+  background: #ffffff;
+  border-radius: 20px;
+  width: 1300px;
+  height: 400px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.Profile_ContactWithSupport h1 {
+  font-family: Arial;
+  font-weight: bold;
+  font-size: 35px;
+  text-align: center;
+  padding-top: 20px;
+}
+.Profile_ContactWithSupport h2 {
+  font-family: Arial;
+  font-weight: bold;
+  font-size: 25px;
+  text-align: left;
+  padding-top: 20px;
+  margin: 20px 10px 10px 10px;
+}
+.Profile_ContactWithSupport p {
+  font-family: Arial;
+  font-weight: bold;
+  font-size: 24px;
+  text-align: left;
+  color: white;
+}
+.Profile_ContactWithSupport-Position {
+  align-items: flex-start;
+  display: flex;
+}
+.Profile_ContactWithSupport-Card {
+  background: #0f1425;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+  width: 400px;
+  height: 200px;
+  margin: 0px 15px 15px 15px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
+  cursor: pointer;
+  background-color: #172855;
+  -webkit-transition: background-color 1000ms linear;
+  -moz-transition: background-color 1000ms linear;
+  -o-transition: background-color 1000ms linear;
+  -ms-transition: background-color 1000ms linear;
+  transition: background-color 1000ms linear;
+}
+.Profile_ContactWithSupport-Card:hover {
+  background-color: #182f6b;
+  transform: scale(1.04);
+  transition: all 0.3s ease-in-out;
+}
+.Profile_ContactWithSupport-Image {
+  border-radius: 5px;
+  width: 140px;
+  height: 140px;
+  margin: 30px 0px 0px 20px;
+}
+
+#Profile_ContactWithSupport-Card-info {
+  align-items: flex-start;
+  display: flex-start;
+  width: 200px;
+  margin-top: 140px;
+  margin-left: 15px;
+}
+.buttonic {
+  position: relative;
+  top: 500px;
+  margin: 0px 25px 0px 25px;
+}
+
+@media screen and (max-width: 960px) {
+  .Profile_Dashboard-Welcome {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    width: 500px;
+  }
+}

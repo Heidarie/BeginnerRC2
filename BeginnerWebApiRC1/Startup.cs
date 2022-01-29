@@ -25,6 +25,7 @@ using System.Text;
 using BeginnerWebApiRC1.Services;
 using BeginnerWebApiRC1.Token;
 using BeginnerWebApiRC1.Beginner;
+using System.Text.Json.Serialization;
 
 namespace BeginnerWebApiRC1
 {
@@ -90,6 +91,7 @@ namespace BeginnerWebApiRC1
                 return jwtBearerOptions;
             }
 
+
             services.AddCors(options =>
             {
                 options.AddPolicy(name:"test",c => c.AllowAnyOrigin().AllowAnyHeader().AllowAnyHeader());
@@ -107,7 +109,7 @@ namespace BeginnerWebApiRC1
             .AddJwtBearer("verify", jwtBearerOptions => options(jwtBearerOptions, "verify"));
             
 
-            services.AddIdentityCore<BeginnerUser>(options =>
+            services.AddIdentity<BeginnerUser, IdentityRole>(options =>
             {
                 options.Password.RequireNonAlphanumeric = false;
             }).AddSignInManager<SignInManager<BeginnerUser>>().AddEntityFrameworkStores<ApplicationDbContext>()
@@ -115,7 +117,10 @@ namespace BeginnerWebApiRC1
 
             services.AddScoped(factory => LogManager.GetLogger(GetType()));
 
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(x =>
+            {
+                x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BeginnerWebApiRC1", Version = "v1" });

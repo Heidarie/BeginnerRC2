@@ -1,8 +1,12 @@
-﻿namespace BeginnerWebApiRC1
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BeginnerWebApiRC1
 {
     public enum Roles
     {
+       [Display(Name = "Employee")]
        Employee = 1,
+       [Display(Name = "Employer")]
        Employer = 2
     }
 

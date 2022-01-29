@@ -27,14 +27,17 @@ namespace BeginnerWebApiRC1.Controllers
         private readonly UserManager<BeginnerUser> _userManager;
         private readonly SignInManager<BeginnerUser> _signInManager;
         private readonly IRefreshTokenRepository _cachedRefreshTokenRepository;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public AccountController(UserManager<BeginnerUser> userManager,
             SignInManager<BeginnerUser> signInManager,
-            IRefreshTokenRepository cachedRefreshTokenRepository)
+            IRefreshTokenRepository cachedRefreshTokenRepository,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _cachedRefreshTokenRepository = cachedRefreshTokenRepository;
+            _roleManager = roleManager;
         }
 
         [HttpPost]
@@ -61,7 +64,7 @@ namespace BeginnerWebApiRC1.Controllers
             {
                 var checkIfUserExist = await _userManager.FindByEmailAsync(user.Email);
 
-                if (checkIfUserExist == null) // check if exist any with this email
+                if (checkIfUserExist == null && (user.RoleId == (int)Roles.Employer || user.RoleId == (int)Roles.Employee)) // check if exist any with this email
                 {
                     var result = await _userManager.CreateAsync(user, model.Password); // create new user, insert to db
 
@@ -69,6 +72,15 @@ namespace BeginnerWebApiRC1.Controllers
                     {
                         if (result.Succeeded)
                         {
+
+                            if (await _roleManager.RoleExistsAsync(model.Role.ToString()) == false)
+                            {
+                                await _roleManager.CreateAsync(new IdentityRole(model.Role.ToString()));
+                            }
+
+                            var res = await _userManager.AddToRoleAsync(user, model.Role.ToString());
+
+
                             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                             this.SendMail(model, token);
 
@@ -82,7 +94,7 @@ namespace BeginnerWebApiRC1.Controllers
                             {
                                 AccessToken = TokenManager.GenerateVerificationAccessToken(user, token),
                                 RefreshToken = refreshToken.refreshToken,
-                            }); ;
+                            });
                         }
                     }
                     catch (Exception ex)
@@ -92,7 +104,7 @@ namespace BeginnerWebApiRC1.Controllers
                     string errors = string.Join(",", result.Errors);
                 }
 
-                return Conflict();
+                return Conflict("Istnieje już użytkownik o podanym mailu");
             }
             catch(Exception ex)
             {
@@ -188,15 +200,24 @@ namespace BeginnerWebApiRC1.Controllers
                             }); // redirect to confirm account
                         }
 
+                        var identityRole = await _userManager.GetRolesAsync(user);
+                        string role = identityRole.FirstOrDefault();
+                        if (string.IsNullOrEmpty(role))
+                        {
+                            role = ((Roles)user.RoleId).ToString();
+                        }
+
                         return Ok(new TokenModel
                         {
                             AccessToken = refreshToken.jwt,
-                            RefreshToken = refreshToken.refreshToken
+                            RefreshToken = refreshToken.refreshToken,
+                            UserRole = role,
+                            UserId = user.Id  
                         }); 
                     }
-                    return BadRequest();
+                    return Conflict("Błędne hasło");
                 }
-                return BadRequest();
+                return Conflict("Nie istnieje użytkownik o podanym mailu");
             }
             return BadRequest();
         }

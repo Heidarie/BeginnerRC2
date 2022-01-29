@@ -1,19 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Profile.css";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router";
 import { Button, Row, Col } from "react-bootstrap";
-
-function Profile({ userData }) {
+import axios from "axios";
+function Profile() {
+  const { id } = useParams();
   const [enableChange, setEnableChange] = useState(false);
+  const [user, setUser] = useState("");
   const { user: currentUser } = useSelector((state) => state.auth);
-  if (
-    currentUser !== undefined &&
-    userData !== undefined &&
-    currentUser.id === userData.id
-  ) {
-    setEnableChange(true);
+
+  function getUser() {
+    axios
+      .get(`https://localhost:44310/User/GetUserProfile?userId=${id}`)
+      .then((response) => {
+        console.log(response);
+        setUser(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
-  console.log(userData);
+  function getUserLogged() {
+    const config = {
+      headers: { Authorization: `Bearer ${currentUser.accessToken}` },
+    };
+    axios
+      .get(`https://localhost:44310/User/GetUserProfile?userId=${id}`, config)
+      .then((response) => {
+        console.log(response);
+        setUser(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  useEffect(() => {
+    if (user === null) {
+      getUser();
+    } else {
+      console.log("TUTAJ");
+      getUserLogged();
+    }
+  }, [id, currentUser.user]);
+  console.log(user);
   return (
     <div>
       <div className="Profile_Section">
@@ -32,24 +62,26 @@ function Profile({ userData }) {
             <Col className="col-9 text-start pt-2">
               <Row>
                 <Col className="col-12 col-xxl-10">
-                  <h6 className="display-6">IMIE NAZWISKO</h6>
+                  <h6 className="display-6">
+                    {user.name + " " + user.surname}
+                  </h6>
                 </Col>
                 <Col className="col-12 col-xxl-2"></Col>
                 <Col className="col-12">
-                  <h4 className="text-muted">EMAIL</h4>
+                  <h4 className="text-muted">{user.email}</h4>
                 </Col>
                 <Col className="col-12">
                   <p className="lead mb-0">JAKIES INNE DANE</p>
                 </Col>
               </Row>
-              {enableChange && (
-                <Button variant="dark" href={`../User/${userData.id}/Edit`}>
+              {user.isUserMainAccount && (
+                <Button variant="dark" href={`../User/Edit/${id}`}>
                   Edytuj
                 </Button>
               )}
             </Col>
           </Row>
-          {enableChange && currentUser.user === 1 && (
+          {user.isUserMainAccount && currentUser.userRole === "Employee" && (
             <div>
               <h1 className="display-6 text-muted text-center pt-3">
                 Twoje aplikacje
@@ -85,7 +117,7 @@ function Profile({ userData }) {
               </div>
             </div>
           )}
-          {enableChange && currentUser.user === 2 && (
+          {user.isUserMainAccount && currentUser.userRole === "Employer" && (
             <div>
               <h1 className="display-6 text-muted text-center pt-3">
                 MOJE OFERTY

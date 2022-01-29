@@ -10,11 +10,10 @@ import { useNavigate } from "react-router-dom";
 export default function Navbartop() {
   const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const logOut = useCallback(() => {
     dispatch(logout());
   }, [dispatch]);
-  console.log("Current user", currentUser);
   useEffect(() => {
     EventBus.on("logout", () => {
       logOut();
@@ -46,7 +45,7 @@ export default function Navbartop() {
                 type="button"
                 variant="light"
                 onClick={() =>
-                  navigate(`../User/${currentUser.accessToken}`, {
+                  navigate(`../User/${currentUser.userId}`, {
                     replace: true,
                   })
                 }

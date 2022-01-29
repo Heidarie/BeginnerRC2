@@ -3,9 +3,8 @@ import { FloatingLabel, Row, Col, Badge } from "react-bootstrap";
 import { FaHome, FaCheck } from "react-icons/fa";
 import SkeletonOfert from "../Skeletons/SkeletonOfert";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllOffers, setSelectedOffer } from "../../Redux/Offers/offerSlice";
+import { setSelectedOffer, getAllOffers } from "../../Redux/Offers/offerSlice";
 import "./OfferList.css";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import OfferPagination from "./OfferPagination";
@@ -25,9 +24,7 @@ export default function OfferList(props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   offers = useSelector(getAllOffers);
-  let cities = [
-    ...new Set(offers.offers.map((item) => item.offer_text[0].city)),
-  ];
+  let cities = [...new Set(offers.offers.map((item) => item.location))];
   const indexOfLastOffer = page * offersPerPage;
   const indexOfFirstOffer = indexOfLastOffer - offersPerPage;
   const currentOffers = offers.offers.slice(
@@ -46,39 +43,19 @@ export default function OfferList(props) {
       }
     }
   }
-  const getOffers = async (offers) => {
-    await axios
-      .get("https://localhost:44310/Offer/GetAllOffers")
-      .then((response) => {
-        console.log(response);
-        offers = response;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  useEffect(() => {
-    offers.offers.length === 0 && getOffers(offers.offers);
-  }, [offers.offers]);
-
-  //FILTROWANIE
   function search(rows) {
     if (searchTerm !== "" && searchCity === "") {
       return rows.filter(
         (row) =>
-          row.offer_text[0].title
-            .toLowerCase()
-            .indexOf(searchTerm.toLowerCase()) > -1 ||
-          row.offer_text[0].languages.indexOf(searchTerm.toLowerCase()) > -1
+          row.positionName.toLowerCase().indexOf(searchTerm.toLowerCase()) >
+            -1 || row.languages.indexOf(searchTerm.toLowerCase()) > -1
       );
     } else if (searchCity !== "") {
-      return rows.filter(
-        (row) => row.offer_text[0].city.indexOf(searchCity) > -1
-      );
+      return rows.filter((row) => row.location.indexOf(searchCity) > -1);
     }
     return rows;
   }
+  console.log(currentOffers);
   // SPRAWDZAJ CZY NASTEPNA STRONA MA WARTOSCI JESLI SA TO WYSWIETL KOLEJNA STRONE W WYBORZE
   return (
     <Col
@@ -172,23 +149,17 @@ export default function OfferList(props) {
           >
             <Col className="col-6 col-lg-4 text-start align-self-center">
               <h6 className="lead mb-0 text-nowrap">
-                {offer_details["offer_text"][0].title}
+                {offer_details.positionName}
               </h6>
               <Row className="d-flex align-self-center">
                 <Col className="col-12 col-sm-12 d-flex align-self-center pt-1">
                   <Badge bg="dark" className="text-nowrap me-1">
                     <FaHome className="me-1" />
-                    {offer_details["offer_text"][0].company_name}
+                    {offer_details.employerName}
                   </Badge>
                   <Badge bg="dark" className="text-nowrap me-1 ">
                     <FaHome className="me-1" />
-                    {offer_details["offer_text"][0].city}
-                  </Badge>
-                  <Badge
-                    bg="none"
-                    className="text-nowrap border border-dark text-muted text-dark"
-                  >
-                    REMOTE
+                    {offer_details.location}
                   </Badge>
                 </Col>
                 <Col className="col-12 col-sm-3 float-start align-self-center">
@@ -198,16 +169,17 @@ export default function OfferList(props) {
             </Col>
             <Col className="col-6 col-lg-3 text-start align-self-center">
               <h6 className="ms-4 text-muted text-nowrap">
-                {offer_details.salary_from} - {offer_details.salary_to} zł
+                {offer_details.salaryFrom} - {offer_details.salaryTo} zł
               </h6>
             </Col>
-            <Col className="col-6 col-lg-3 text-start align-self-center">
+            {/* <Col className="col-6 col-lg-3 text-start align-self-center">
               {offer_details["offer_text"][0].languages.map((lang, id) => (
                 <Badge key={id} bg="info" className="text-nowrap me-2">
                   {lang.toUpperCase()}
                 </Badge>
               ))}
-            </Col>
+            </Col> */}
+            <Col className="col-6 col-lg-3 text-start align-self-center"></Col>
             <Col className="col-6 col-lg-2 text-end align-self-center">
               <h6 className="text-muted">
                 <FaCheck className="me-1" />

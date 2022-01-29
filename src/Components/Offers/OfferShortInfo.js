@@ -1,23 +1,32 @@
-import React, { useEffect } from "react";
-import { Row, Col } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Row, Col, Button } from "react-bootstrap";
 import { FaPeopleArrows, FaBolt, FaClock, FaCheckCircle } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import SkeletonOfert from "../Skeletons/SkeletonOfert";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { getAllOffers } from "../../Redux/Offers/offerSlice";
+
 export const OfferShortInfo = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
-  const offers = useSelector(getAllOffers);
-  const offer_details = offers.offers.filter(
-    (offer) => offer.id === offers.selectedOffer
-  );
-  const applyForOffer = async (offers) => {
-    const offerId = offers.selectedOffer;
+  let offers = useSelector(getAllOffers);
+  const [offerShow, setOfferShow] = useState([]);
+  const [information, setInformation] = useState("");
+  const { user: currentUser } = useSelector((state) => state.auth);
+  const applyForOffer = async (id) => {
+    const offerId = id;
+    const config = { Authorization: `Bearer ${currentUser.accessToken}` };
+    console.log(config);
     await axios
-      .post("https://localhost:44310/Offer/UserApply", offerId)
+      .post(
+        `https://localhost:44310/Offer/UserApply?offerId=${offerId}`,
+        {},
+        {
+          headers: config,
+        }
+      )
       .then((response) => {
-        console.log(response);
+        setInformation(response.data);
       })
       .catch((err) => {
         console.log(err);
@@ -26,32 +35,36 @@ export const OfferShortInfo = () => {
   const getOfferDetails = async (offers) => {
     const offerId = offers.selectedOffer;
     console.log(offerId);
-    console.log(!offers.isActiveSelected);
-    if (offers.isActiveSelected) {
-      await axios
-        .post("https://localhost:44310/Offer/GetOfferDetails", offerId)
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    const config = {
+      headers: { Authorization: `Bearer ${currentUser.accessToken}` },
+    };
+    axios
+      .get(
+        `https://localhost:44310/Offer/GetOfferDetails?offerId=${offerId}`,
+        config
+      )
+      .then((response) => {
+        setOfferShow([response.data]);
+        console.log(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
   useEffect(() => {
-    offers.isActiveSelected !== false && getOfferDetails(offers);
+    getOfferDetails(offers);
   }, [offers]);
 
   const offersApplied = async () => {
     //DODAĆ BLOKOWANIE PRZYCISKÓW NA KTÓRE KTOŚ APLIKOWAŁ
   };
-
   return (
     <>
       {offers.loading && [1, 2, 3, 4, 5].map((n) => <SkeletonOfert key={n} />)}
       {!offers.isActiveSelected
         ? null
-        : offer_details.map((offer, id) => (
+        : offerShow.map((offer, id) => (
             <Col
               className="d-none d-xl-block col-xl-5 shadow-sm p-0 bg-white border-none h-75"
               style={{ borderRadius: "15px" }}
@@ -65,22 +78,22 @@ export const OfferShortInfo = () => {
                 }}
               >
                 <Col className="col-3 d-flex ps-4 align-items-center justify-content-center">
-                  <img
+                  {/* <img
                     src={offer["offer_text"][0].company_image}
                     alt={offer["offer_text"][0].company_name}
                     width="110"
                     className="d-block"
-                  />
+                  /> */}
                 </Col>
                 <Col className="col-9 text-start pt-2">
-                  <h6 className="display-6">{offer["offer_text"][0].title}</h6>
+                  <h6 className="display-6">{offer.offerName}</h6>
                   <p className="lead mb-0">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   </p>
                   <small className="text-muted">
-                    {offer["offer_text"][0].street}
+                    {offer.street}
                     {"  "}
-                    {offer["offer_text"][0].city}
+                    {offer.city}
                   </small>
                 </Col>
                 <Col className="col-4 text-center my-2">
@@ -89,9 +102,9 @@ export const OfferShortInfo = () => {
                     className="border border-dark rounded-pill text-nowrap"
                     style={{ wordBreak: "break-all" }}
                   >
-                    <p className="lead mb-0">
+                    {/* <p className="lead mb-0">
                       +-{offer["offer_text"][0].company_size}
-                    </p>
+                    </p> */}
                     <small className="text-muted">Wielkość firmy</small>
                   </div>
                 </Col>
@@ -101,9 +114,9 @@ export const OfferShortInfo = () => {
                     className="border border-dark rounded-pill text-nowrap"
                     style={{ wordBreak: "break-all" }}
                   >
-                    <p className="lead mb-0">
+                    {/* <p className="lead mb-0">
                       {offer["offer_text"][0].experience}
-                    </p>
+                    </p> */}
                     <small className="text-muted">Doświadczenie</small>
                   </div>
                 </Col>
@@ -113,7 +126,7 @@ export const OfferShortInfo = () => {
                     className="border border-dark rounded-pill text-nowrap"
                     style={{ wordBreak: "break-all" }}
                   >
-                    <p className="lead mb-0">{offer.CD}</p>
+                    <p className="lead mb-0">{offer.creationDate}</p>
                     <small className="text-muted">Data wystawienia</small>
                   </div>
                 </Col>
@@ -128,24 +141,11 @@ export const OfferShortInfo = () => {
                     <small className="text-muted ms-2">U NAS BĘDZIESZ:</small>
 
                     <div className="ms-4">
-                      <p className="mb-0">
-                        • obsługiwał/ła transakcje gotówkowe i bezgotówkowe, .
-                      </p>
-                      <p className="mb-0">
-                        • aktywnie sprzedawał/ła produkty finansowe i
-                        ubezpieczenia,
-                      </p>
-                      <p className="mb-0">
-                        • dbał/ła o wysoką jakość obsługi Klienta – również
-                        telefonicznie,
-                      </p>
-                      <p className="mb-0">
-                        • budował/ła długotrwałe relacje z Klientami
-                      </p>
+                      <p className="mb-0">{offer.description}</p>
                     </div>
                   </div>
                 </Col>
-                <Col className="col-12">
+                {/* <Col className="col-12">
                   <div
                     className="shadow-sm border border-light m-2 p-2"
                     style={{ borderRadius: "10px" }}
@@ -169,7 +169,7 @@ export const OfferShortInfo = () => {
                       </p>
                     </div>
                   </div>
-                </Col>
+                </Col> */}
                 <Col className="col-12">
                   <div
                     className="shadow-sm border border-light m-2 p-2 "
@@ -242,26 +242,68 @@ export const OfferShortInfo = () => {
                   </div>
                 </Col>
                 <div className="d-grid col-6 mx-auto pb-2 text-end">
-                  {isLoggedIn ? (
-                    <button
-                      type="button"
-                      className="btn btn-outline-dark rounded-pill"
-                      onClick={() => applyForOffer()}
-                    >
-                      Aplikuj
-                    </button>
+                  {isLoggedIn && currentUser.userRole === "Employee" ? (
+                    <div>
+                      {offer.applicationStatus === "" && (
+                        <Button
+                          type="button"
+                          className="btn btn-warning btn-outline-dark rounded-pill col-12"
+                          onClick={() => applyForOffer(offer.id)}
+                        >
+                          Aplikuj
+                        </Button>
+                      )}
+                      {offer.applicationStatus === "Applied" && (
+                        <Button
+                          type="button"
+                          className="btn btn-warning btn-outline-dark rounded-pill col-12"
+                          onClick={() => applyForOffer(offer.id)}
+                          disabled
+                        >
+                          Zaaplikowano
+                        </Button>
+                      )}
+                      {offer.applicationStatus === "Denied" && (
+                        <Button
+                          type="button"
+                          className="btn btn-danger  rounded-pill col-12"
+                          onClick={() => applyForOffer(offer.id)}
+                          disabled
+                        >
+                          Zaaplikowano
+                        </Button>
+                      )}
+                      {offer.applicationStatus === "Confirmed" && (
+                        <Button
+                          type="button"
+                          className="btn btn-success rounded-pill col-12"
+                          onClick={() => applyForOffer(offer.id)}
+                          disabled
+                        >
+                          Zaaplikowano
+                        </Button>
+                      )}
+                      <small className="col-12 text-center me-5">
+                        {information}
+                      </small>
+                    </div>
                   ) : (
-                    <button
-                      type="button"
-                      className="btn btn-outline-dark rounded-pill "
-                    >
-                      <Link
-                        to="/Register"
-                        className="text-warning text-decoration-none"
+                    <div>
+                      <Button
+                        type="button"
+                        className="btn btn-warning btn-outline-dark rounded-pill col-12"
                       >
-                        <h5>APLIKUJ</h5>
-                      </Link>
-                    </button>
+                        <Link
+                          to="/Register"
+                          className="text-dark text-decoration-none"
+                        >
+                          <h5>APLIKUJ</h5>
+                        </Link>
+                      </Button>
+                      <small className="col-12 text-center me-5">
+                        Musisz się zalogować
+                      </small>
+                    </div>
                   )}
                 </div>
               </Row>

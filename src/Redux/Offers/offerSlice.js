@@ -3,7 +3,9 @@ import axios from "axios";
 export const fetchAsyncOffers = createAsyncThunk(
   "offers/fetchOffers",
   async () => {
-    const response = await axios.get("http://localhost:8000/Offers");
+    const response = await axios.get(
+      "https://localhost:44310/Offer/GetAllOffers"
+    );
     return response.data;
   }
 );

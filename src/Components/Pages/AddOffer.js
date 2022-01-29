@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import Button from "@restart/ui/esm/Button";
+import React, { useCallback, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Container,
@@ -7,47 +8,54 @@ import {
   Form,
   ButtonGroup,
   ToggleButton,
-  Button,
 } from "react-bootstrap";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { BiArrowBack } from "react-icons/bi";
-import { FaCameraRetro, FaCoins } from "react-icons/fa";
-// import data from "../data/languages.json";
-// import ReactTags from "react-tag-autocomplete";
+import { useSelector } from "react-redux";
+
+import {
+  FaCameraRetro,
+  FaPeopleArrows,
+  FaBolt,
+  FaClock,
+  FaCheckCircle,
+  FaCoins,
+  FaMinusSquare,
+} from "react-icons/fa";
+import data from "../data/languages.json";
+import ReactTags from "react-tag-autocomplete";
 import "./ReactTags.css";
 export default function Addoffer() {
   const navigate = useNavigate();
+  const reactTags = useRef();
   const [selectedFile, setSelectedFile] = useState(null);
-  // const [tags, setTags] = useState([]);
-  // const [benefits, setBenefits] = useState([]);
-  const [radioValue, setRadioValue] = useState("Email");
+  const [tags, setTags] = useState([]);
+  let input;
+  const [benefits, setBenefits] = useState([]);
   const [radioJobValue, setRadioJobValue] = useState("Zdalnie");
-  const radios = [
-    { name: "Email", value: "Email" },
-    { name: "Link", value: "Link" },
-  ];
+  const [information, setInformation] = useState("");
   const radiosJob = [
     { name: "Stacjonarnie", value: "Stacjonarnie" },
     { name: "Zdalnie", value: "Zdalnie" },
     { name: "Stacjonarnie+Zdalnie", value: "Stacjonarnie+Zdalnie" },
   ];
-  // function removeBenefit(name) {
-  //   const newBenefits = benefits.filter((item) => item !== name);
-  //   setBenefits(newBenefits);
-  // }
-  // const onDelete = useCallback(
-  //   (tagIndex) => {
-  //     setTags(tags.filter((_, i) => i !== tagIndex));
-  //   },
-  //   [tags]
-  // );
-  // const onAddition = useCallback(
-  //   (newTag) => {
-  //     setTags([...tags, newTag]);
-  //   },
-  //   [tags]
-  // );
+  function removeBenefit(name) {
+    const newBenefits = benefits.filter((item) => item !== name);
+    setBenefits(newBenefits);
+  }
+  const onDelete = useCallback(
+    (tagIndex) => {
+      setTags(tags.filter((_, i) => i !== tagIndex));
+    },
+    [tags]
+  );
+  const onAddition = useCallback(
+    (newTag) => {
+      setTags([...tags, newTag]);
+    },
+    [tags]
+  );
 
   function fileUploadHandler() {
     setValue("image", selectedFile);
@@ -59,27 +67,43 @@ export default function Addoffer() {
     getValues,
     formState: { errors },
   } = useForm();
+  const { user: currentUser } = useSelector((state) => state.auth);
   const onSubmit = async (data, e) => {
+    const langArray = [];
+    console.log(data.lang);
+    data.lang.map((obj) => {
+      langArray.push(obj.name);
+    });
     e.preventDefault();
     const dataToSend = {
-      OfferModel: {
-        OfferName: data.title,
-        Description: data.requirements,
-        EmployerName: data.company_name,
-        SalaryFrom: data.income_from,
-        SalaryTo: data.income_to,
-        ApplicationStatus: data.apply_option,
-        City: data.city,
-        Street: data.street,
-        Profession: data.profession,
-      },
+      OfferName: data.title,
+      Description: data.requirements,
+      EmployerName: data.company_name,
+      SalaryFrom: data.income_from,
+      SalaryTo: data.income_to,
+      //ApplicationStatus: data.apply_option,
+      City: data.city,
+      Street: data.street,
+      Profession: data.profession,
+      //NOWE
+      CompanySize: data.company_size,
+      DataExperience: data.experience,
+      Duties: data.duties,
+      Languages: langArray,
+      Benefits: data.benefits,
+      JobType: data.job_type,
     };
     console.log(dataToSend);
+    const config = { Authorization: `Bearer ${currentUser.accessToken}` };
     await axios
-      .post("https://localhost:44310/Offer/AddOffer", dataToSend)
+      .post("https://localhost:44310/Offer/AddOffer", dataToSend, {
+        headers: config,
+      })
       .then((response) => {
-        console.log(response);
-        navigate({ pathname: "/" });
+        setInformation(response.data);
+        setTimeout(() => {
+          navigate({ pathname: "/" });
+        }, 2000);
       })
       .catch((err) => {
         console.log(err);
@@ -252,7 +276,7 @@ export default function Addoffer() {
                       </Form.Group>
                     </Col>
                     <Col className="col-12 col-lg-4 d-flex justify-content-center">
-                      {/* <Form.Group
+                      <Form.Group
                         className="mb-3"
                         controlId="exampleForm.ControlInput1"
                       >
@@ -281,11 +305,11 @@ export default function Addoffer() {
                             {errors.postal_code.message}
                           </p>
                         )}
-                      </Form.Group> */}
+                      </Form.Group>
                     </Col>
                   </Row>
                 </Col>
-                {/* <Col className="col-12 col-xl-3 text-center my-2 ">
+                <Col className="col-12 col-xl-4 text-center my-2 ">
                   <FaPeopleArrows
                     className="mb-1"
                     style={{ fontSize: "25px" }}
@@ -309,11 +333,11 @@ export default function Addoffer() {
                       </Form.Group>
                     </Col>
                   </Row>
-                </Col> */}
-                <Col className="col-12  text-center my-2">
+                </Col>
+                <Col className="col-12 col-xl-4 text-center my-2">
                   <FaCoins className="mb-1" style={{ fontSize: "25px" }} />
                   <Row className="shadow border border-dark rounded-pill  text-nowrap mx-1 justify-content-center h-75">
-                    <Col className="col-12">
+                    <Col className="col-12 ">
                       <p className="lead mb-0"></p>
                       <small className="text-muted">Zarobki</small>
                     </Col>
@@ -360,7 +384,7 @@ export default function Addoffer() {
                     </Col>
                   </Row>
                 </Col>
-                {/* <Col className="col-12 col-xl-3 text-center my-2">
+                <Col className="col-12 col-xl-4 text-center my-2">
                   <FaBolt className="mb-1" style={{ fontSize: "25px" }} />
                   <Row className="shadow border border-dark rounded-pill text-nowrap pb-2 mx-1 h-75">
                     <Col className="col-12">
@@ -385,8 +409,8 @@ export default function Addoffer() {
                       </Form.Select>
                     </Col>
                   </Row>
-                </Col> */}
-                {/* <Col className="col-12 col-xl-6 text-center my-2">
+                </Col>
+                <Col className="col-12 col-xl-6 text-center my-2">
                   <FaClock className="mb-1" style={{ fontSize: "25px" }} />
                   <Row className="shadow border border-dark rounded-pill text-nowrap pb-2 mx-1 h-75">
                     <Col className="col-12">
@@ -408,8 +432,8 @@ export default function Addoffer() {
                       </Form.Group>
                     </Col>
                   </Row>
-                </Col> */}
-                {/* <Col className="col-12 col-xl-6 text-center my-2">
+                </Col>
+                <Col className="col-12 col-xl-6 text-center my-2">
                   <FaClock className="mb-1" style={{ fontSize: "25px" }} />
                   <Row className="shadow border border-dark rounded-pill text-nowrap pb-2 mx-1 h-75">
                     <Col className="col-12">
@@ -427,21 +451,12 @@ export default function Addoffer() {
                           className="rounded rounded-pill border border-light "
                           {...register("finish_date", {
                             required: "Wymagana jest data wygaśnięcia oferty",
-                            // validate: {
-                            //   checkIfHigher: (value) => {
-                            //     const { add_date } = getValues();
-                            //     return (
-                            //       Date.parse(add_date) > Date.parse(value) ||
-                            //       "Data rozpoczęcia to data rozpoczęcia"
-                            //     );
-                            //   },
-                            // },
                           })}
                         />
                       </Form.Group>
                     </Col>
                   </Row>
-                </Col> */}
+                </Col>
                 {/* BŁEDY */}
                 {errors.income_from && (
                   <p style={{ color: "red" }}>{errors.income_from.message}</p>
@@ -491,7 +506,7 @@ export default function Addoffer() {
                   </div>
                 </Col>
                 <Col className="col-12">
-                  {/* <div
+                  <div
                     className="shadow-sm border border-light m-2 p-2"
                     style={{ borderRadius: "10px" }}
                   >
@@ -521,10 +536,10 @@ export default function Addoffer() {
                         <p style={{ color: "red" }}>{errors.duties.message}</p>
                       )}
                     </Form.Group>
-                  </div> */}
+                  </div>
                 </Col>
                 <Col className="col-12">
-                  {/* <div
+                  <div
                     className="shadow-sm border border-light d-block m-2 p-2 "
                     style={{ borderRadius: "10px" }}
                   >
@@ -557,8 +572,7 @@ export default function Addoffer() {
                     </Col>
                     <div className="d-flex">
                       <ul className="col-12 list-group list-group-flush justify-content-center list-none ">
-                        {/* NAPRAWIC DODAWANIE */}
-                  {/* {benefits.map((name) => (
+                        {benefits.map((name) => (
                           <div
                             key={name}
                             className="d-flex align-items-center justify-content-center"
@@ -584,12 +598,12 @@ export default function Addoffer() {
                         ))}
                       </ul>
                     </div>
-                  </div> */}
+                  </div>
                 </Col>
               </Row>
             </Col>
           </Row>
-          {/* <Row
+          <Row
             className="border border-dark bg-light bg-gradient p-2 mt-5 "
             style={{
               borderRadius: "25px",
@@ -610,7 +624,7 @@ export default function Addoffer() {
                 style={{ color: "blue" }}
               />
             </Col>
-          </Row> */}
+          </Row>
           <Row
             className="border border-dark bg-light bg-gradient p-2 mt-5 "
             style={{
@@ -657,73 +671,12 @@ export default function Addoffer() {
           >
             <Col className="col-12 pt-2 text-center ">
               <Col className="col-12 text-center mb-3 ">
-                <h6 className="display-6 ">
-                  W przypadku aplikacji użytkownika, wysłać ją na...
-                </h6>
+                <h6 className="display-6 ">To wszystko :)</h6>
               </Col>
-              <Row className="d-flex justify-content-center align-items-center mb-3 ">
-                <Col className="col-12">
-                  <ButtonGroup>
-                    {radios.map((radio, idx) => (
-                      <ToggleButton
-                        key={idx}
-                        id={`radio-${idx}`}
-                        type="radio"
-                        variant={idx % 2 ? "outline-success" : "outline-danger"}
-                        name="radio"
-                        value={radio.value}
-                        checked={radioValue === radio.value}
-                        className="rounded rounded-pill text-center me-2"
-                        onChange={(e) => setRadioValue(e.currentTarget.value)}
-                      >
-                        {radio.name}
-                      </ToggleButton>
-                    ))}
-                  </ButtonGroup>
-                </Col>
-                {radioValue === "Email" ? (
-                  <Col className="col-12 col-lg-12 justify-content-center">
-                    <Form.Group
-                      className="mb-3"
-                      controlId="exampleForm.ControlInput1"
-                    >
-                      <Form.Label className="">Email</Form.Label>
-                      <Form.Control
-                        type="email"
-                        size="lg"
-                        placeholder="Email"
-                        className="rounded rounded-pill border border-light text-center"
-                        {...register("apply_data", { required: true })}
-                      />
-                    </Form.Group>
-                  </Col>
-                ) : (
-                  <Col className="col-12 col-lg-12 justify-content-center">
-                    <Form.Group
-                      className="mb-3"
-                      controlId="exampleForm.ControlInput1"
-                    >
-                      <Form.Label className=" text-nowrap">
-                        Własny system rekturacji
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        size="lg"
-                        placeholder="Link"
-                        className="rounded rounded-pill border border-light text-center"
-                        {...register("apply_data", { required: true })}
-                      />
-                    </Form.Group>
-                  </Col>
-                )}
-              </Row>
             </Col>
             <div className="d-grid col-6 mx-auto pb-2 text-end">
-              {/* {setValue("lang", tags)} */}
-              {setValue("apply_data")}
-              {/* {setValue("benefits", benefits)} */}
-
-              {setValue("apply_option", radioValue)}
+              {setValue("lang", tags)}
+              {setValue("benefits", benefits)}
               {setValue("job_type", radioJobValue)}
               <Button
                 type="submit"
@@ -734,6 +687,9 @@ export default function Addoffer() {
                 Dodaj ofertę
               </Button>
             </div>
+            <h6 className="text-center text-success display-6">
+              {information}
+            </h6>
           </Row>
         </Form>
       </Container>

@@ -4,32 +4,20 @@ import Footer from "../Footer/Footer";
 import Navbartop from "../Navbar/Navbartop";
 import DashboardWorker from "../Profiles/DashboardWorker";
 import { useParams } from "react-router";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 export default function NewPage() {
   // NOT SURE ABOUT USER LOGGED
   const { id } = useParams();
-  const [user, setUser] = useState(undefined);
-  const getData = async (id, setUser) => {
-    await axios
-      .get("https://localhost:44310/User/GetUserData", id)
-      .then((response) => {
-        console.log(response);
-        setUser(response);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  useEffect(() => {
-    getData(id, setUser);
-  }, [id]);
+  const { user: currentUser } = useSelector((state) => state.auth);
+
   return (
     <>
       <Navbartop />
       <section style={{ backgroundColor: "#eee" }}>
         <Container className="justify-content-center align-items-center py-5">
           <Row className="justify-content-around align-items-top">
-            <DashboardWorker userData={user} />
+            <DashboardWorker />
           </Row>
         </Container>
       </section>

@@ -1,4 +1,5 @@
 ﻿using BeginnerWebApiRC1.Beginner;
+using System.Collections.Generic;
 
 namespace BeginnerWebApiRC1.Models.Offer
 {
@@ -16,6 +17,7 @@ namespace BeginnerWebApiRC1.Models.Offer
             CreationDate = offer.Cd.ToShortDateString();
             Id = offer.Id;
             Profession = profession.Profession1;
+            Languages = offer.AdditionalData != null ? new List<string>(offer.AdditionalData.Languages.Split(";")) : null;
         }
         public int Id { get; set; }
         public string PositionName { get; set; }
@@ -25,5 +27,6 @@ namespace BeginnerWebApiRC1.Models.Offer
         public string SalaryTo { get; set; }
         public string CreationDate { get; set; }
         public string Profession { get; set; }
+        public List<string> Languages { get; set; }
     }
 }

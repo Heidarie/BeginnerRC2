@@ -1,0 +1,83 @@
+<div style="padding:0;margin:0 auto;width:100%!important;font-family:Helvetica Neue,Helvetica,Arial,sans-serif">
+  <table role="mail" align="center" border="0" cellspacing="0" cellpadding="0" width="100%" bgcolor="#018036" style="background-color:#018036;table-layout:fixed">
+    <tbody>
+	  <td align="center" style="padding: 24px">
+	    <center width="100%">
+		  <table role="mail" border="0" cellspacing="0" cellpadding="0" width="512" bgcolor="#FFFFFF" style="background-color:#FFFFFF;margin:0 auto;max-width:512px;width:inherit">
+		    <tbody>
+			  <tr>
+			    <td bgcolor="#ffffff" style="background-color:#ffffff; padding:18px 24px 0 24px">
+				  <table role="mail" border="0" cellspacing="0" cellpadding="0" width="100%"  style="width:100%!important;min-width:100%!important">
+				    <tbody>
+					  <tr>
+					    <td align="center" valign="middle">
+						  <a href="localhost:3000">
+							<img alt="Beginner" border="0" src="https://i.ibb.co/92D5M3x/Be-owe-i-Czarne-Czysto-Typograficzne-Psychiatra-Logo.png" height="38" style="outline:none;color:#ffffff;text-decoration:none">
+						  </a>
+						</td>
+					  </tr>
+					</tbody>
+				  </table>
+				</td>
+			  </tr>
+			  <tr>
+			    <td>
+				  <table role="mail" border="0" cellspacing="0" cellpadding="0" width="100%">
+				    <tbody>
+					  <tr>
+					    <td>
+						  <table role="mail" border="0" cellspacing="0" cellpadding="0" width="100%">
+						    <tbody>
+							  <tr>
+							    <td>
+								  <table cellspacing="0" cellpadding="0" style="padding:10px 24px">
+								    <tbody valign="top" style="table-layout:fixed;vertical-align:top;width:100%">
+									  <tr>
+									    <td width="56" style="width:56px;padding-right:16px">
+										  <a href="WSTAW ODNOŚNIK DO PROFILU" style="color:#0a66c2;display:inline-block;text-decoration:none" target="_blank">
+										    <img src="https://i.ibb.co/tL0F8Zq/stock-user.jpg" alt="USER" border="0" width="48" style="outline:none;color:#ffffff;text-decoration:none">
+										  </a>
+										</td>
+										<td align="left" style="padding-left:0;text-align:left">
+										  <a href="http://localhost:3000/User/[USER_ID]" style="color:#0a66c2;display:inline-block;text-decoration:none" target="_blank">
+										    <table role="mail" border="0" cellspacing="0" cellpadding="0" width="100%" valign="top" style="table-layout:fixed;vertical-align:top;width:100%">
+											  <tbody>
+											    <tr>
+												  <td style="padding-bottom:4px">
+												    [NAME]
+												  </td>
+												</tr>
+												<tr>
+												  <td style="margin:0;color:#000000;font-weight:400;font-size:14px;line-height:1.429">
+												    [PLACE]
+												  </td>
+												</tr>
+												<tr>
+												  <td style="margin:0;color:#000000;font-weight:400;font-size:14px;line-height:1.429">
+												    [NOTIFICATION]
+												  </td>
+												</tr>
+											  </tbody>
+											</table>
+										  </a>
+										</td>
+									  </tr>
+									</tbody>
+								  </table>
+								</td>
+							  </tr>
+							</tbody>
+						  </table>
+						</td>
+					  </tr>
+					</tbody>
+				  </table>
+				</td>
+			  </tr>
+			</tbody>
+		  </table>
+		</center>
+	  </td>
+	</tbody>
+  </table>
+</div>

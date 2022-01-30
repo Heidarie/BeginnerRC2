@@ -1,9 +1,12 @@
 ﻿using BeginnerWebApiRC1.Models;
 using BeginnerWebApiRC1.Models.Offer;
+using BeginnerWebApiRC1.Models.Shared;
 using BeginnerWebApiRC1.Models.User;
+using BeginnerWebApiRC1.Refactors;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,9 +44,10 @@ namespace BeginnerWebApiRC1.Controllers
         [Route("[action]")]
         public async Task<IActionResult> ChangeApplicationStatus(int offerId, string userId, int statusId)
         {
-            bool result = await DatabaseManager.ChangeApplicationStatus(userId, offerId, statusId);
-            if (result)
+            ChangedStatusNotification notification = await DatabaseManager.ChangeApplicationStatus(userId, offerId, statusId);
+            if (notification != null)
             {
+                MailFactory.SendStatusChangeNotification(notification);
                 return Ok();
             }
             else

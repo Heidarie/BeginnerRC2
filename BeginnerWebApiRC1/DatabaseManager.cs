@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BeginnerWebApiRC1.Beginner;
 using BeginnerWebApiRC1.Models;
 using BeginnerWebApiRC1.Models.Offer;
+using BeginnerWebApiRC1.Models.Shared;
 using BeginnerWebApiRC1.Models.User;
 using log4net;
 
@@ -68,8 +69,9 @@ namespace BeginnerWebApiRC1
             return users;
         }
 
-        public async Task<bool> ChangeApplicationStatus(string userId,int offerId, int statusId)
+        public async Task<ChangedStatusNotification> ChangeApplicationStatus(string userId,int offerId, int statusId)
         {
+            ChangedStatusNotification notification = new ChangedStatusNotification();
             try
             {
                 EmployeeApplication employee = dbContext.EmployeeApplications.Where(e => e.OffersId == offerId && e.UserId == userId).First();
@@ -78,12 +80,20 @@ namespace BeginnerWebApiRC1
                 employee.ApplicationStatusId = statusId;
                 dbContext.EmployeeApplications.Add(employee);
                 await dbContext.SaveChangesAsync();
-                return true;
+                Offer offer = dbContext.Offers.Where(e => e.Id == offerId).FirstOrDefault();
+                BeginnerUser user = dbContext.Users.FirstOrDefault(u => u.Id == userId);
+                BeginnerUser employerUser = dbContext.Users.Where(u => u.Id == offer.UserId).FirstOrDefault();
+                notification.OfferName = offer.Name;
+                notification.Status = statusId;
+                notification.Name = employerUser.Name;
+                notification.Email = user.Email;
+                notification.UserId = employerUser.Id;
+                return notification;
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return false;
+                return null;
             }
         }
         
@@ -132,7 +142,7 @@ namespace BeginnerWebApiRC1
                     Id = highestIdOffer != null ? (highestIdOffer.Id + 1) : 1,
                     Cd = DateTime.Now,
                     Fd = DateOnly.FromDateTime(DateTime.Now.AddDays(14)),
-                    PostalCode = offer.OfferName,
+                    Name = offer.OfferName,
                     OfferText = offer.Description,
                     UserId = userId,
                     SalaryFrom = offer.SalaryFrom,

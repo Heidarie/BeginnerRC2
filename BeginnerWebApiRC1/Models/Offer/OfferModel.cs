@@ -9,7 +9,7 @@ namespace BeginnerWebApiRC1.Models.Offer
         public OfferModel(Beginner.Offer offer, BeginnerUser employer, Profession profession,string appStatusName)
         {
             this.Id = offer.Id;
-            this.OfferName = offer.PostalCode;
+            this.OfferName = offer.Name;
             this.Description = offer.OfferText;
             this.EmployerName = employer.Name;
             this.SalaryFrom = offer.SalaryFrom;
@@ -24,8 +24,8 @@ namespace BeginnerWebApiRC1.Models.Offer
             this.JobType = offer.JobType;
             this.Experience = offer.ExperienceRequired;
             this.Duties = offer.Duties;
-            this.Languages = new List<string>(offer.AdditionalData.Languages.Split(";"));
-            this.Benefits = new List<string>(offer.AdditionalData.Benefits.Split(";"));
+            this.Languages = offer.AdditionalData != null ? new List<string>(offer.AdditionalData.Languages.Split(";")) : null;
+            this.Benefits = offer.AdditionalData != null ? new List<string>(offer.AdditionalData.Benefits.Split(";")): null;
         }
 
         public int? Id { get; set; }

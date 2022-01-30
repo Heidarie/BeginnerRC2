@@ -13,7 +13,6 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { BiArrowBack } from "react-icons/bi";
 import { useSelector } from "react-redux";
-
 import {
   FaCameraRetro,
   FaPeopleArrows,
@@ -69,11 +68,12 @@ export default function Addoffer() {
   } = useForm();
   const { user: currentUser } = useSelector((state) => state.auth);
   const onSubmit = async (data, e) => {
-    const langArray = [];
     console.log(data.lang);
-    data.lang.map((obj) => {
-      langArray.push(obj.name);
-    });
+    const langArray = [
+      data.lang.map((obj) => {
+        return obj.name;
+      }),
+    ];
     e.preventDefault();
     const dataToSend = {
       OfferName: data.title,

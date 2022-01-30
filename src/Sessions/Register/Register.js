@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FloatingLabel, Col, ButtonGroup, ToggleButton } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { BiArrowBack } from "react-icons/bi";
 import { useDispatch } from "react-redux";
@@ -10,7 +10,7 @@ import { clearMessage } from "../../Redux/User/message";
 const Register = () => {
   const [successful, setSuccessful] = useState(true);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   useEffect(() => {
     dispatch(clearMessage());
   }, [dispatch]);
@@ -51,6 +51,9 @@ const Register = () => {
       .unwrap()
       .then(() => {
         setSuccessful(true);
+        setTimeout(() => {
+          navigate({ pathname: "/" });
+        }, 3000);
       })
       .catch(() => {
         setSuccessful(false);
@@ -489,17 +492,25 @@ const Register = () => {
                               Zarejestruj się
                             </button>
                             <div>
-                              {successful !== true && (
+                              {successful !== true ? (
                                 <div className="form-group">
                                   <div
-                                    className={
-                                      successful
-                                        ? "alert alert-success"
-                                        : "alert alert-danger"
-                                    }
+                                    className="alert alert-danger"
                                     role="alert"
                                   >
                                     Użytkownik o takim emailu już istnieje!
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className="form-group">
+                                  <div
+                                    className="alert alert-success"
+                                    role="alert"
+                                  >
+                                    <small>
+                                      Udało Ci się zarejestrować, teraz
+                                      potwierdź konto.
+                                    </small>
                                   </div>
                                 </div>
                               )}

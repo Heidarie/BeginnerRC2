@@ -1,19 +1,26 @@
 import React, { useEffect } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { BiArrowBack } from "react-icons/bi";
 import axios from "axios";
+import { useSelector } from "react-redux";
+
 const ConfirmAccount = () => {
+  const { user: currentUser } = useSelector((state) => state.auth);
+
   useEffect(() => {
+    const config = { Authorization: `Bearer ${currentUser.accessToken}` };
     axios
-      .get("https://localhost:44310/Account/ConfirmAccount")
+      .get("https://localhost:44310/Account/ConfirmAccount", {
+        headers: config,
+      })
       .then((response) => {
         console.log(response);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [currentUser.accessToken]);
 
   return (
     <section style={{}}>
@@ -27,7 +34,12 @@ const ConfirmAccount = () => {
             style={{ borderRadius: "15px" }}
           >
             <h6 className="display-6">Udało Ci się potwierdzić konto</h6>
-            <small className="text-muted">Beginner.pl</small>
+            <small className="text-muted text-center">Beginner.pl</small>
+          </Col>
+          <Col className="col-12  h-75 text-center">
+            <Button className="btn btn-dark text-center  mt-2" href={"/Login"}>
+              Zaloguj się
+            </Button>
           </Col>
         </Row>
       </Container>

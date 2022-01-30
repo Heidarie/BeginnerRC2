@@ -35,7 +35,7 @@ export const OfferShortInfo = () => {
   const getOfferDetails = async (offers) => {
     const offerId = offers.selectedOffer;
     console.log(offerId);
-    const config = {
+    const config = !offers.offers && {
       headers: { Authorization: `Bearer ${currentUser.accessToken}` },
     };
     axios
@@ -56,9 +56,6 @@ export const OfferShortInfo = () => {
     getOfferDetails(offers);
   }, [offers]);
 
-  const offersApplied = async () => {
-    //DODAĆ BLOKOWANIE PRZYCISKÓW NA KTÓRE KTOŚ APLIKOWAŁ
-  };
   return (
     <>
       {offers.loading && [1, 2, 3, 4, 5].map((n) => <SkeletonOfert key={n} />)}
@@ -241,7 +238,7 @@ export const OfferShortInfo = () => {
                     </div>
                   </div>
                 </Col>
-                <div className="d-grid col-6 mx-auto pb-2 text-end">
+                <div className="d-grid col-6 mx-auto pb-2 ">
                   {isLoggedIn && currentUser.userRole === "Employee" ? (
                     <div>
                       {offer.applicationStatus === "" && (
@@ -300,9 +297,17 @@ export const OfferShortInfo = () => {
                           <h5>APLIKUJ</h5>
                         </Link>
                       </Button>
-                      <small className="col-12 text-center me-5">
-                        Musisz się zalogować
-                      </small>
+
+                      {currentUser !== null &&
+                      currentUser.userRole === "Employer" ? (
+                        <small className="col-12 text-center text-align-center text-nowrap">
+                          Jako pracodawca nie możesz aplikować{" "}
+                        </small>
+                      ) : (
+                        <small className="col-12 text-center me-5">
+                          Musisz się zalogować
+                        </small>
+                      )}
                     </div>
                   )}
                 </div>

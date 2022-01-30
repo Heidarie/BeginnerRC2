@@ -6,7 +6,6 @@ import { Button, Row, Col } from "react-bootstrap";
 import axios from "axios";
 function Profile() {
   const { id } = useParams();
-  const [enableChange, setEnableChange] = useState(false);
   const [user, setUser] = useState("");
   const { user: currentUser } = useSelector((state) => state.auth);
 
@@ -42,7 +41,7 @@ function Profile() {
       console.log("TUTAJ");
       getUserLogged();
     }
-  }, [id, currentUser.user]);
+  }, []);
   console.log(user);
   return (
     <div>

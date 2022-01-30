@@ -59,11 +59,14 @@ namespace BeginnerWebApiRC1
         public async Task<List<BeginnerUser>> GetUserApplications(int offerId)
         {
             List<BeginnerUser> users = new List<BeginnerUser>();
-            List<EmployeeApplication> employeeApplications = dbContext.EmployeeApplications.Where(a => a.OffersId == offerId && a.ApplicationStatus.Id == 1).ToList();
+            List<EmployeeApplication> employeeApplications = dbContext.EmployeeApplications.Where(a => a.OffersId == offerId && (a.ApplicationStatus.Id == 1 || a.ApplicationStatus.Id == 2)).ToList();
             foreach(EmployeeApplication application in employeeApplications)
             {
                 BeginnerUser user = dbContext.Users.Where(u => u.Id == application.UserId).FirstOrDefault();
                 user.ProfessionId1Navigation = dbContext.Professions.FirstOrDefault(p => p.Id == user.ProfessionId);
+                if(user.EmployeeApplications == null)
+                    user.EmployeeApplications = new List<EmployeeApplication>();
+                user.EmployeeApplications.Add(employeeApplications.Where(a => a.UserId == user.Id).FirstOrDefault());
                 users.Add(user);
             }
             return users;

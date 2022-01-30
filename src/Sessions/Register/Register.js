@@ -5,10 +5,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { BiArrowBack } from "react-icons/bi";
 import { useDispatch } from "react-redux";
-import { registerUser } from "../../Redux/User/auth";
+import { registerUser, registerEmployer } from "../../Redux/User/auth";
 import { clearMessage } from "../../Redux/User/message";
 const Register = () => {
-  const [successful, setSuccessful] = useState(true);
+  const [successful, setSuccessful] = useState("");
+  const [information, setInformation] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
@@ -29,8 +32,11 @@ const Register = () => {
   ];
 
   const onSubmit = (data, e) => {
+    console.log("TUTAJ");
+    setInformation("");
+    setSuccessful("");
+    setLoading(true);
     e.preventDefault();
-    setSuccessful(false);
     const firstName = data.firstName;
     const lastName = data.lastName;
     const email = data.email;
@@ -38,26 +44,69 @@ const Register = () => {
     const passwordConfirm = data.passwordConfirm;
     const typeUser = data.typeUser;
     //Dodaj if na podstawie pracownik pracodawca by dobrze podawac dane
-    dispatch(
-      registerUser({
-        firstName,
-        lastName,
-        email,
-        phoneNumber,
-        passwordConfirm,
-        typeUser,
-      })
-    )
-      .unwrap()
-      .then(() => {
-        setSuccessful(true);
-        setTimeout(() => {
-          navigate({ pathname: "/" });
-        }, 3000);
-      })
-      .catch(() => {
-        setSuccessful(false);
-      });
+    if (radioValue === 1) {
+      dispatch(
+        registerUser({
+          firstName,
+          lastName,
+          email,
+          phoneNumber,
+          passwordConfirm,
+          typeUser,
+        })
+      )
+        .unwrap()
+        .then(() => {
+          setSuccessful(true);
+          setInformation(
+            "Udało się utworzyć konto, potwierdź je teraz emailem"
+          );
+          setTimeout(() => {
+            navigate({ pathname: "/" });
+          }, 3000);
+        })
+        .catch(() => {
+          setInformation("Użytkownik o takim emailu już istnieje");
+          setSuccessful(false);
+          setLoading(false);
+        });
+      setSuccessful(true);
+      setInformation("Udało się utworzyć konto, potwierdź je teraz emailem");
+      setTimeout(() => {
+        navigate({ pathname: "/" });
+      }, 3000);
+    } else {
+      dispatch(
+        registerEmployer({
+          firstName,
+          lastName,
+          email,
+          phoneNumber,
+          passwordConfirm,
+          typeUser,
+        })
+      )
+        .unwrap()
+        .then(() => {
+          setSuccessful(true);
+          setInformation(
+            "Udało się utworzyć konto, potwierdź je teraz emailem"
+          );
+          setTimeout(() => {
+            navigate({ pathname: "/" });
+          }, 3000);
+        })
+        .catch(() => {
+          setInformation("Użytkownik o takim emailu już istnieje");
+          setSuccessful(false);
+          setLoading(false);
+        });
+      setSuccessful(true);
+      setInformation("Udało się utworzyć konto, potwierdź je teraz emailem");
+      setTimeout(() => {
+        navigate({ pathname: "/" });
+      }, 3000);
+    }
   };
   return (
     <section
@@ -274,20 +323,29 @@ const Register = () => {
                               className="btn btn-primary btn-block fa-lg gradient-custom-3 mb-3"
                               type="submit"
                             >
+                              {loading && (
+                                <span className="spinner-border spinner-border-sm"></span>
+                              )}
                               Zarejestruj się
                             </button>
                             <div>
-                              {successful !== true && (
+                              {successful === false && (
                                 <div className="form-group">
                                   <div
-                                    className={
-                                      successful
-                                        ? "alert alert-success"
-                                        : "alert alert-danger"
-                                    }
+                                    className="alert alert-danger"
                                     role="alert"
                                   >
-                                    Użytkownik o takim emailu już istnieje!
+                                    <small>{information}</small>
+                                  </div>
+                                </div>
+                              )}
+                              {successful === true && (
+                                <div className="form-group">
+                                  <div
+                                    className="alert alert-success"
+                                    role="alert"
+                                  >
+                                    <small>{information}</small>
                                   </div>
                                 </div>
                               )}
@@ -307,45 +365,17 @@ const Register = () => {
                         </Form>
                       ) : (
                         <Form onSubmit={handleSubmit(onSubmit)}>
-                          <div className="form-outline mb-4">
-                            <FloatingLabel
-                              controlId="floatingRegisterName"
-                              label="Imie"
-                              className="form-label"
-                            >
-                              <Form.Control
-                                type="text"
-                                className="form-control"
-                                placeholder="Imie"
-                                {...register("firstName", {
-                                  required: true,
-                                  maxLength: 20,
-                                  pattern: /^[A-Za-z]+$/i,
-                                })}
-                              />
-                              {errors?.firstName?.type === "required" && (
-                                <p>To pole jest wymagane</p>
-                              )}
-                              {errors?.firstName?.type === "maxLength" && (
-                                <p>Imię nie może być dłuższe niż 20 znaków</p>
-                              )}
-                              {errors?.firstName?.type === "pattern" && (
-                                <p>Tylko litery mogą znależć się w imieniu</p>
-                              )}
-                            </FloatingLabel>
-                          </div>
-
                           <div className="form-outline mb-4 ">
                             <FloatingLabel
                               controlId="floatingRegisterSecondName"
-                              label="Nazwisko"
+                              label="Nazwa Firmy"
                               className="form-label"
                             >
                               <Form.Control
                                 type="text"
                                 className="form-control"
                                 placeholder="Nazwisko"
-                                {...register("lastName", {
+                                {...register("name", {
                                   required: true,
                                 })}
                               />
@@ -392,30 +422,7 @@ const Register = () => {
                               )}
                             </FloatingLabel>
                           </div>
-                          <div className="form-outline mb-4">
-                            <FloatingLabel
-                              controlId="floatingPhoneNumber"
-                              label="NIP"
-                              className="form-label"
-                            >
-                              <Form.Control
-                                type="number"
-                                className="form-control"
-                                placeholder="1168613065"
-                                {...register("NIP", {
-                                  required: true,
-                                  maxLength: 10,
-                                  minLength: 10,
-                                })}
-                              />
-                              {errors?.NIP?.type === "required" && (
-                                <p>NIP jest wymagane</p>
-                              )}
-                              {errors?.NIP?.type === "maxLength" && (
-                                <p>NIP może mieć maksymalnie 10 cyfr</p>
-                              )}
-                            </FloatingLabel>
-                          </div>
+
                           <div className="form-outline mb-4">
                             <FloatingLabel
                               controlId="floatingRegisterPassword"
@@ -489,28 +496,29 @@ const Register = () => {
                               className="btn btn-primary btn-block fa-lg gradient-custom-3 mb-3"
                               type="submit"
                             >
+                              {loading && (
+                                <span className="spinner-border spinner-border-sm"></span>
+                              )}
                               Zarejestruj się
                             </button>
                             <div>
-                              {successful !== true ? (
+                              {successful === false && (
                                 <div className="form-group">
                                   <div
                                     className="alert alert-danger"
                                     role="alert"
                                   >
-                                    Użytkownik o takim emailu już istnieje!
+                                    <small>{information}</small>
                                   </div>
                                 </div>
-                              ) : (
+                              )}
+                              {successful === true && (
                                 <div className="form-group">
                                   <div
                                     className="alert alert-success"
                                     role="alert"
                                   >
-                                    <small>
-                                      Udało Ci się zarejestrować, teraz
-                                      potwierdź konto.
-                                    </small>
+                                    <small>{information}</small>
                                   </div>
                                 </div>
                               )}

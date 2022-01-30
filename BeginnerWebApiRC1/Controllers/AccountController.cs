@@ -2,6 +2,7 @@
 using BeginnerWebApiRC1.Models;
 using BeginnerWebApiRC1.Models.Account;
 using BeginnerWebApiRC1.Models.Shared;
+using BeginnerWebApiRC1.Refactors;
 using BeginnerWebApiRC1.Token;
 using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -82,7 +83,7 @@ namespace BeginnerWebApiRC1.Controllers
 
 
                             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                            this.SendMail(model, token);
+                            MailFactory.SendConfirmationMail(model, token);
 
                             var refreshToken = TokenManager.GenerateRefreshToken(user);
                             if (user.RefreshTokens == null)
@@ -115,56 +116,6 @@ namespace BeginnerWebApiRC1.Controllers
             }
         }
 
-        private async void SendMail(RegistrationModel model, string token)
-        {
-            MimeMessage message = new MimeMessage();
-            MailboxAddress from = new MailboxAddress("DoNotReply", "NoReply.Beginner@gmail.com");
-            message.From.Add(from);
-            MailboxAddress to = new MailboxAddress(model.Username, model.Email);
-            message.To.Add(to);
-
-            message.Subject = "Account Verification";
-
-            BodyBuilder bodyBuilder = new BodyBuilder();
-            bodyBuilder.HtmlBody = "<b>Enter this link to verify Your account:" +
-                " <a href=\"beginner.pl/Account/ConfirmAccount?verificationCode=\"" + token + ">Link</a><b>";
-
-            message.Body = bodyBuilder.ToMessageBody();
-
-
-            SmtpClient smtpClient = new SmtpClient();
-            smtpClient.Connect("smtp.gmail.com", 587, false);
-            smtpClient.Authenticate("NoReply.Beginner@gmail.com", "Beginner135");
-            await smtpClient.SendAsync(message);
-            smtpClient.Disconnect(true);
-            smtpClient.Dispose();
-        }
-
-        private async void ResendConfirmationMail(string email, string username, string token)
-        {
-            MimeMessage message = new MimeMessage();
-            MailboxAddress from = new MailboxAddress("DoNotReply", "NoReply.Beginner@gmail.com");
-            message.From.Add(from);
-            MailboxAddress to = new MailboxAddress(username, email);
-            message.To.Add(to);
-
-            message.Subject = "Account Verification";
-
-            BodyBuilder bodyBuilder = new BodyBuilder();
-            bodyBuilder.HtmlBody = "<b>Enter this link to verify Your account:" +
-                " <a href=\"beginner.pl/Account/ConfirmAccount?verificationCode=\"" + token + ">Link</a><b>";
-
-            message.Body = bodyBuilder.ToMessageBody();
-
-
-            SmtpClient smtpClient = new SmtpClient();
-            smtpClient.Connect("smtp.gmail.com", 587, false);
-            smtpClient.Authenticate("NoReply.Beginner@gmail.com", "Beginner135");
-            await smtpClient.SendAsync(message);
-            smtpClient.Disconnect(true);
-            smtpClient.Dispose();
-        }
-
         [HttpPost]
         [Route("Login")]
         public async Task<IActionResult> Login([FromBody] AuthenticationModel model)
@@ -190,7 +141,7 @@ namespace BeginnerWebApiRC1.Controllers
                         if (user.StatusId == 1)
                         {
                             string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                            ResendConfirmationMail(user.Email, user.Name, token);
+                            MailFactory.ResendConfirmationMail(user.Email, user.Name, token);
 
                             return Ok(new
                             {

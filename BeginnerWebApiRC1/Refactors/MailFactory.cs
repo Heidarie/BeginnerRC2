@@ -21,8 +21,7 @@ namespace BeginnerWebApiRC1.Refactors
             message.Subject = "Account Verification";
 
             BodyBuilder bodyBuilder = new BodyBuilder();
-            bodyBuilder.HtmlBody = "<b>Enter this link to verify Your account:" +
-                " <a href=\"beginner.pl/Account/ConfirmAccount?verificationCode=\"" + token + ">Link</a><b>";
+            bodyBuilder.HtmlBody = EmailConfirmAccountBody();
 
             message.Body = bodyBuilder.ToMessageBody();
 

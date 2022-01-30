@@ -28,6 +28,25 @@ const registerUser = (
   const xd = axios.post(API_URL + "Register", formData, configRegister);
   console.log(xd);
 };
+const registerEmployer = (
+  name,
+  email,
+  phoneNumber,
+  passwordConfirm,
+  typeUser
+) => {
+  let formData = new FormData();
+  formData.append("Name", name);
+  formData.append("Username", email);
+  formData.append("Email", email);
+  formData.append("PhoneNumber", phoneNumber);
+  formData.append("Password", passwordConfirm);
+  formData.append("Role", typeUser);
+  formData.append("Profession", typeUser);
+  console.log(formData);
+  const xd = axios.post(API_URL + "Register", formData, configRegister);
+  console.log(xd);
+};
 
 const login = (email, password) => {
   let formData = { email: email, password: password };
@@ -49,6 +68,7 @@ const authService = {
   registerUser,
   login,
   logout,
+  registerEmployer,
 };
 
 export default authService;

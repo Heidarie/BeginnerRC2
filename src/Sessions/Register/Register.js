@@ -37,14 +37,15 @@ const Register = () => {
     setSuccessful("");
     setLoading(true);
     e.preventDefault();
-    const firstName = data.firstName;
-    const lastName = data.lastName;
-    const email = data.email;
-    const phoneNumber = data.phoneNumber;
-    const passwordConfirm = data.passwordConfirm;
-    const typeUser = data.typeUser;
+
     //Dodaj if na podstawie pracownik pracodawca by dobrze podawac dane
     if (radioValue === 1) {
+      const firstName = data.firstName;
+      const lastName = data.lastName;
+      const email = data.email;
+      const phoneNumber = data.phoneNumber;
+      const passwordConfirm = data.passwordConfirm;
+      const typeUser = data.typeUser;
       dispatch(
         registerUser({
           firstName,
@@ -76,10 +77,14 @@ const Register = () => {
         navigate({ pathname: "/" });
       }, 3000);
     } else {
+      const name = data.name;
+      const email = data.email;
+      const phoneNumber = data.phoneNumber;
+      const passwordConfirm = data.passwordConfirm;
+      const typeUser = data.typeUser;
       dispatch(
         registerEmployer({
-          firstName,
-          lastName,
+          name,
           email,
           phoneNumber,
           passwordConfirm,
@@ -97,15 +102,16 @@ const Register = () => {
           }, 3000);
         })
         .catch(() => {
+          console.log("tutaj");
           setInformation("Użytkownik o takim emailu już istnieje");
           setSuccessful(false);
           setLoading(false);
         });
       setSuccessful(true);
       setInformation("Udało się utworzyć konto, potwierdź je teraz emailem");
-      setTimeout(() => {
-        navigate({ pathname: "/" });
-      }, 3000);
+      // setTimeout(() => {
+      //   navigate({ pathname: "/" });
+      // }, 3000);
     }
   };
   return (

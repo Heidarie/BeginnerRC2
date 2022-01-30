@@ -37,18 +37,13 @@ export const registerUser = createAsyncThunk(
 );
 export const registerEmployer = createAsyncThunk(
   "auth/register",
-  async (
-    { firstName, lastName, email, phoneNumber, passwordConfirm, typeUser },
-    thunkAPI
-  ) => {
+  async ({ name, email, phoneNumber, passwordConfirm, typeUser }, thunkAPI) => {
     try {
-      const response = await AuthService.registerUser(
-        firstName,
-        lastName,
+      const response = await AuthService.registerEmployer(
+        name,
         email,
         phoneNumber,
         passwordConfirm,
-        typeUser,
         typeUser
       );
 

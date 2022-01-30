@@ -13,7 +13,7 @@ namespace BeginnerWebApiRC1.Refactors
         public static async void SendConfirmationMail(RegistrationModel model, string token)
         {
             MimeMessage message = new MimeMessage();
-            MailboxAddress from = new MailboxAddress("DoNotReply", "NoReply.Beginner@gmail.com");
+            MailboxAddress from = new MailboxAddress("Beginner", "NoReply.Beginner@gmail.com");
             message.From.Add(from);
             MailboxAddress to = new MailboxAddress(model.Username, model.Email);
             message.To.Add(to);
@@ -37,7 +37,7 @@ namespace BeginnerWebApiRC1.Refactors
         public static async void ResendConfirmationMail(string email, string username, string token)
         {
             MimeMessage message = new MimeMessage();
-            MailboxAddress from = new MailboxAddress("DoNotReply", "NoReply.Beginner@gmail.com");
+            MailboxAddress from = new MailboxAddress("Beginner", "NoReply.Beginner@gmail.com");
             message.From.Add(from);
             MailboxAddress to = new MailboxAddress(username, email);
             message.To.Add(to);
@@ -61,7 +61,7 @@ namespace BeginnerWebApiRC1.Refactors
         public static async void SendStatusChangeNotification(ChangedStatusNotification notification)
         {
             MimeMessage message = new MimeMessage();
-            MailboxAddress from = new MailboxAddress("DoNotReply", "NoReply.Beginner@gmail.com");
+            MailboxAddress from = new MailboxAddress("Beginner", "NoReply.Beginner@gmail.com");
             message.From.Add(from);
             MailboxAddress to = new MailboxAddress(notification.OfferName,notification.Email);
             message.To.Add(to);
@@ -85,7 +85,7 @@ namespace BeginnerWebApiRC1.Refactors
         public static async void SendUserVisitNotification(VisitorNotification notification)
         {
             MimeMessage message = new MimeMessage();
-            MailboxAddress from = new MailboxAddress("DoNotReply", "NoReply.Beginner@gmail.com");
+            MailboxAddress from = new MailboxAddress("Beginner", "NoReply.Beginner@gmail.com");
             message.From.Add(from);
             MailboxAddress to = new MailboxAddress(notification.Name, notification.Email);
             message.To.Add(to);

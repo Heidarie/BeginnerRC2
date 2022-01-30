@@ -12,7 +12,7 @@ const onSubmit = async (data, e) => {};
 export default function EditProfile() {
   const navigate = useNavigate();
   const { user: currentUser } = useSelector((state) => state.auth);
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState({});
   console.log(user);
   const [information, setInformation] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
@@ -21,7 +21,6 @@ export default function EditProfile() {
     setValue("userPicture", selectedImage);
     setValue("cvFile", selectedCV);
   }
-
   const {
     register,
     handleSubmit,
@@ -103,7 +102,10 @@ export default function EditProfile() {
                       <h6 className="display-6">Zdjęcie</h6>
                     </Col>
                     <Col className="col-12 text-center justify-content-lg-start">
-                      <FaCameraRetro style={{ fontSize: "50px" }} />
+                      <img
+                        src={`data:image/png;base64,${user.userPictureConverted}`}
+                        width={100}
+                      />
                     </Col>
                     <Col className="col-12 text-center justify-content-start">
                       <input
@@ -142,8 +144,8 @@ export default function EditProfile() {
                     <Form.Control
                       type="text"
                       size="lg"
-                      value={user.name}
-                      onChange={(e) => this.value(e.target.value)}
+                      defaultValue={user.name}
+                      name="name"
                       placeholder="Imię"
                       className="rounded rounded-pill border border-light text-center"
                       {...register("name", {
@@ -163,7 +165,8 @@ export default function EditProfile() {
                     <Form.Control
                       type="text"
                       size="lg"
-                      value={user.surname}
+                      defaultValue={user.surname}
+                      name="surname"
                       placeholder="Nazwisko"
                       className="rounded rounded-pill border border-light text-center"
                       {...register("surname", {
@@ -183,7 +186,7 @@ export default function EditProfile() {
                     <Form.Control
                       type="text"
                       size="lg"
-                      value={user.profession}
+                      defaultValue={user.profession}
                       placeholder="Profesja"
                       className="rounded rounded-pill border border-light text-center"
                       {...register("profession", {
@@ -203,7 +206,7 @@ export default function EditProfile() {
                     <Form.Control
                       type="text"
                       size="lg"
-                      value={user.aboutMe}
+                      defaultValue={user.aboutMe}
                       placeholder="O mnie"
                       className="rounded rounded-pill border border-light text-center"
                       {...register("aboutMe", {
@@ -223,8 +226,8 @@ export default function EditProfile() {
                     <Form.Control
                       type="text"
                       size="lg"
-                      value={user.userExperience}
-                      placeholder="doświadczenie"
+                      defaultValue={user.userExperience}
+                      placeholder="Doświadczenie"
                       className="rounded rounded-pill border border-light text-center"
                       {...register("userExperience", {
                         required:

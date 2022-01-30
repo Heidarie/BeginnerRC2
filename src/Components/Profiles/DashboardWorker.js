@@ -52,29 +52,42 @@ function Profile() {
             style={{
               borderRadius: "25px",
               boxShadow: "0px 15px 10px -15px #111",
-              minHeight: "200px",
+              minHeight: "300px",
             }}
           >
             <Col className="col-3 d-flex ps-4 align-items-center justify-content-center">
-              ZDJECIE
+              <img
+                src={`data:image/png;base64,${user.userPictureConverted}`}
+                width={250}
+              />
             </Col>
             <Col className="col-9 text-start pt-2">
               <Row>
                 <Col className="col-12 col-xxl-10">
                   <h6 className="display-6">
                     {user.name + " " + user.surname}
-                  </h6>
+                  </h6>{" "}
+                  <p className="lead mb-0">{user.profession}</p>
                 </Col>
                 <Col className="col-12 col-xxl-2"></Col>
                 <Col className="col-12">
-                  <h4 className="text-muted">{user.email}</h4>
+                  <h4 className="text-muted">EMAIL: {user.email}</h4>
                 </Col>
                 <Col className="col-12">
-                  <p className="lead mb-0">JAKIES INNE DANE</p>
+                  <p className="lead mb-0">O mnie : {user.aboutMe}</p>
+                </Col>
+                <Col className="col-12">
+                  <p className="lead mb-0">
+                    Doświadczenie : {user.userExperience}
+                  </p>
                 </Col>
               </Row>
               {user.isUserMainAccount && (
-                <Button variant="dark" href={`../User/Edit/${id}`}>
+                <Button
+                  className="mt-1"
+                  variant="dark"
+                  href={`../User/Edit/${id}`}
+                >
                   Edytuj
                 </Button>
               )}

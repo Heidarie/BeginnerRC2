@@ -1,5 +1,5 @@
 <div style="padding:0;margin:0 auto;width:100%!important;font-family:Helvetica Neue,Helvetica,Arial,sans-serif">
-  <table role="mail" align="center" border="0" cellspacing="0" cellpadding="0" width="100%" bgcolor="#018036" style="background-color:#018036;table-layout:fixed">
+  <table role="mail" align="center" border="0" cellspacing="0" cellpadding="0" width="80%" bgcolor="#018036" style="background-color:#018036;table-layout:fixed">
     <tbody>
 	  <td align="center" style="padding: 24px">
 	    <center width="100%">

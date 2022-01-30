@@ -12,7 +12,7 @@
 					  <tr>
 					    <td align="center" valign="middle">
 						  <a href="localhost:3000">
-							<img alt="Beginner" border="0" src="https://i.ibb.co/92D5M3x/Be-owe-i-Czarne-Czysto-Typograficzne-Psychiatra-Logo.png" height="38" style="outline:none;color:#ffffff;text-decoration:none">
+							<img alt="Beginner" border="0" src="https://i.ibb.co/92D5M3x/Be-owe-i-Czarne-Czysto-Typograficzne-Psychiatra-Logo.png" height="52" style="outline:none;color:#ffffff;text-decoration:none">
 						  </a>
 						</td>
 					  </tr>

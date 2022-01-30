@@ -12,7 +12,7 @@
 					  <tr>
 					    <td align="center" valign="middle">
 						  <a href="localhost:3000">
-							<img alt="Beginner" border="0" src="https://i.ibb.co/92D5M3x/Be-owe-i-Czarne-Czysto-Typograficzne-Psychiatra-Logo.png" height="38" style="outline:none;color:#ffffff;text-decoration:none">
+							<img alt="Beginner" border="0" src="https://i.ibb.co/92D5M3x/Be-owe-i-Czarne-Czysto-Typograficzne-Psychiatra-Logo.png" height="52" style="outline:none;color:#ffffff;text-decoration:none">
 						  </a>
 						</td>
 					  </tr>
@@ -43,13 +43,8 @@
 										    <table role="mail" border="0" cellspacing="0" cellpadding="0" width="100%" valign="top" style="table-layout:fixed;vertical-align:top;width:100%">
 											  <tbody>
 											    <tr>
-												  <td style="padding-bottom:4px">
+												  <td style="padding-bottom:4px;font-size:20px">
 												    [NAME]
-												  </td>
-												</tr>
-												<tr>
-												  <td style="margin:0;color:#000000;font-weight:400;font-size:14px;line-height:1.429">
-												    [PLACE]
 												  </td>
 												</tr>
 												<tr>

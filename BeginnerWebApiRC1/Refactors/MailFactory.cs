@@ -82,18 +82,18 @@ namespace BeginnerWebApiRC1.Refactors
             smtpClient.Dispose();
         }
 
-        public static async void SendUserVisitNotification(ChangedStatusNotification notification)
+        public static async void SendUserVisitNotification(VisitorNotification notification)
         {
             MimeMessage message = new MimeMessage();
             MailboxAddress from = new MailboxAddress("DoNotReply", "NoReply.Beginner@gmail.com");
             message.From.Add(from);
-            MailboxAddress to = new MailboxAddress(notification.OfferName, notification.Email);
+            MailboxAddress to = new MailboxAddress(notification.Name, notification.Email);
             message.To.Add(to);
 
-            message.Subject = "Twoja aplikacja zmieniła status";
+            message.Subject = "Ktoś odwiedził twój profil";
 
             BodyBuilder bodyBuilder = new BodyBuilder();
-            bodyBuilder.HtmlBody = "";
+            bodyBuilder.HtmlBody = EmailUserVisitBody(notification);
 
             message.Body = bodyBuilder.ToMessageBody();
 
@@ -139,18 +139,17 @@ namespace BeginnerWebApiRC1.Refactors
             return body;
         }
 
-        private static string EmailUserVisitBody(ChangedStatusNotification notification)
+        private static string EmailUserVisitBody(VisitorNotification notification)
         {
             string body = string.Empty;
-            var root = AppDomain.CurrentDomain.BaseDirectory; using (var reader = new System.IO.StreamReader(@"Content/mailbody.txt"))
+            var root = AppDomain.CurrentDomain.BaseDirectory; using (var reader = new System.IO.StreamReader(@"Content/mailbodyUserVisit.txt"))
             {
                 string readFile = reader.ReadToEnd();
                 string StrContent = string.Empty;
                 StrContent = readFile;
                 //Assing the field values in the template
                 StrContent = StrContent.Replace("[USER_ID]", notification.UserId);
-                StrContent = StrContent.Replace("[NAME]", notification.Name);
-                StrContent = StrContent.Replace("[PLACE]", notification.Place);
+                StrContent = StrContent.Replace("[NAME]", notification.Name + " " + notification.Surname);
                 body = StrContent.ToString();
             }
             return body;

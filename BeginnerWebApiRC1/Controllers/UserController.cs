@@ -1,5 +1,7 @@
 ﻿using BeginnerWebApiRC1.Models;
+using BeginnerWebApiRC1.Models.Shared;
 using BeginnerWebApiRC1.Models.User;
+using BeginnerWebApiRC1.Refactors;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -33,7 +35,7 @@ namespace BeginnerWebApiRC1.Controllers
             if (ModelState.IsValid)
             {
                 Claim userIdClaim = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "userId");
-                if (userIdClaim != null || string.IsNullOrEmpty(userId))
+                if (userIdClaim != null && userIdClaim.Value == userId)
                 {
                     if (userIdClaim != null)
                     {
@@ -47,6 +49,16 @@ namespace BeginnerWebApiRC1.Controllers
                 else
                 {
                     UserProfileModel profileModel = await DatabaseManager.GetUserProfile(userId, false);
+                    if (userIdClaim != null)
+                    {
+                        UserProfileModel visitorProfileModel = await DatabaseManager.GetUserProfile(userIdClaim.Value, false);
+                        VisitorNotification visitorNotification = new VisitorNotification(visitorProfileModel) 
+                        { 
+                            UserId = userIdClaim.Value, 
+                            Email = profileModel.Email
+                        };
+                        MailFactory.SendUserVisitNotification(visitorNotification);
+                    }
                     profileModel.UserPictureConverted = ConvertImageToBase64(userId);
                     return profileModel;
                 }

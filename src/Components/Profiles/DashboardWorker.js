@@ -2,22 +2,30 @@ import React, { useState, useEffect } from "react";
 import "./Profile.css";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { Button, Row, Col } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+
+import { Button, Row, Col, Badge } from "react-bootstrap";
 import axios from "axios";
 function Profile() {
+  const navigate = useNavigate();
+
   const { id } = useParams();
   const [user, setUser] = useState("");
+  const [userOffers, setUserOffers] = useState("");
   const { user: currentUser } = useSelector((state) => state.auth);
 
   function getUser() {
     axios
       .get(`https://localhost:44310/User/GetUserProfile?userId=${id}`)
       .then((response) => {
-        console.log(response);
+        console.log(response.data);
         setUser(response.data);
       })
       .catch((err) => {
         console.log(err);
+        navigate(`../404Page`, {
+          replace: true,
+        });
       });
   }
   function getUserLogged() {
@@ -34,12 +42,29 @@ function Profile() {
         console.log(err);
       });
   }
+  function getUserOffers() {
+    const config = {
+      headers: { Authorization: `Bearer ${currentUser.accessToken}` },
+    };
+    axios
+      .get(
+        `https://localhost:44310/User/GetAll${currentUser.userRole}Offers?userId=${id}`,
+        config
+      )
+      .then((response) => {
+        console.log(response);
+        setUserOffers(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   useEffect(() => {
-    if (user === null) {
-      getUser();
-    } else {
-      console.log("TUTAJ");
+    if (user.isLoggedIn && user.userId === "") {
       getUserLogged();
+      getUserOffers();
+    } else {
+      const res = getUser();
     }
   }, []);
   console.log(user);
@@ -48,22 +73,22 @@ function Profile() {
       <div className="Profile_Section">
         <div className="Profile_Wrapper">
           <Row
-            className="bg-warning bg-gradient"
+            className="bg-warning bg-gradient shadow"
             style={{
               borderRadius: "25px",
-              boxShadow: "0px 15px 10px -15px #111",
-              minHeight: "300px",
             }}
           >
-            <Col className="col-3 d-flex ps-4 align-items-center justify-content-center">
+            <Col className="col-12 col-lg-3  d-flex ps-4 align-items-center justify-content-center">
               <img
                 src={`data:image/png;base64,${user.userPictureConverted}`}
-                width={250}
+                width={300}
+                alt={`data:image/png;base64,${user.userPictureConverted}`}
+                className="m-3 rounded"
               />
             </Col>
-            <Col className="col-9 text-start pt-2">
-              <Row>
-                <Col className="col-12 col-xxl-10">
+            <Col className="col-12 col-lg-7  text-start pt-2">
+              <Row className="m-3">
+                <Col className="col-12 col-xxl-10 ">
                   <h6 className="display-6">
                     {user.name + " " + user.surname}
                   </h6>{" "}
@@ -82,9 +107,11 @@ function Profile() {
                   </p>
                 </Col>
               </Row>
+            </Col>
+            <Col className="col-12 col-lg-2 text-end">
               {user.isUserMainAccount && (
                 <Button
-                  className="mt-1"
+                  className="m-3"
                   variant="dark"
                   href={`../User/Edit/${id}`}
                 >
@@ -94,76 +121,66 @@ function Profile() {
             </Col>
           </Row>
           {user.isUserMainAccount && currentUser.userRole === "Employee" && (
-            <div>
-              <h1 className="display-6 text-muted text-center pt-3">
-                Twoje aplikacje
-              </h1>
-              <div className="Profile_Options">
-                <div className="Profile_Options-MyAplication">
-                  <p className="display-6 text-muted">WSB</p>
-                  <img
-                    className="Profile_Options-Image"
-                    src="https://tipsmake.com/data0/mimages/Wage-And-Hour-Disputes-How-To-Get-Paid-For-Working-Overtime-2.jpg"
-                    alt="logo"
-                  />
-                  <button className="bg-danger">ODRZUCONO</button>
-                </div>
-                <div className="Profile_Options-MyAplication">
-                  <p className="display-6 text-muted">POSNANIA</p>
-                  <img
-                    className="Profile_Options-Image"
-                    src="https://tipsmake.com/data0/mimages/Wage-And-Hour-Disputes-How-To-Get-Paid-For-Working-Overtime-2.jpg"
-                    alt="logo"
-                  />
-                  <button className="bg-success">ZAAKCEPTOWANO</button>
-                </div>
-                <div className="Profile_Options-MyAplication">
-                  <p className="display-6 text-muted">ZABKA</p>
-                  <img
-                    className="Profile_Options-Image"
-                    src="https://tipsmake.com/data0/mimages/Wage-And-Hour-Disputes-How-To-Get-Paid-For-Working-Overtime-2.jpg"
-                    alt="logo"
-                  />
-                  <button className="bg-danger">ODRZUCONO</button>
-                </div>
-              </div>
-            </div>
+            <Row className="d-flex justify-content-between">
+              <Col
+                style={{
+                  borderRadius: "25px",
+                }}
+                className="col-12 col-sm-5 m-3 col-xl-3 bg-light bg-gradient shadow"
+              >
+                <Row className="text-center ">
+                  <Col className="col-12">
+                    <h6 className="lead m-1" style={{ wordWrap: "break-word" }}>
+                      TYTUL
+                    </h6>
+                  </Col>
+                  <Col className="col-12 overflow-hidden img-fluid">
+                    <img
+                      src="https://tipsmake.com/data0/mimages/Wage-And-Hour-Disputes-How-To-Get-Paid-For-Working-Overtime-2.jpg"
+                      alt="test"
+                      className="img-fluid"
+                      width={300}
+                    />
+                  </Col>
+                  <Col className="col-12">
+                    <Badge bg="success" className="text-nowrap m-2 px-4 py-2">
+                      STAN
+                    </Badge>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
           )}
           {user.isUserMainAccount && currentUser.userRole === "Employer" && (
-            <div>
-              <h1 className="display-6 text-muted text-center pt-3">
-                MOJE OFERTY
-              </h1>
-              <div className="Profile_Options">
-                <div className="Profile_Options-MyAplication">
-                  <p className="display-6 text-muted">WSB</p>
-                  <img
-                    className="Profile_Options-Image"
-                    src="https://tipsmake.com/data0/mimages/Wage-And-Hour-Disputes-How-To-Get-Paid-For-Working-Overtime-2.jpg"
-                    alt="logo"
-                  />
-                  <button className="bg-danger">ODRZUCONO</button>
-                </div>
-                <div className="Profile_Options-MyAplication">
-                  <p className="display-6 text-muted">POSNANIA</p>
-                  <img
-                    className="Profile_Options-Image"
-                    src="https://tipsmake.com/data0/mimages/Wage-And-Hour-Disputes-How-To-Get-Paid-For-Working-Overtime-2.jpg"
-                    alt="logo"
-                  />
-                  <button className="bg-success">ZAAKCEPTOWANO</button>
-                </div>
-                <div className="Profile_Options-MyAplication">
-                  <p className="display-6 text-muted">ZABKA</p>
-                  <img
-                    className="Profile_Options-Image"
-                    src="https://tipsmake.com/data0/mimages/Wage-And-Hour-Disputes-How-To-Get-Paid-For-Working-Overtime-2.jpg"
-                    alt="logo"
-                  />
-                  <button className="bg-danger">ODRZUCONO</button>
-                </div>
-              </div>
-            </div>
+            <Row className="d-flex justify-content-between">
+              <Col
+                style={{
+                  borderRadius: "25px",
+                }}
+                className="col-12 col-sm-5 m-3 col-xl-3 bg-light bg-gradient shadow"
+              >
+                <Row className="text-center ">
+                  <Col className="col-12">
+                    <h6 className="lead m-1" style={{ wordWrap: "break-word" }}>
+                      TYTUL
+                    </h6>
+                  </Col>
+                  <Col className="col-12 overflow-hidden img-fluid">
+                    <img
+                      src="https://tipsmake.com/data0/mimages/Wage-And-Hour-Disputes-How-To-Get-Paid-For-Working-Overtime-2.jpg"
+                      alt="test"
+                      className="img-fluid"
+                      width={300}
+                    />
+                  </Col>
+                  <Col className="col-12">
+                    <Badge bg="success" className="text-nowrap m-2 px-4 py-2">
+                      STAN
+                    </Badge>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
           )}
         </div>
       </div>

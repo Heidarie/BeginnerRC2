@@ -298,7 +298,7 @@ export const OfferShortInfo = () => {
                         </Link>
                       </Button>
 
-                      {currentUser !== null &&
+                      {currentUser.userId !== "" &&
                       currentUser.userRole === "Employer" ? (
                         <small className="col-12 text-center text-align-center text-nowrap">
                           Jako pracodawca nie możesz aplikować{" "}

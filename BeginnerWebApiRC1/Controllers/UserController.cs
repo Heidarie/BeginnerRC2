@@ -53,6 +53,7 @@ namespace BeginnerWebApiRC1.Controllers
                             application.EmployerImage = FileHelper.ConvertImageToBase64(application.EmployerId);
                         }
                     }
+
                     var cacheEntryOptions = new MemoryCacheEntryOptions()
                                             .SetSlidingExpiration(TimeSpan.FromMinutes(10));
                     _cache.Set("UserProfile", profileModel, cacheEntryOptions);
@@ -61,19 +62,31 @@ namespace BeginnerWebApiRC1.Controllers
             }
             else
             {
-                UserProfileModel profileModel = await DatabaseManager.GetUserProfile(userId, false);
-                if (user != null)
+                if (!string.IsNullOrEmpty(userId))
                 {
-                    UserProfileModel visitorProfileModel = new UserProfileModel(user, user.ProfessionId1Navigation, true);
-                    VisitorNotification visitorNotification = new VisitorNotification(visitorProfileModel)
+                    try
                     {
-                        UserId = user.Id,
-                        Email = profileModel.Email
-                    };
-                    MailFactory.SendUserVisitNotification(visitorNotification);
+                        UserProfileModel profileModel = await DatabaseManager.GetUserProfile(userId, false);
+                        if (user != null)
+                        {
+                            UserProfileModel visitorProfileModel = new UserProfileModel(user, user.ProfessionId1Navigation, true);
+                            VisitorNotification visitorNotification = new VisitorNotification(visitorProfileModel)
+                            {
+                                UserId = user.Id,
+                                Email = profileModel.Email
+                            };
+                            MailFactory.SendUserVisitNotification(visitorNotification);
+                        }
+                        profileModel.UserPictureConverted = FileHelper.ConvertImageToBase64(userId);
+                        return profileModel;
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Fatal(string.Format("An error on fetching user info. User id: {0}! {1}", userId, ex));
+                        return null;
+                    }
                 }
-                profileModel.UserPictureConverted = FileHelper.ConvertImageToBase64(userId);
-                return profileModel;
+                return null;
             }
 
 

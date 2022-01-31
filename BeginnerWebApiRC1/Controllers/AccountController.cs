@@ -202,17 +202,10 @@ namespace BeginnerWebApiRC1.Controllers
         public async Task<IActionResult> Logout()
         {
             Claim userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "userId");
+            _cache.Remove("BeginnerUser");
+            _cache.Remove("UserProfile");
             await _cachedRefreshTokenRepository.DeleteAll(userId.Value);
             return Ok();
-        }
-
-        [HttpGet]
-        [Route("Test")]
-        [AllowAnonymous]
-        public async Task<BeginnerUser> Test()
-        {
-            BeginnerUser user = await _userManager.FindByNameAsync("Dawid");
-            return user;
         }
     }
 }

@@ -45,10 +45,13 @@ namespace BeginnerWebApiRC1.Controllers
                 {
                     profileModel = new UserProfileModel(user, user.ProfessionId1Navigation, true);
                     profileModel.UserPictureConverted = FileHelper.ConvertImageToBase64(user.Id);
-                    profileModel.EmployeeApplications = await DatabaseManager.GetShortApplicationModel(user);
-                    foreach (var application in profileModel.EmployeeApplications)
+                    if (user.RoleId == (int)Roles.Employee)
                     {
-                        application.EmployerImage = FileHelper.ConvertImageToBase64(application.EmployerId);
+                        profileModel.EmployeeApplications = await DatabaseManager.GetShortApplicationModel(user);
+                        foreach (var application in profileModel.EmployeeApplications)
+                        {
+                            application.EmployerImage = FileHelper.ConvertImageToBase64(application.EmployerId);
+                        }
                     }
                     var cacheEntryOptions = new MemoryCacheEntryOptions()
                                             .SetSlidingExpiration(TimeSpan.FromMinutes(10));

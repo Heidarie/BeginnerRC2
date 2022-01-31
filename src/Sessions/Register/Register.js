@@ -16,7 +16,7 @@ const Register = () => {
   const navigate = useNavigate();
   useEffect(() => {
     dispatch(clearMessage());
-  }, [dispatch]);
+  }, []);
 
   const {
     handleSubmit,
@@ -37,7 +37,6 @@ const Register = () => {
     setLoading(true);
     e.preventDefault();
 
-    //Dodaj if na podstawie pracownik pracodawca by dobrze podawac dane
     if (radioValue === 1) {
       const firstName = data.firstName;
       const lastName = data.lastName;
@@ -64,6 +63,8 @@ const Register = () => {
           );
           setTimeout(() => {
             navigate({ pathname: "/" });
+
+            window.location.reload();
           }, 3000);
         })
         .catch((error) => {
@@ -96,6 +97,8 @@ const Register = () => {
           );
           setTimeout(() => {
             navigate({ pathname: "/" });
+
+            window.location.reload();
           }, 3000);
         })
         .catch((error) => {

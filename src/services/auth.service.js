@@ -44,8 +44,16 @@ const registerEmployer = (
   formData.append("Role", typeUser);
   formData.append("Profession", typeUser);
   console.log(formData);
-  const res = axios.post(API_URL + "Register", formData, configRegister);
-  return res;
+  return axios
+    .post(API_URL + "Register", formData, configRegister)
+    .then((response) => {
+      if (response.data.accessToken) {
+        response.userRole = "";
+        response.userId = "";
+        localStorage.setItem("user", JSON.stringify(response.data));
+      }
+      return response;
+    });
 };
 
 const login = (email, password) => {
@@ -54,6 +62,8 @@ const login = (email, password) => {
     .post(API_URL + "Login", formData, configLogin)
     .then((response) => {
       if (response.data.accessToken) {
+        response.userRole = "";
+        response.userId = "";
         localStorage.setItem("user", JSON.stringify(response.data));
       }
       return response;
@@ -66,9 +76,9 @@ const logout = () => {
 
 const authService = {
   registerUser,
+  registerEmployer,
   login,
   logout,
-  registerEmployer,
 };
 
 export default authService;

@@ -23,6 +23,7 @@ function Profile() {
       })
       .catch((err) => {
         console.log(err);
+
         navigate(`../404Page`, {
           replace: true,
         });
@@ -60,11 +61,11 @@ function Profile() {
       });
   }
   useEffect(() => {
-    if (user.isLoggedIn && user.userId === "") {
+    if (user.userId === "") {
+      getUser();
+    } else {
       getUserLogged();
       getUserOffers();
-    } else {
-      const res = getUser();
     }
   }, []);
   console.log(user);

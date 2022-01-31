@@ -25,8 +25,8 @@ const registerUser = (
   formData.append("Role", typeUser);
   formData.append("Profession", typeUser);
   console.log(formData);
-  const xd = axios.post(API_URL + "Register", formData, configRegister);
-  console.log(xd);
+  const res = axios.post(API_URL + "Register", formData, configRegister);
+  return res;
 };
 const registerEmployer = (
   name,
@@ -44,8 +44,8 @@ const registerEmployer = (
   formData.append("Role", typeUser);
   formData.append("Profession", typeUser);
   console.log(formData);
-  const xd = axios.post(API_URL + "Register", formData, configRegister);
-  console.log(xd);
+  const res = axios.post(API_URL + "Register", formData, configRegister);
+  return res;
 };
 
 const login = (email, password) => {

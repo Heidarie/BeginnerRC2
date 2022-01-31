@@ -50,6 +50,7 @@ export const registerEmployer = createAsyncThunk(
       thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
     } catch (error) {
+      console.log(error);
       const message =
         (error.response &&
           error.response.data &&

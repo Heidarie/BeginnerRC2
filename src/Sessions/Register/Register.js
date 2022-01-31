@@ -32,7 +32,6 @@ const Register = () => {
   ];
 
   const onSubmit = (data, e) => {
-    console.log("TUTAJ");
     setInformation("");
     setSuccessful("");
     setLoading(true);
@@ -57,7 +56,8 @@ const Register = () => {
         })
       )
         .unwrap()
-        .then(() => {
+        .then((res) => {
+          console.log(res);
           setSuccessful(true);
           setInformation(
             "Udało się utworzyć konto, potwierdź je teraz emailem"
@@ -66,16 +66,12 @@ const Register = () => {
             navigate({ pathname: "/" });
           }, 3000);
         })
-        .catch(() => {
+        .catch((error) => {
+          console.log("tutaj", error);
           setInformation("Użytkownik o takim emailu już istnieje");
           setSuccessful(false);
           setLoading(false);
         });
-      setSuccessful(true);
-      setInformation("Udało się utworzyć konto, potwierdź je teraz emailem");
-      setTimeout(() => {
-        navigate({ pathname: "/" });
-      }, 3000);
     } else {
       const name = data.name;
       const email = data.email;
@@ -92,7 +88,8 @@ const Register = () => {
         })
       )
         .unwrap()
-        .then(() => {
+        .then((res) => {
+          console.log(res);
           setSuccessful(true);
           setInformation(
             "Udało się utworzyć konto, potwierdź je teraz emailem"
@@ -101,17 +98,12 @@ const Register = () => {
             navigate({ pathname: "/" });
           }, 3000);
         })
-        .catch(() => {
-          console.log("tutaj");
+        .catch((error) => {
+          console.log("tutaj", error);
           setInformation("Użytkownik o takim emailu już istnieje");
           setSuccessful(false);
           setLoading(false);
         });
-      setSuccessful(true);
-      setInformation("Udało się utworzyć konto, potwierdź je teraz emailem");
-      // setTimeout(() => {
-      //   navigate({ pathname: "/" });
-      // }, 3000);
     }
   };
   return (

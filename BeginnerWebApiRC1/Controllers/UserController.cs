@@ -1,4 +1,5 @@
-﻿using BeginnerWebApiRC1.Models;
+﻿using BeginnerWebApiRC1.Helpers;
+using BeginnerWebApiRC1.Models;
 using BeginnerWebApiRC1.Models.Shared;
 using BeginnerWebApiRC1.Models.User;
 using BeginnerWebApiRC1.Refactors;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.IO;
 using System.Linq;
@@ -21,10 +23,12 @@ namespace BeginnerWebApiRC1.Controllers
     public class UserController : BaseController
     {
         private readonly UserManager<BeginnerUser> _userManager;
+        private readonly IMemoryCache _cache;
 
-        public UserController(UserManager<BeginnerUser> userManager)
+        public UserController(UserManager<BeginnerUser> userManager, IMemoryCache cache)
         {
             _userManager = userManager;
+            _cache = cache;
         }
 
         [HttpGet]
@@ -32,38 +36,44 @@ namespace BeginnerWebApiRC1.Controllers
         [AllowAnonymous]
         public async Task<UserProfileModel> GetUserProfile(string userId = "")
         {
-            if (ModelState.IsValid)
+            BeginnerUser user = new BeginnerUser();
+            _cache.TryGetValue("BeginnerUser", out user);
+            if (user != null && user.Id == userId)
             {
-                Claim userIdClaim = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "userId");
-                if (userIdClaim != null && userIdClaim.Value == userId)
+                UserProfileModel profileModel = new UserProfileModel();
+                if (!_cache.TryGetValue("UserProfile", out profileModel))
                 {
-                    if (userIdClaim != null)
+                    profileModel = new UserProfileModel(user, user.ProfessionId1Navigation, true);
+                    profileModel.UserPictureConverted = FileHelper.ConvertImageToBase64(user.Id);
+                    profileModel.EmployeeApplications = await DatabaseManager.GetShortApplicationModel(user);
+                    foreach (var application in profileModel.EmployeeApplications)
                     {
-                        userId = userIdClaim.Value;
-                        UserProfileModel profileModel = await DatabaseManager.GetUserProfile(userId, true);
-                        profileModel.UserPictureConverted = ConvertImageToBase64(userId);
-                        return profileModel;
+                        application.EmployerImage = FileHelper.ConvertImageToBase64(application.EmployerId);
                     }
-                    return null;
+                    var cacheEntryOptions = new MemoryCacheEntryOptions()
+                                            .SetSlidingExpiration(TimeSpan.FromMinutes(10));
+                    _cache.Set("UserProfile", profileModel, cacheEntryOptions);
                 }
-                else
-                {
-                    UserProfileModel profileModel = await DatabaseManager.GetUserProfile(userId, false);
-                    if (userIdClaim != null)
-                    {
-                        UserProfileModel visitorProfileModel = await DatabaseManager.GetUserProfile(userIdClaim.Value, false);
-                        VisitorNotification visitorNotification = new VisitorNotification(visitorProfileModel) 
-                        { 
-                            UserId = userIdClaim.Value, 
-                            Email = profileModel.Email
-                        };
-                        MailFactory.SendUserVisitNotification(visitorNotification);
-                    }
-                    profileModel.UserPictureConverted = ConvertImageToBase64(userId);
-                    return profileModel;
-                }
+                return profileModel;
             }
-            return null;
+            else
+            {
+                UserProfileModel profileModel = await DatabaseManager.GetUserProfile(userId, false);
+                if (user != null)
+                {
+                    UserProfileModel visitorProfileModel = new UserProfileModel(user, user.ProfessionId1Navigation, true);
+                    VisitorNotification visitorNotification = new VisitorNotification(visitorProfileModel)
+                    {
+                        UserId = user.Id,
+                        Email = profileModel.Email
+                    };
+                    MailFactory.SendUserVisitNotification(visitorNotification);
+                }
+                profileModel.UserPictureConverted = FileHelper.ConvertImageToBase64(userId);
+                return profileModel;
+            }
+
+
         }
 
         [HttpPost]
@@ -73,8 +83,8 @@ namespace BeginnerWebApiRC1.Controllers
             try
             {
                 Claim userIdClaim = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "userId");
-                model.CvFileConverted = ConvertPDF(model.CvFile);
-                UploadImage(model.UserPicture, userIdClaim.Value);
+                model.CvFileConverted = FileHelper.ConvertPDF(model.CvFile);
+                FileHelper.UploadImage(model.UserPicture, userIdClaim.Value);
                 bool result = await DatabaseManager.EditUserProfile(userIdClaim.Value, model);
                 if (result)
                     return Ok("Pomyślnie edytowano dane!");
@@ -85,49 +95,6 @@ namespace BeginnerWebApiRC1.Controllers
             {
                 Logger.Error(string.Format("Error on user profile edit: {0}",ex));
                 return Conflict("Wystąpił błąd podczas edycji profilu!");
-            }
-        }
-
-        private string ConvertPDF(IFormFile file)
-        {
-            string fileBytes = "";
-            if (file.Length > 0)
-            {
-                using(var ms = new MemoryStream())
-                {
-                    file.CopyTo(ms);
-                    var bytes = ms.ToArray();
-                    fileBytes = Convert.ToBase64String(bytes);
-                }
-            }
-            return fileBytes;
-        }
-
-        private string ConvertImageToBase64(string path)
-        {
-            try
-            {
-                path = Path.Combine("Content/Images/User", path + ".jpg");
-                string image = System.Convert.ToBase64String(System.IO.File.ReadAllBytes(path));
-                return image;
-            }
-            catch
-            {
-                Logger.Info(string.Format("Image not found", path));
-                return "";
-            }
-        }
-
-        private void UploadImage(IFormFile photo, string userId)
-        {
-            if(photo.Length > 0)
-            {
-                string fileName = userId + ".jpg";
-                string path = Path.Combine("Content/Images/User", fileName);
-                using (var stream = new FileStream(path, FileMode.Create))
-                {
-                    photo.CopyTo(stream);
-                }
             }
         }
     }

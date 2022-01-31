@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BeginnerWebApiRC1.Beginner;
 using BeginnerWebApiRC1.Models;
+using BeginnerWebApiRC1.Models.Employee;
 using BeginnerWebApiRC1.Models.Offer;
 using BeginnerWebApiRC1.Models.Shared;
 using BeginnerWebApiRC1.Models.User;
@@ -70,6 +71,25 @@ namespace BeginnerWebApiRC1
                 users.Add(user);
             }
             return users;
+        }
+
+        public void SetUpLoggedUser(BeginnerUser user)
+        {
+            user.ProfessionId1Navigation = new Profession();
+            user.ProfessionId1Navigation = dbContext.Professions.FirstOrDefault(p => p.Id == user.ProfessionId);
+            user.EmployeeApplications = dbContext.EmployeeApplications.Where(p => p.UserId == user.Id).ToList();
+            if(user.RoleId == (int)Roles.Employer)
+                user.Offers = dbContext.Offers.Where(o => o.UserId == user.Id).ToList();
+            else
+            {
+                user.Offers = new List<Offer>();
+                foreach(EmployeeApplication emApp in user.EmployeeApplications)
+                {
+                    Offer offer = dbContext.Offers.Where(o => o.Id == emApp.OffersId).FirstOrDefault();
+                    user.Offers.Add(offer);
+                }
+            }
+                
         }
 
         public async Task<ChangedStatusNotification> ChangeApplicationStatus(string userId,int offerId, int statusId)
@@ -144,7 +164,7 @@ namespace BeginnerWebApiRC1
                 {
                     Id = highestIdOffer != null ? (highestIdOffer.Id + 1) : 1,
                     Cd = DateTime.Now,
-                    Fd = DateOnly.FromDateTime(DateTime.Now.AddDays(14)),
+                    Fd = DateTime.Now.AddDays(14),
                     Name = offer.OfferName,
                     OfferText = offer.Description,
                     UserId = userId,
@@ -204,6 +224,22 @@ namespace BeginnerWebApiRC1
             return userModel;
 
         } 
+
+        public async Task<List<ShortApplicationModel>> GetShortApplicationModel(BeginnerUser user)
+        {
+            List<ShortApplicationModel> shortApplicationModel = new List<ShortApplicationModel>();
+            List<EmployeeApplication> eApps = dbContext.EmployeeApplications.Where(a => a.UserId == user.Id).ToList();
+            foreach(EmployeeApplication employeeApplication in eApps)
+            {
+                ShortApplicationModel sApp = new ShortApplicationModel();
+                Offer offer = dbContext.Offers.Where(o => o.Id == employeeApplication.OffersId).First();
+                sApp.PositionName = offer.Name;
+                sApp.ApplicationStatus = ((ApplicationStatusEnum)employeeApplication.ApplicationStatusId).ToString();
+                sApp.EmployerId = offer.UserId;
+                shortApplicationModel.Add(sApp);
+            }
+            return shortApplicationModel;
+        }
 
         public async Task<bool> EditUserProfile(string userId, UserProfileModel model)
         {

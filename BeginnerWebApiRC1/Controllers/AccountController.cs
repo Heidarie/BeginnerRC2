@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Hosting;
 using MimeKit;
 using System;
@@ -29,16 +30,19 @@ namespace BeginnerWebApiRC1.Controllers
         private readonly SignInManager<BeginnerUser> _signInManager;
         private readonly IRefreshTokenRepository _cachedRefreshTokenRepository;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IMemoryCache _cache;
 
         public AccountController(UserManager<BeginnerUser> userManager,
             SignInManager<BeginnerUser> signInManager,
             IRefreshTokenRepository cachedRefreshTokenRepository,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IMemoryCache cache)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _cachedRefreshTokenRepository = cachedRefreshTokenRepository;
             _roleManager = roleManager;
+            _cache = cache;
         }
 
         [HttpPost]
@@ -73,7 +77,6 @@ namespace BeginnerWebApiRC1.Controllers
                     {
                         if (result.Succeeded)
                         {
-
                             if (await _roleManager.RoleExistsAsync(model.Role.ToString()) == false)
                             {
                                 await _roleManager.CreateAsync(new IdentityRole(model.Role.ToString()));
@@ -157,7 +160,8 @@ namespace BeginnerWebApiRC1.Controllers
                         {
                             role = ((Roles)user.RoleId).ToString();
                         }
-
+                        DatabaseManager.SetUpLoggedUser(user);
+                        _cache.Set("BeginnerUser", user);
                         return Ok(new TokenModel
                         {
                             AccessToken = refreshToken.jwt,

@@ -1,5 +1,7 @@
 ﻿using BeginnerWebApiRC1.Beginner;
+using BeginnerWebApiRC1.Models.Employee;
 using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 
 namespace BeginnerWebApiRC1.Models.User
 {
@@ -28,6 +30,7 @@ namespace BeginnerWebApiRC1.Models.User
         public string CvFileConverted { get; set; }
         public string AboutMe { get; set; }
         public string UserExperience { get; set; }
-        public bool IsUserMainAccount { get; set; }  
+        public bool IsUserMainAccount { get; set; }
+        public List<ShortApplicationModel> EmployeeApplications { get; set; }
     }
 }

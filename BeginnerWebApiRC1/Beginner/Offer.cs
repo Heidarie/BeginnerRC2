@@ -20,7 +20,7 @@ namespace BeginnerWebApiRC1.Beginner
         public string SalaryTo { get; set; }
         public DateTime Cd { get; set; }
         public DateTime Md { get; set; }
-        public DateOnly Fd { get; set; }
+        public DateTime Fd { get; set; }
         public string UserId { get; set; }
         public int ProfessionId { get; set; }
         public string City { get; set; }

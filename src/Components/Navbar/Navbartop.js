@@ -56,6 +56,7 @@ export default function Navbartop() {
                 variant="dark"
                 onClick={() => {
                   logOut();
+                  window.location.reload();
                 }}
               >
                 Wyloguj się

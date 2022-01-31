@@ -39,7 +39,7 @@ export default function Navbartop() {
               );
             })}
           </Nav>
-          {currentUser ? (
+          {currentUser.userId !== "" ? (
             <Nav className="pullright">
               <Button
                 type="button"

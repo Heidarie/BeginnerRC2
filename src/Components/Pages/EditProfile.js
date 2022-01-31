@@ -85,7 +85,7 @@ export default function EditProfile() {
       <Link to={`/User/${id}`}>
         <BiArrowBack className="back-arrow" />
       </Link>
-      <Container className="col-10 d-flex justify-content-center align-items-center py-5 h-100">
+      <Container className="col-5 d-flex justify-content-center align-items-center py-5 h-100">
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Row
             className="bg-warning bg-gradient p-2 "
@@ -102,10 +102,14 @@ export default function EditProfile() {
                       <h6 className="display-6">Zdjęcie</h6>
                     </Col>
                     <Col className="col-12 text-center justify-content-lg-start">
-                      <img
-                        src={`data:image/png;base64,${user.userPictureConverted}`}
-                        width={100}
-                      />
+                      {user.userPictureConverted === "" ? (
+                        <img
+                          src={`data:image/png;base64,${user.userPictureConverted}`}
+                          width={100}
+                        />
+                      ) : (
+                        <FaCameraRetro style={{ fontSize: "50px" }} />
+                      )}
                     </Col>
                     <Col className="col-12 text-center justify-content-start">
                       <input

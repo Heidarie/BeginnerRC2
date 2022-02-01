@@ -43,6 +43,7 @@ namespace BeginnerWebApiRC1.Controllers
             _cachedRefreshTokenRepository = cachedRefreshTokenRepository;
             _roleManager = roleManager;
             _cache = cache;
+            this.SetBeginnerUser(_cache);
         }
 
         [HttpPost]
@@ -161,7 +162,6 @@ namespace BeginnerWebApiRC1.Controllers
                             role = ((Roles)user.RoleId).ToString();
                         }
                         DatabaseManager.SetUpLoggedUser(user);
-                        _cache.Set("BeginnerUser", user);
                         return Ok(new TokenModel
                         {
                             AccessToken = refreshToken.jwt,

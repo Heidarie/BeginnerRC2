@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -20,13 +21,20 @@ namespace BeginnerWebApiRC1.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class EmployerController : BaseController
     {
+        private readonly IMemoryCache _cache;
+
+        public EmployerController(IMemoryCache cache)
+        {
+            _cache = cache;
+            this.SetBeginnerUser(_cache);
+        }
+
         [HttpGet]
         [Route("[action]")]
         public async Task<List<ShortOfferModel>> GetAllEmployerOffers()
         {
             List<ShortOfferModel> shortOfferModels = new List<ShortOfferModel>();  
-            Claim userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "userId");
-            shortOfferModels = await DatabaseManager.GetAllOffers(userId.Value);
+            shortOfferModels = await DatabaseManager.GetAllOffers(LoggedUser.Id);
             return shortOfferModels;
         }
 

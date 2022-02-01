@@ -29,6 +29,7 @@ namespace BeginnerWebApiRC1.Controllers
         {
             _userManager = userManager;
             _cache = cache;
+            this.SetBeginnerUser(_cache);
         }
 
         [HttpGet]
@@ -36,18 +37,16 @@ namespace BeginnerWebApiRC1.Controllers
         [AllowAnonymous]
         public async Task<UserProfileModel> GetUserProfile(string userId = "")
         {
-            BeginnerUser user = new BeginnerUser();
-            _cache.TryGetValue("BeginnerUser", out user);
-            if (user != null && user.Id == userId)
+            if (LoggedUser != null && LoggedUser.Id == userId)
             {
                 UserProfileModel profileModel = new UserProfileModel();
                 if (!_cache.TryGetValue("UserProfile", out profileModel))
                 {
-                    profileModel = new UserProfileModel(user, user.ProfessionId1Navigation, true);
-                    profileModel.UserPictureConverted = FileHelper.ConvertImageToBase64(user.Id);
-                    if (user.RoleId == (int)Roles.Employee)
+                    profileModel = new UserProfileModel(LoggedUser, LoggedUser.ProfessionId1Navigation, true);
+                    profileModel.UserPictureConverted = FileHelper.ConvertImageToBase64(LoggedUser.Id);
+                    if (LoggedUser.RoleId == (int)Roles.Employee)
                     {
-                        profileModel.EmployeeApplications = await DatabaseManager.GetShortApplicationModel(user);
+                        profileModel.EmployeeApplications = await DatabaseManager.GetShortApplicationModel(LoggedUser);
                         foreach (var application in profileModel.EmployeeApplications)
                         {
                             application.EmployerImage = FileHelper.ConvertImageToBase64(application.EmployerId);
@@ -67,9 +66,9 @@ namespace BeginnerWebApiRC1.Controllers
                     try
                     {
                         UserProfileModel profileModel = await DatabaseManager.GetUserProfile(userId, false);
-                        if (user != null)
+                        if (LoggedUser != null)
                         {
-                            UserProfileModel visitorProfileModel = new UserProfileModel(user, user.ProfessionId1Navigation, true);
+                            UserProfileModel visitorProfileModel = new UserProfileModel(LoggedUser, LoggedUser.ProfessionId1Navigation, true);
                             VisitorNotification visitorNotification = new VisitorNotification(visitorProfileModel)
                             {
                                 UserId = user.Id,

@@ -12,8 +12,17 @@ namespace BeginnerWebApiRC1.Controllers
     public abstract class BaseController : ControllerBase
     {
         private ILog logger;
-
         private DatabaseManager databaseManager;
+        private BeginnerUser beginnerUser;
+        
+        protected BeginnerUser LoggedUser
+        {
+            get
+            {
+                return beginnerUser;
+            }
+        }
+
         protected DatabaseManager DatabaseManager
         {
             get
@@ -26,21 +35,6 @@ namespace BeginnerWebApiRC1.Controllers
             }
         }
 
-        protected virtual new BeginnerPrincipal User
-        {
-            get
-            {
-                if(HttpContext.User is BeginnerPrincipal)
-                {
-                    return HttpContext.User as BeginnerPrincipal;
-                }
-                else
-                {
-                    return new BeginnerPrincipal(HttpContext.User.Identity,"", null);
-                }
-            }
-        }
-
         protected ILog Logger
         {
             get
@@ -49,6 +43,11 @@ namespace BeginnerWebApiRC1.Controllers
                     logger = LogManager.GetLogger(this.GetType());
                 return logger;
             }
+        }
+
+        public void SetBeginnerUser(IMemoryCache cache)
+        {
+            cache.TryGetValue("BeginnerUser", out beginnerUser);
         }
 
         public RedirectToRouteResult RedirectToAction(string action, object routeValues, string fragments)

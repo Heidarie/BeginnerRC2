@@ -26,6 +26,7 @@ using BeginnerWebApiRC1.Services;
 using BeginnerWebApiRC1.Token;
 using BeginnerWebApiRC1.Beginner;
 using System.Text.Json.Serialization;
+using System.Globalization;
 
 namespace BeginnerWebApiRC1
 {
@@ -132,12 +133,15 @@ namespace BeginnerWebApiRC1
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var cultureInfo = new CultureInfo("pl-PL");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BeginnerWebApiRC1 v1"));
             }
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
             app.UseHttpsRedirection();
 

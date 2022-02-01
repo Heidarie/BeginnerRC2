@@ -254,7 +254,6 @@ export const OfferShortInfo = () => {
                         <Button
                           type="button"
                           className="btn btn-warning btn-outline-dark rounded-pill col-12"
-                          onClick={() => applyForOffer(offer.id)}
                           disabled
                         >
                           Zaaplikowano
@@ -264,49 +263,54 @@ export const OfferShortInfo = () => {
                         <Button
                           type="button"
                           className="btn btn-danger  rounded-pill col-12"
-                          onClick={() => applyForOffer(offer.id)}
                           disabled
                         >
-                          Zaaplikowano
+                          Odrzucono
                         </Button>
                       )}
                       {offer.applicationStatus === "Confirmed" && (
                         <Button
                           type="button"
                           className="btn btn-success rounded-pill col-12"
-                          onClick={() => applyForOffer(offer.id)}
                           disabled
                         >
-                          Zaaplikowano
+                          Przyjęto!
                         </Button>
                       )}
-                      <small className="col-12 text-center me-5">
-                        {information}
-                      </small>
+
+                      <Col className="col-12 text-center">
+                        <small className="text-muted">{information}</small>
+                      </Col>
                     </div>
                   ) : (
                     <div>
-                      <Button
-                        type="button"
-                        className="btn btn-warning btn-outline-dark rounded-pill col-12"
-                      >
-                        <Link
-                          to="/Register"
-                          className="text-dark text-decoration-none"
+                      {currentUser.userRole !== "Employer" && (
+                        <Button
+                          type="button"
+                          className="btn btn-warning btn-outline-dark rounded-pill col-12"
                         >
-                          <h5>APLIKUJ</h5>
-                        </Link>
-                      </Button>
+                          <Link
+                            to="/Register"
+                            className="text-dark text-decoration-none"
+                          >
+                            <h5>APLIKUJ</h5>
+                          </Link>
+                        </Button>
+                      )}
 
                       {currentUser.userId !== "" &&
                       currentUser.userRole === "Employer" ? (
-                        <small className="col-12 text-center text-align-center text-nowrap">
-                          Jako pracodawca nie możesz aplikować{" "}
-                        </small>
+                        <Col className="col-12 text-center">
+                          <small className="text-muted">
+                            Jako pracodawca nie możesz aplikować
+                          </small>
+                        </Col>
                       ) : (
-                        <small className="col-12 text-center me-5">
-                          Musisz się zalogować
-                        </small>
+                        <Col className="col-12 text-center">
+                          <small className="text-muted">
+                            Musisz się zalogować
+                          </small>
+                        </Col>
                       )}
                     </div>
                   )}

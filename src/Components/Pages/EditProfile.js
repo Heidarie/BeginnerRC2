@@ -77,6 +77,7 @@ export default function EditProfile() {
         console.log(err);
       });
   }
+
   useEffect(() => {
     getUserLogged();
   }, []);

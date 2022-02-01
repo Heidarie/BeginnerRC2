@@ -93,7 +93,6 @@ export const logout = createAsyncThunk("auth/logout", async () => {
   await AuthService.logout();
 });
 
-console.log(user);
 const initialState =
   user.userId !== ""
     ? { isLoggedIn: true, user }

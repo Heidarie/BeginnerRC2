@@ -16,7 +16,6 @@ export const OfferShortInfo = () => {
   const applyForOffer = async (id) => {
     const offerId = id;
     const config = { Authorization: `Bearer ${currentUser.accessToken}` };
-    console.log(config);
     await axios
       .post(
         `https://localhost:44310/Offer/UserApply?offerId=${offerId}`,
@@ -34,7 +33,6 @@ export const OfferShortInfo = () => {
   };
   const getOfferDetails = async (offers) => {
     const offerId = offers.selectedOffer;
-    console.log(offerId);
     const config = !offers.offers && {
       headers: { Authorization: `Bearer ${currentUser.accessToken}` },
     };
@@ -45,7 +43,6 @@ export const OfferShortInfo = () => {
       )
       .then((response) => {
         setOfferShow([response.data]);
-        console.log(response.data);
       })
       .catch((err) => {
         console.log(err);

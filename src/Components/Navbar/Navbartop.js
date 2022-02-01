@@ -6,12 +6,18 @@ import { Nav, Navbar, Button, Container } from "react-bootstrap";
 import EventBus from "../../common/EventBus";
 import { logout } from "../../Redux/User/auth";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 export default function Navbartop() {
   const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  function logoutUser() {
+    axios.get("https://localhost:44310/Account/Logout", {
+      headers: { Authorization: `Bearer ${currentUser.accessToken}` },
+    });
+  }
   const logOut = useCallback(() => {
+    logoutUser();
     dispatch(logout());
   }, [dispatch]);
   useEffect(() => {
@@ -31,13 +37,14 @@ export default function Navbartop() {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            {NavbarItems.map((item) => {
-              return (
-                <Nav.Link key={item.id} href={item.url}>
-                  {item.title}
-                </Nav.Link>
-              );
-            })}
+            {currentUser.userRole === "Employer" &&
+              NavbarItems.map((item) => {
+                return (
+                  <Nav.Link key={item.id} href={item.url}>
+                    {item.title}
+                  </Nav.Link>
+                );
+              })}
           </Nav>
           {currentUser.userId !== "" ? (
             <Nav className="pullright">

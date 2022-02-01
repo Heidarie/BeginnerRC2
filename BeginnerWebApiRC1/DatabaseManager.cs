@@ -121,28 +121,15 @@ namespace BeginnerWebApiRC1
         }
         
 
-        public async Task<OfferModel> GetOffer(int id, string userId)
+        public async Task<OfferModel> GetOffer(int id, BeginnerUser user = null)
         {
             Offer offer = dbContext.Offers.FirstOrDefault(o => o.Id == id);
             if (offer != null)
             {
                 BeginnerUser employer = dbContext.Users.Where(p => p.Id == offer.UserId).FirstOrDefault();
-                EmployeeApplication application = dbContext.EmployeeApplications.Where(a => a.UserId == userId && a.OffersId == offer.Id).FirstOrDefault();
+                //EmployeeApplication application = dbContext.EmployeeApplications.Where(a => a.UserId == userId && a.OffersId == offer.Id).FirstOrDefault();
                 Profession profession = dbContext.Professions.Where(p => p.Id == offer.ProfessionId).First();
-                OfferModel offerModel = new OfferModel(offer, employer, profession, application == null ? "" : dbContext.ApplicationStatuses.Where(a => a.Id == application.ApplicationStatusId).Select(a => a.Name).FirstOrDefault());
-                return offerModel;
-            }
-            return null;
-        }
-
-        public async Task<OfferModel> GetOffer(int id)
-        {
-            Offer offer = dbContext.Offers.FirstOrDefault(o => o.Id == id);
-            if (offer != null)
-            {
-                BeginnerUser employer = dbContext.Users.Where(p => p.Id == offer.UserId).FirstOrDefault();
-                Profession profession = dbContext.Professions.Where(p => p.Id == offer.ProfessionId).First();
-                OfferModel offerModel = new OfferModel(offer, employer, profession, "");
+                OfferModel offerModel = new OfferModel(offer, employer, profession, user == null ? "" : dbContext.ApplicationStatuses.Where(a => a.Id == user.EmployeeApplications.Where(a => a.OffersId == id).Select(a => a.ApplicationStatusId).First()).Select(a => a.Name).FirstOrDefault());
                 return offerModel;
             }
             return null;
@@ -157,7 +144,6 @@ namespace BeginnerWebApiRC1
                 this.CreateProfession(offer.Profession);
                 prof = dbContext.Professions.Where(x => x.Profession1 == offer.Profession).FirstOrDefault();
             }
-            //var people = dbContext.Person.ToList();
             try
             {
                 Offer dbOffer = new Offer()
@@ -193,6 +179,38 @@ namespace BeginnerWebApiRC1
             catch(Exception ex)
             {
                 Logger.Error(string.Format("Adding new offer went wrong: {0}",ex));
+                return false;
+            }
+        }
+        
+
+        public async Task<bool> UpdateOffer(OfferModel offer, string userId, string benefits, string languages)
+        {
+            Offer currentOffer = dbContext.Offers.FirstOrDefault(x => x.Id == offer.Id);
+            try
+            {
+                currentOffer.Name = offer.OfferName;
+                currentOffer.OfferText = offer.Description;
+                currentOffer.SalaryFrom = offer.SalaryFrom;
+                currentOffer.SalaryTo = offer.SalaryTo;
+                currentOffer.City = offer.City;
+                currentOffer.Street = offer.Street;
+                currentOffer.ExperienceRequired = offer.Experience;
+                currentOffer.Duties = offer.Duties;
+                currentOffer.JobType = offer.JobType;
+                if (currentOffer.AdditionalData == null)
+                    currentOffer.AdditionalData = new OfferAdditionalData();
+                currentOffer.AdditionalData.Languages = languages;
+                currentOffer.AdditionalData.Benefits = benefits;
+                currentOffer.Md = DateTime.Now;
+                currentOffer.UserId = userId;
+
+                await dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(string.Format("Adding new offer went wrong: {0}", ex));
                 return false;
             }
         }

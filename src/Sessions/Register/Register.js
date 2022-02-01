@@ -59,7 +59,7 @@ const Register = () => {
           console.log(res);
           setSuccessful(true);
           setInformation(
-            "Udało się utworzyć konto, potwierdź je teraz emailem"
+            "Udało się utworzyć konto, potwierdź je teraz emailem."
           );
           setTimeout(() => {
             navigate({ pathname: "/" });
@@ -69,7 +69,7 @@ const Register = () => {
         })
         .catch((error) => {
           console.log("tutaj", error);
-          setInformation("Użytkownik o takim emailu już istnieje");
+          setInformation("Użytkownik o takim emailu już istnieje.");
           setSuccessful(false);
           setLoading(false);
         });
@@ -93,7 +93,7 @@ const Register = () => {
           console.log(res);
           setSuccessful(true);
           setInformation(
-            "Udało się utworzyć konto, potwierdź je teraz emailem"
+            "Udało się utworzyć konto, potwierdź je teraz emailem."
           );
           setTimeout(() => {
             navigate({ pathname: "/" });
@@ -103,7 +103,7 @@ const Register = () => {
         })
         .catch((error) => {
           console.log("tutaj", error);
-          setInformation("Użytkownik o takim emailu już istnieje");
+          setInformation("Użytkownik o takim emailu już istnieje.");
           setSuccessful(false);
           setLoading(false);
         });

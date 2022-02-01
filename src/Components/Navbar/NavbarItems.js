@@ -1,9 +1,9 @@
 export const NavbarItems = [
-  // {
-  //   id: 1,
-  //   title: "Oferty Pracy",
-  //   url: "OfertyPracy",
-  // },
+  {
+    id: 1,
+    title: "Dodaj Oferte",
+    url: "/AddOffer",
+  },
   // {
   //   id: 2,
   //   title: "Dla Pracodawców",

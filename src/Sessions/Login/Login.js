@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FloatingLabel } from "react-bootstrap";
+import { FloatingLabel, Col } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
 import "./Login.css";
@@ -12,6 +12,8 @@ import { clearMessage } from "../../Redux/User/message";
 
 const Login = (setUser) => {
   const [loading, setLoading] = useState(false);
+  const [successful, setSuccessful] = useState("");
+  const [information, setInformation] = useState("");
   const { isLoggedIn } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -28,14 +30,20 @@ const Login = (setUser) => {
 
   const onSubmit = (data, e) => {
     e.preventDefault();
+    setSuccessful("");
+    setInformation("");
     setLoading(true);
 
     dispatch(login({ email: data.email, password: data.password }))
       .unwrap()
-      .then(() => {
+      .then((res) => {
+        setSuccessful(true);
+        setInformation("Udało się zalogować!");
         window.location.reload();
       })
-      .catch(() => {
+      .catch((error) => {
+        setSuccessful(false);
+        setInformation("Błędne hasło lub email.");
         setLoading(false);
       });
   };
@@ -126,7 +134,23 @@ const Login = (setUser) => {
                           )}
                           Zaloguj się
                         </button>
-                        {}
+
+                        {successful === false && (
+                          <Col
+                            className="col-12 text-center alert alert-danger"
+                            role="alert"
+                          >
+                            <small>{information}</small>
+                          </Col>
+                        )}
+                        {successful === true && (
+                          <Col
+                            className="col-12 text-center alert alert-success"
+                            role="alert"
+                          >
+                            <small>{information}</small>
+                          </Col>
+                        )}
                         <Link className="text-muted" to="/ForgotPassword">
                           Zapomniałeś hasła?
                         </Link>

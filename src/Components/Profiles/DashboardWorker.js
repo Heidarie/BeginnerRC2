@@ -18,26 +18,14 @@ function Profile() {
     axios
       .get(`https://localhost:44310/User/GetUserProfile?userId=${id}`)
       .then((response) => {
-        console.log(response.data);
-        setUser(response.data);
-      })
-      .catch((err) => {
-        console.log(err);
-
-        navigate(`../404Page`, {
-          replace: true,
-        });
-      });
-  }
-  function getUserLogged() {
-    const config = {
-      headers: { Authorization: `Bearer ${currentUser.accessToken}` },
-    };
-    axios
-      .get(`https://localhost:44310/User/GetUserProfile?userId=${id}`, config)
-      .then((response) => {
-        console.log(response);
-        setUser(response.data);
+        console.log("TYPOWY CALL", response.data);
+        checkToRedirect(response.data);
+        if (response.data.isUserMainAccount) {
+          setUser(response.data);
+          getUserOffers();
+        } else {
+          setUser(response.data);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -53,22 +41,23 @@ function Profile() {
         config
       )
       .then((response) => {
-        console.log(response);
+        console.log("OFERTY", response.data);
         setUserOffers(response.data);
       })
       .catch((err) => {
         console.log(err);
       });
   }
-  useEffect(() => {
-    if (user.userId === "") {
-      getUser();
-    } else {
-      getUserLogged();
-      getUserOffers();
+  function checkToRedirect(data) {
+    if (data === "") {
+      navigate(`../404Page`, {
+        replace: true,
+      });
     }
+  }
+  useEffect(() => {
+    getUser();
   }, []);
-  console.log(user);
   return (
     <div>
       <div className="Profile_Section">
@@ -79,12 +68,12 @@ function Profile() {
               borderRadius: "25px",
             }}
           >
-            <Col className="col-12 col-lg-3  d-flex ps-4 align-items-center justify-content-center">
+            <Col className="col-12 col-lg-3 overflow-hidden img-fluid d-flex ps-4 align-items-center justify-content-center">
               <img
                 src={`data:image/png;base64,${user.userPictureConverted}`}
-                width={300}
+                width={200}
                 alt={`data:image/png;base64,${user.userPictureConverted}`}
-                className="m-3 rounded"
+                className="m-3 rounded img-fluid"
               />
             </Col>
             <Col className="col-12 col-lg-7  text-start pt-2">

@@ -69,11 +69,9 @@ export default function Addoffer() {
   const { user: currentUser } = useSelector((state) => state.auth);
   const onSubmit = async (data, e) => {
     console.log(data.lang);
-    const langArray = [
-      data.lang.map((obj) => {
-        return obj.name;
-      }),
-    ];
+    const langArray = data.lang.map((obj) => {
+      return obj.name;
+    });
     e.preventDefault();
     const dataToSend = {
       OfferName: data.title,

@@ -118,10 +118,7 @@ namespace BeginnerWebApiRC1
 
             services.AddScoped(factory => LogManager.GetLogger(GetType()));
 
-            services.AddControllers().AddJsonOptions(x =>
-            {
-                x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-            });
+            services.AddControllers().AddNewtonsoftJson();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BeginnerWebApiRC1", Version = "v1" });

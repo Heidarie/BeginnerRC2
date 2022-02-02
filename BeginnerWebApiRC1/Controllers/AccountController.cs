@@ -87,7 +87,7 @@ namespace BeginnerWebApiRC1.Controllers
 
 
                             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                            MailFactory.SendConfirmationMail(model, token);
+                            MailFactory.SendConfirmationMail(model, token, user.Id);
 
                             var refreshToken = TokenManager.GenerateRefreshToken(user);
                             if (user.RefreshTokens == null)
@@ -145,7 +145,7 @@ namespace BeginnerWebApiRC1.Controllers
                         if (user.StatusId == 1)
                         {
                             string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                            MailFactory.ResendConfirmationMail(user.Email, user.Name, token);
+                            MailFactory.ResendConfirmationMail(user.Email, user.Name, user.Id ,token);
 
                             return Ok(new
                             {
@@ -179,19 +179,16 @@ namespace BeginnerWebApiRC1.Controllers
         }
 
         [EnableCors]
-        [HttpGet]
+        [HttpPost]
         [Route("ConfirmAccount")]
-        [Authorize(AuthenticationSchemes = "verify")]
-        public async Task<IActionResult> ConfirmAccount()
+        public async Task<IActionResult> ConfirmAccount(VerificationModel model)
         {
-            Claim username = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "username");
-            Claim verificationCode = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "verificationCode");
-            BeginnerUser user = await _userManager.FindByNameAsync(username.Value);
-            var result = await _userManager.ConfirmEmailAsync(user, verificationCode.Value);
+            BeginnerUser newBeginner = await _userManager.FindByIdAsync(model.UserId);
+            var result = await _userManager.ConfirmEmailAsync(newBeginner, model.Token);
             if (result.Succeeded)
             {
-                user.StatusId = 2;
-                bool dbResult = await DatabaseManager.ActivateUser(user.Id, user.StatusId);
+                newBeginner.StatusId = 2;
+                bool dbResult = await DatabaseManager.ActivateUser(newBeginner.Id, newBeginner.StatusId);
                 return Ok();
             }
             return ValidationProblem();

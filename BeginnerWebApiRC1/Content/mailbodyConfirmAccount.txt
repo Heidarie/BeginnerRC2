@@ -34,7 +34,7 @@
 								    <tbody valign="top" style="table-layout:fixed;vertical-align:top;width:100%">
 									  <tr>
 										<td align="left" style="padding-left:0;text-align:left">
-										  <a href="http://localhost:3000/ConfirmAccount" style="color:#0a66c2;display:inline-block;text-decoration:none" target="_blank">
+										  <a href="http://localhost:3000/ConfirmAccount?verify=[USERID]&t=[TOKEN]" style="color:#0a66c2;display:inline-block;text-decoration:none" target="_blank">
 										    <table role="mail" border="0" cellspacing="0" cellpadding="0" width="100%" valign="top" style="table-layout:fixed;vertical-align:top;width:100%">
 											  <tbody>
 											    <tr>

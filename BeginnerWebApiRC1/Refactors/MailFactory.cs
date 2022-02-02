@@ -10,7 +10,7 @@ namespace BeginnerWebApiRC1.Refactors
 {
     public static class MailFactory
     {
-        public static async void SendConfirmationMail(RegistrationModel model, string token)
+        public static async void SendConfirmationMail(RegistrationModel model, string token, string userId)
         {
             MimeMessage message = new MimeMessage();
             MailboxAddress from = new MailboxAddress("Beginner", "NoReply.Beginner@gmail.com");
@@ -21,7 +21,7 @@ namespace BeginnerWebApiRC1.Refactors
             message.Subject = "Account Verification";
 
             BodyBuilder bodyBuilder = new BodyBuilder();
-            bodyBuilder.HtmlBody = EmailConfirmAccountBody();
+            bodyBuilder.HtmlBody = EmailConfirmAccountBody(token, userId);
 
             message.Body = bodyBuilder.ToMessageBody();
 
@@ -34,7 +34,7 @@ namespace BeginnerWebApiRC1.Refactors
             smtpClient.Dispose();
         }
 
-        public static async void ResendConfirmationMail(string email, string username, string token)
+        public static async void ResendConfirmationMail(string email, string username, string userId, string token)
         {
             MimeMessage message = new MimeMessage();
             MailboxAddress from = new MailboxAddress("Beginner", "NoReply.Beginner@gmail.com");
@@ -45,7 +45,7 @@ namespace BeginnerWebApiRC1.Refactors
             message.Subject = "Account Verification";
 
             BodyBuilder bodyBuilder = new BodyBuilder();
-            bodyBuilder.HtmlBody = EmailConfirmAccountBody();
+            bodyBuilder.HtmlBody = EmailConfirmAccountBody(token, userId);
 
             message.Body = bodyBuilder.ToMessageBody();
 
@@ -125,7 +125,7 @@ namespace BeginnerWebApiRC1.Refactors
             return body;
         }
 
-        private static string EmailConfirmAccountBody()
+        private static string EmailConfirmAccountBody(string token, string userId)
         {
             string body = string.Empty;
             var root = AppDomain.CurrentDomain.BaseDirectory; using (var reader = new System.IO.StreamReader(@"Content/mailbodyConfirmAccount.txt"))
@@ -133,6 +133,8 @@ namespace BeginnerWebApiRC1.Refactors
                 string readFile = reader.ReadToEnd();
                 string StrContent = string.Empty;
                 StrContent = readFile;
+                StrContent = StrContent.Replace("[TOKEN]", token);
+                StrContent = StrContent.Replace("[USERID]", userId);
                 //Assing the field values in the template
                 body = StrContent.ToString();
             }

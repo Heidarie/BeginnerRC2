@@ -19,8 +19,12 @@ namespace BeginnerWebApiRC1.Helpers
         {
             try
             {
+                string image = "";
                 path = Path.Combine("Content/Images/User", path + ".jpg");
-                string image = System.Convert.ToBase64String(System.IO.File.ReadAllBytes(path));
+                if (File.Exists(path)) 
+                    image = System.Convert.ToBase64String(System.IO.File.ReadAllBytes(path));
+                else
+                    image = System.Convert.ToBase64String(System.IO.File.ReadAllBytes("Content/Images/User/no_image_company.png"));
                 return image;
             }
             catch

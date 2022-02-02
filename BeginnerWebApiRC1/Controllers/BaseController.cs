@@ -50,6 +50,19 @@ namespace BeginnerWebApiRC1.Controllers
             cache.TryGetValue("BeginnerUser", out beginnerUser);
         }
 
+        public void RefreshUserDetails()
+        {
+            beginnerUser.ClearDetails();
+            DatabaseManager.SetUpLoggedUser(beginnerUser);
+        }
+
+        public void ReloadUserData()
+        {
+            beginnerUser = null;
+            DatabaseManager.RefreshLoggedUser(beginnerUser);
+            DatabaseManager.SetUpLoggedUser(beginnerUser);
+        }
+
         public RedirectToRouteResult RedirectToAction(string action, object routeValues, string fragments)
         {
             return base.RedirectToRoute(action, routeValues, fragments);

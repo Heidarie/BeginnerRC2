@@ -75,6 +75,7 @@ namespace BeginnerWebApiRC1
 
         public void SetUpLoggedUser(BeginnerUser user)
         {
+            
             user.ProfessionId1Navigation = new Profession();
             user.ProfessionId1Navigation = dbContext.Professions.FirstOrDefault(p => p.Id == user.ProfessionId);
             user.EmployeeApplications = dbContext.EmployeeApplications.Where(p => p.UserId == user.Id).ToList();
@@ -90,6 +91,11 @@ namespace BeginnerWebApiRC1
                 }
             }
                 
+        }
+
+        public void RefreshLoggedUser(BeginnerUser user)
+        {
+            user = dbContext.Users.FirstOrDefault(u => u.Id == user.Id);
         }
 
         public async Task<ChangedStatusNotification> ChangeApplicationStatus(string userId,int offerId, int statusId)
@@ -282,7 +288,7 @@ namespace BeginnerWebApiRC1
             user.PersonData.UserAboutMe = model.AboutMe;
             user.PersonData.UserExperience = model.UserExperience;
             var result = await dbContext.SaveChangesAsync();
-            return result == 1 ? true : false;
+            return result >= 0 ? true : false;
            
         }
 

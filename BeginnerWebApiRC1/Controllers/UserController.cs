@@ -97,12 +97,14 @@ namespace BeginnerWebApiRC1.Controllers
         {
             try
             {
-                Claim userIdClaim = HttpContext.User.Claims.FirstOrDefault(x => x.Type == "userId");
                 model.CvFileConverted = FileHelper.ConvertPDF(model.CvFile);
-                FileHelper.UploadImage(model.UserPicture, userIdClaim.Value);
-                bool result = await DatabaseManager.EditUserProfile(userIdClaim.Value, model);
+                FileHelper.UploadImage(model.UserPicture, LoggedUser.Id);
+                bool result = await DatabaseManager.EditUserProfile(LoggedUser.Id, model);
                 if (result)
+                {
+                    this.ReloadUserData();
                     return Ok("Pomyślnie edytowano dane!");
+                }
                 else
                     return Conflict("Wystąpił błąd podczas edycji profilu!");
             }

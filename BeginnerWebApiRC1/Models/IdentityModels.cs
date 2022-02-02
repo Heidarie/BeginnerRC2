@@ -128,6 +128,13 @@ namespace BeginnerWebApiRC1.Models
         public virtual ICollection<Message> Messages { get; set; }
         public virtual ICollection<Beginner.Offer> Offers { get; set; }
         public virtual ICollection<Participant> Participants { get; set; }
+
+        public void ClearDetails()
+        {
+            this.ProfessionId1Navigation = null;
+            this.EmployeeApplications = null;
+            this.Offers = null;
+        }
     }
 
     public class ApplicationDbContext : IdentityDbContext<BeginnerUser>

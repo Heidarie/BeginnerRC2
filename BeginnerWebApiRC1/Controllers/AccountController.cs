@@ -189,6 +189,7 @@ namespace BeginnerWebApiRC1.Controllers
             {
                 newBeginner.StatusId = 2;
                 bool dbResult = await DatabaseManager.ActivateUser(newBeginner.Id, newBeginner.StatusId);
+                this.ReloadUserData();
                 return Ok();
             }
             return ValidationProblem();

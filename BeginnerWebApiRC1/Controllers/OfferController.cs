@@ -1,4 +1,5 @@
-﻿using BeginnerWebApiRC1.Models;
+﻿using BeginnerWebApiRC1.Helpers;
+using BeginnerWebApiRC1.Models;
 using BeginnerWebApiRC1.Models.Offer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -43,6 +44,7 @@ namespace BeginnerWebApiRC1.Controllers
         {
             OfferModel offer = new OfferModel();
             offer = await DatabaseManager.GetOffer(offerId, LoggedUser);
+            offer.Image = FileHelper.ConvertImageToBase64(offer.EmployerId);
             return offer;
         }
 
@@ -79,6 +81,7 @@ namespace BeginnerWebApiRC1.Controllers
                 bool result = await DatabaseManager.UpdateOffer(offer, LoggedUser.Id, benefits, languages);
                 if (result)
                 {
+                    this.RefreshUserDetails();
                     return Ok("Edytowano ofertę");
                 }
                 else
@@ -93,10 +96,10 @@ namespace BeginnerWebApiRC1.Controllers
         [Route("[action]")]
         public async Task<IActionResult> UserApply(int offerId)
         {
-            _cache.TryGetValue("BeginnerUser", out user);
             bool result = await DatabaseManager.AssignUserToOffer(LoggedUser.Id, offerId);
             if (result)
             {
+                this.RefreshUser();
                 return Ok("Zaaplikowano na ofertę!");
             }
             else

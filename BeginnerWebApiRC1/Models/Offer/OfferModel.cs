@@ -13,6 +13,7 @@ namespace BeginnerWebApiRC1.Models.Offer
             this.OfferName = offer.Name;
             this.Description = offer.OfferText;
             this.EmployerName = employer.Name;
+            this.EmployerId = employer.Id;
             this.SalaryFrom = offer.SalaryFrom;
             this.SalaryTo = offer.SalaryTo;
             this.CreationDate = offer.Cd.ToShortDateString();
@@ -38,6 +39,8 @@ namespace BeginnerWebApiRC1.Models.Offer
         public string SalaryFrom { get; set; }
         public string SalaryTo { get; set; }
         public string CreationDate { get; set; }
+        public string Image { get; set; }
+        public string EmployerId { get; set; }
         public string FinishDay { get; set; }
         public string ApplicationStatus { get; set; }
         [Required]

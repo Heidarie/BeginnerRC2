@@ -99,7 +99,7 @@ namespace BeginnerWebApiRC1.Controllers
             bool result = await DatabaseManager.AssignUserToOffer(LoggedUser.Id, offerId);
             if (result)
             {
-                this.RefreshUser();
+                this.RefreshUserDetails();
                 return Ok("Zaaplikowano na ofertę!");
             }
             else

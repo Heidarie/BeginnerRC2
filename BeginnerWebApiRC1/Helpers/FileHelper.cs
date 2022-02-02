@@ -24,7 +24,7 @@ namespace BeginnerWebApiRC1.Helpers
                 if (File.Exists(path)) 
                     image = System.Convert.ToBase64String(System.IO.File.ReadAllBytes(path));
                 else
-                    image = System.Convert.ToBase64String(System.IO.File.ReadAllBytes("Content/Images/User/no_image_company.png"));
+                    image = System.Convert.ToBase64String(System.IO.File.ReadAllBytes("Content/Images/User/no_image_company.jpg"));
                 return image;
             }
             catch

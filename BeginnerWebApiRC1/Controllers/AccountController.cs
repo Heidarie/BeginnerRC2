@@ -58,7 +58,7 @@ namespace BeginnerWebApiRC1.Controllers
                 Surname = model.Surname,
                 Email = model.Email,
                 StatusId = 1,
-                UserName = model.Username,
+                UserName = model.Email,
                 Md = DateTime.Now,
                 PhoneNumber = model.PhoneNumber,
                 RoleId = (int)model.Role,
@@ -162,6 +162,7 @@ namespace BeginnerWebApiRC1.Controllers
                             role = ((Roles)user.RoleId).ToString();
                         }
                         DatabaseManager.SetUpLoggedUser(user);
+                        _cache.Set("BeginnerUser", user);
                         return Ok(new TokenModel
                         {
                             AccessToken = refreshToken.jwt,

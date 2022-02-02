@@ -33,35 +33,47 @@ namespace BeginnerWebApiRC1.Controllers
         [Route("[action]")]
         public async Task<List<ShortOfferModel>> GetAllEmployerOffers()
         {
-            List<ShortOfferModel> shortOfferModels = new List<ShortOfferModel>();  
-            shortOfferModels = await DatabaseManager.GetAllOffers(LoggedUser.Id);
-            return shortOfferModels;
+            if (LoggedUser.RoleId == (int)Roles.Employer)
+            {
+                List<ShortOfferModel> shortOfferModels = new List<ShortOfferModel>();
+                shortOfferModels = await DatabaseManager.GetAllOffers(LoggedUser.Id);
+                return shortOfferModels;
+            }
+            return null;
         }
 
         [HttpGet]
         [Route("[action]")]
         public async Task<List<ApplicantShortProfile>> GetOfferApplicants(int offerId) 
         {
-            List<ApplicantShortProfile> applicantShortProfiles = new List<ApplicantShortProfile>();
-            List<BeginnerUser> employees = await DatabaseManager.GetUserApplications(offerId);
-            applicantShortProfiles = employees.Select(x => new ApplicantShortProfile(x)).ToList();
-            return applicantShortProfiles;
+            if (LoggedUser.RoleId == (int)Roles.Employer)
+            {
+                List<ApplicantShortProfile> applicantShortProfiles = new List<ApplicantShortProfile>();
+                List<BeginnerUser> employees = await DatabaseManager.GetUserApplications(offerId);
+                applicantShortProfiles = employees.Select(x => new ApplicantShortProfile(x)).ToList();
+                return applicantShortProfiles;
+            }
+            return null;
         }
 
         [HttpPost]
         [Route("[action]")]
         public async Task<IActionResult> ChangeApplicationStatus(int offerId, string userId, int statusId)
         {
-            ChangedStatusNotification notification = await DatabaseManager.ChangeApplicationStatus(userId, offerId, statusId);
-            if (notification != null)
+            if (LoggedUser.RoleId == (int)Roles.Employer)
             {
-                MailFactory.SendStatusChangeNotification(notification);
-                return Ok();
+                ChangedStatusNotification notification = await DatabaseManager.ChangeApplicationStatus(userId, offerId, statusId);
+                if (notification != null)
+                {
+                    MailFactory.SendStatusChangeNotification(notification);
+                    return Ok();
+                }
+                else
+                {
+                    return Problem();
+                }
             }
-            else
-            {
-                return Problem();
-            }
+            return BadRequest();
         }
     }
 }

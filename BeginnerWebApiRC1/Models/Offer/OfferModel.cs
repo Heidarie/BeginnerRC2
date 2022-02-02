@@ -17,7 +17,7 @@ namespace BeginnerWebApiRC1.Models.Offer
             this.SalaryFrom = offer.SalaryFrom;
             this.SalaryTo = offer.SalaryTo;
             this.CreationDate = offer.Cd.ToShortDateString();
-            this.FinishDay = offer.Fd.ToShortDateString();
+            this.FinishDate = offer.Fd.ToShortDateString();
             this.ApplicationStatus = appStatusName;
             this.City = offer.City;
             this.Street = offer.Street;
@@ -41,7 +41,7 @@ namespace BeginnerWebApiRC1.Models.Offer
         public string CreationDate { get; set; }
         public string Image { get; set; }
         public string EmployerId { get; set; }
-        public string FinishDay { get; set; }
+        public string FinishDate { get; set; }
         public string ApplicationStatus { get; set; }
         [Required]
         public string City { get; set; }

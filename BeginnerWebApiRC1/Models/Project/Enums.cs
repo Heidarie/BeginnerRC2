@@ -18,6 +18,8 @@ namespace BeginnerWebApiRC1
 
     public enum ApplicationStatusEnum
     {
+        [Display(Name = "Brak")]
+        Brak = 0,
         [Display(Name = "Zaaplikowano")]
         Zaaplikowano = 1,
         [Display(Name = "Rozpatrywana")]

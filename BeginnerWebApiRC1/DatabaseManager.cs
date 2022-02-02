@@ -124,12 +124,19 @@ namespace BeginnerWebApiRC1
         public async Task<OfferModel> GetOffer(int id, BeginnerUser user = null)
         {
             Offer offer = dbContext.Offers.FirstOrDefault(o => o.Id == id);
+            OfferModel offerModel = null;
             if (offer != null)
             {
                 BeginnerUser employer = dbContext.Users.Where(p => p.Id == offer.UserId).FirstOrDefault();
-                //EmployeeApplication application = dbContext.EmployeeApplications.Where(a => a.UserId == userId && a.OffersId == offer.Id).FirstOrDefault();
                 Profession profession = dbContext.Professions.Where(p => p.Id == offer.ProfessionId).First();
-                OfferModel offerModel = new OfferModel(offer, employer, profession, user == null ? "" : dbContext.ApplicationStatuses.Where(a => a.Id == user.EmployeeApplications.Where(a => a.OffersId == id).Select(a => a.ApplicationStatusId).First()).Select(a => a.Name).FirstOrDefault());
+                if (user != null) {
+                    int applicationStatus = user.EmployeeApplications.Where(a => a.OffersId == id).Select(a => a.ApplicationStatusId).FirstOrDefault();
+                    offerModel = new OfferModel(offer, employer, profession, ((ApplicationStatusEnum)applicationStatus).ToString());
+                }
+                else
+                {
+                    offerModel = new OfferModel(offer, employer, profession, "");
+                }
                 return offerModel;
             }
             return null;

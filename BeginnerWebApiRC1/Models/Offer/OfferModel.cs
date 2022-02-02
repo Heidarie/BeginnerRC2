@@ -1,5 +1,6 @@
 ﻿using BeginnerWebApiRC1.Beginner;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace BeginnerWebApiRC1.Models.Offer
 {
@@ -29,7 +30,9 @@ namespace BeginnerWebApiRC1.Models.Offer
         }
 
         public int? Id { get; set; }
-        public string OfferName { get; set; } // use postal code
+        [Required(ErrorMessage = "Tytuł nie może być pusty")]
+        public string OfferName { get; set; }
+        [Required(ErrorMessage = "Opis nie może być pusty. Zachęć przyszłych pracowników")]
         public string Description { get; set; }
         public string EmployerName { get; set; }
         public string SalaryFrom { get; set; }
@@ -37,14 +40,22 @@ namespace BeginnerWebApiRC1.Models.Offer
         public string CreationDate { get; set; }
         public string FinishDay { get; set; }
         public string ApplicationStatus { get; set; }
+        [Required]
         public string City { get; set; }
         public string Street { get; set; }
+        [Required(ErrorMessage = "Należy podać profesję")]
         public string Profession { get; set; }
+        [Required(ErrorMessage = "Jeżeli pracujesz sam wpisz: 1 :)")]
         public int CompanySize { get; set; }
+        [Required(ErrorMessage = "Należy podać wymagane doświadczenie")]
         public string Experience { get; set; }
+        [Required(ErrorMessage = "Podaj obowiązki pracownika")]
         public string Duties { get; set; }
+        [Required(ErrorMessage = "Wybierz jak pracujecie")]
         public string JobType { get; set; }
+        [Required(ErrorMessage = "Podaj jaką wiedzę musi mieć pracownik")]
         public List<string> Languages { get; set; }
+        [Required(ErrorMessage = "Co Ty oferujesz")]
         public List<string> Benefits { get; set; }
 
     }

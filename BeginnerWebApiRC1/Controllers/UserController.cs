@@ -71,7 +71,7 @@ namespace BeginnerWebApiRC1.Controllers
                             UserProfileModel visitorProfileModel = new UserProfileModel(LoggedUser, LoggedUser.ProfessionId1Navigation, true);
                             VisitorNotification visitorNotification = new VisitorNotification(visitorProfileModel)
                             {
-                                UserId = user.Id,
+                                UserId = LoggedUser.Id,
                                 Email = profileModel.Email
                             };
                             MailFactory.SendUserVisitNotification(visitorNotification);

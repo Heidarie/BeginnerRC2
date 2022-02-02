@@ -50,18 +50,22 @@ namespace BeginnerWebApiRC1.Controllers
         [Route("[action]")]
         public async Task<IActionResult> AddOffer(OfferModel offer)
         {
-            _cache.TryGetValue("BeginnerUser", out user);
-            string benefits = string.Join(";", offer.Benefits);
-            string languages = string.Join(";", offer.Languages);
-            bool result = await DatabaseManager.CreateOffer(offer, LoggedUser.Id, benefits, languages);
-            if (result)
+            if (ModelState.IsValid)
             {
-                return Ok("Dodano ofertę");
+                _cache.TryGetValue("BeginnerUser", out user);
+                string benefits = string.Join(";", offer.Benefits);
+                string languages = string.Join(";", offer.Languages);
+                bool result = await DatabaseManager.CreateOffer(offer, LoggedUser.Id, benefits, languages);
+                if (result)
+                {
+                    return Ok("Dodano ofertę");
+                }
+                else
+                {
+                    return Problem("Wystąpił problem podczas dodawania oferty");
+                }
             }
-            else
-            {
-                return Problem("Wystąpił problem podczas dodawania oferty");
-            }
+            return BadRequest();
         }
 
         [HttpPost]
@@ -70,17 +74,16 @@ namespace BeginnerWebApiRC1.Controllers
         {
             if (ModelState.IsValid)
             {
-                _cache.TryGetValue("BeginnerUser", out user);
                 string benefits = string.Join(";", offer.Benefits);
                 string languages = string.Join(";", offer.Languages);
                 bool result = await DatabaseManager.UpdateOffer(offer, LoggedUser.Id, benefits, languages);
                 if (result)
                 {
-                    return Ok("Dodano ofertę");
+                    return Ok("Edytowano ofertę");
                 }
                 else
                 {
-                    return Problem("Wystąpił problem podczas dodawania oferty");
+                    return Problem("Wystąpił problem podczas edycji oferty");
                 }
             }
             return BadRequest();

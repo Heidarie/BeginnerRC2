@@ -10,7 +10,7 @@ namespace BeginnerWebApiRC1.Models.Offer
         public ShortOfferModel(Beginner.Offer offer, BeginnerUser user, Profession profession)
         {
             PositionName = offer.Name;
-            EmployerName = user.UserName;
+            EmployerName = user.Name;
             Location = offer.City;
             SalaryFrom = offer.SalaryFrom;
             SalaryTo = offer.SalaryTo;

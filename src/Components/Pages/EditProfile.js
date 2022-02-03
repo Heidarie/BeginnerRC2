@@ -8,7 +8,6 @@ import { BiArrowBack } from "react-icons/bi";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 
-const onSubmit = async (data, e) => {};
 export default function EditProfile() {
   const navigate = useNavigate();
   const { user: currentUser } = useSelector((state) => state.auth);
@@ -21,13 +20,7 @@ export default function EditProfile() {
     setValue("userPicture", selectedImage);
     setValue("cvFile", selectedCV);
   }
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    getValues,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
   console.log(register);
   const { id } = useParams();
   const onSubmit = async (data, e) => {
@@ -106,6 +99,7 @@ export default function EditProfile() {
                       {user.userPictureConverted === "" ? (
                         <img
                           src={`data:image/png;base64,${user.userPictureConverted}`}
+                          alt={user.name}
                           width={100}
                         />
                       ) : (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FloatingLabel, Row, Col, Badge } from "react-bootstrap";
 import { FaHome, FaCheck } from "react-icons/fa";
 import SkeletonOfert from "../Skeletons/SkeletonOfert";

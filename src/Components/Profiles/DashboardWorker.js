@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import "./Profile.css";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FaCameraRetro } from "react-icons/fa";
-import { FloatingLabel, Row, Col, Badge, Button } from "react-bootstrap";
+import { Row, Col, Badge, Button } from "react-bootstrap";
 import { FaHome, FaCheck } from "react-icons/fa";
 import axios from "axios";
 function Profile() {
@@ -165,7 +165,7 @@ function Profile() {
                         {offer.employerImage ? (
                           <img
                             src={`data:image/png;base64,${offer.employerImage}`}
-                            alt={id + 1}
+                            alt={offer.positionName}
                             className="img-fluid border border-dark"
                             width={250}
                           />
@@ -258,7 +258,6 @@ function Profile() {
                         <Button
                           className="btn btn-dark"
                           style={{ maxWidth: "200px", minWidth: "150px" }}
-                          disabled
                           onClick={() =>
                             navigate(`../EditOffer/${offer.id}`, {
                               replace: true,
@@ -272,6 +271,7 @@ function Profile() {
                         <Button
                           className="btn btn-dark"
                           style={{ maxWidth: "200px", minWidth: "150px" }}
+                          disabled
                           onClick={() =>
                             navigate(`../EditOffer/${offer.id}`, {
                               replace: true,

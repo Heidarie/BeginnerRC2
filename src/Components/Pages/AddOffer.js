@@ -17,7 +17,6 @@ import {
   FaCameraRetro,
   FaPeopleArrows,
   FaBolt,
-  FaClock,
   FaCheckCircle,
   FaCoins,
   FaMinusSquare,
@@ -28,7 +27,6 @@ import "./ReactTags.css";
 export default function Addoffer() {
   const navigate = useNavigate();
   const reactTags = useRef();
-  const [selectedFile, setSelectedFile] = useState(null);
   const [tags, setTags] = useState([]);
   let input;
   const [benefits, setBenefits] = useState([]);
@@ -56,9 +54,6 @@ export default function Addoffer() {
     [tags]
   );
 
-  function fileUploadHandler() {
-    setValue("image", selectedFile);
-  }
   const {
     register,
     handleSubmit,
@@ -139,18 +134,12 @@ export default function Addoffer() {
                   <Row>
                     <Col className="col-12 text-center justify-content-lg-start">
                       <h6 className="display-6">LOGO</h6>
+                      <h6 className="display-6">Twojego profilu</h6>
                     </Col>
                     <Col className="col-12 text-center justify-content-lg-start">
                       <FaCameraRetro style={{ fontSize: "50px" }} />
                     </Col>
-                    <Col className="col-12 text-center justify-content-start">
-                      <input
-                        type="file"
-                        className="form-control-file rounded rounded-pill border border-dark text-center p-2"
-                        id="exampleFormControlFile1"
-                        onChange={(e) => setSelectedFile(e.target.files[0])}
-                      />
-                    </Col>
+                    <Col className="col-12 text-center justify-content-start"></Col>
                   </Row>
                 </Col>
                 <Col className="col-12 col-lg-7 pt-2 text-center">
@@ -628,7 +617,6 @@ export default function Addoffer() {
               <Button
                 type="submit"
                 variant="warning"
-                onClick={fileUploadHandler()}
                 className="btn btn-outline-dark rounded-pill"
               >
                 Dodaj ofertę

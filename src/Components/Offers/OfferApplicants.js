@@ -1,18 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Form,
-  ButtonGroup,
-  ToggleButton,
-  Badge,
-  Button,
-  Label,
-} from "react-bootstrap";
-import { FaCameraRetro, FaHome, FaCheck } from "react-icons/fa";
+import { Container, Row, Col, Badge, Button } from "react-bootstrap";
+import { FaCheck } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
-
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { BiArrowBack } from "react-icons/bi";
@@ -104,7 +93,7 @@ export default function OfferApplicants() {
       <Container className="col-6 d-flex justify-content-center align-items-center py-5 h-100">
         {selectedOffer.length !== 0 &&
           selectedOffer.map((offer, id) => (
-            <Col className="col-12">
+            <Col className="col-12" key={offer.id}>
               <Row
                 className=" shadow my-2 m-1 p-2 border border-secondary rounded"
                 key={offer.id}
@@ -127,7 +116,7 @@ export default function OfferApplicants() {
                             <h2>{applicant.name + " " + applicant.surname}</h2>
                           </Link>
                         </Col>
-                        {applicant.statusId == 1 && (
+                        {applicant.statusId === 1 && (
                           <Col className="col-12 col-lg-6 text-end  align-self-center">
                             <Button
                               className="btn btn-success me-2"
@@ -149,7 +138,7 @@ export default function OfferApplicants() {
                             </Button>
                           </Col>
                         )}
-                        {applicant.statusId == 2 && (
+                        {applicant.statusId === 2 && (
                           <Col className="col-12 col-lg-6 text-end  align-self-center">
                             <Badge className="bg-success">
                               <FaCheck className="me-1" />
@@ -157,7 +146,7 @@ export default function OfferApplicants() {
                             </Badge>
                           </Col>
                         )}
-                        {applicant.statusId == 3 && (
+                        {applicant.statusId === 3 && (
                           <Col className="col-12 col-lg-6 text-end  align-self-center">
                             <Badge>
                               <ImCross className="me-1" />

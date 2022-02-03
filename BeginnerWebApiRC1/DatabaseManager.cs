@@ -34,7 +34,7 @@ namespace BeginnerWebApiRC1
         public async Task<List<ShortOfferModel>> GetAllOffers()
         {
             List<ShortOfferModel> shortOfferModels = new List<ShortOfferModel>();
-            List<Offer> offers = dbContext.Offers.Where(o => o.StatusId == 2).ToList();
+            List<Offer> offers = dbContext.Offers.Where(o => o.StatusId == 2).OrderByDescending(o => o.Cd).ToList();
             foreach(var offer in offers)
             {
                 BeginnerUser user = dbContext.Users.Where(p => p.Id == offer.UserId).FirstOrDefault();

@@ -58,6 +58,40 @@ namespace BeginnerWebApiRC1.Controllers
 
         [HttpPost]
         [Route("[action]")]
+        public async Task<IActionResult> FinishOffer(int offerId)
+        {
+            bool result = await DatabaseManager.FinishOffer(offerId);
+            if (result)
+            {
+                List<ShortOfferModel> shortOfferModels = new List<ShortOfferModel>();
+                shortOfferModels = await DatabaseManager.GetAllOffers(LoggedUser.Id);
+                return Ok(shortOfferModels);
+            }
+            else
+            {
+                return Problem("Wystąpił problem podczas wyłączania oferty");
+            }
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> RenewOffer(int offerId)
+        {
+            bool result = await DatabaseManager.RenewOffer(offerId);
+            if (result)
+            {
+                List<ShortOfferModel> shortOfferModels = new List<ShortOfferModel>();
+                shortOfferModels = await DatabaseManager.GetAllOffers(LoggedUser.Id);
+                return Ok(shortOfferModels);
+            }
+            else
+            {
+                return Problem("Wystąpił problem podczas przywracania oferty");
+            }
+        }
+
+        [HttpPost]
+        [Route("[action]")]
         public async Task<IActionResult> ChangeApplicationStatus(int offerId, string userId, int statusId)
         {
             if (LoggedUser.RoleId == (int)Roles.Employer)

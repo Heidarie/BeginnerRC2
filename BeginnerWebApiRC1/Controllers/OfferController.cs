@@ -102,36 +102,6 @@ namespace BeginnerWebApiRC1.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> FinishOffer(int offerId)
-        {
-            bool result = await DatabaseManager.FinishOffer(offerId);
-            if (result)
-            {
-                return Ok("Wyłączono ofertę");
-            }
-            else
-            {
-                return Problem("Wystąpił problem podczas wyłączania oferty");
-            }
-        }
-
-        [HttpPost]
-        [Route("[action]")]
-        public async Task<IActionResult> RenewOffer(int offerId)
-        {
-            bool result = await DatabaseManager.RenewOffer(offerId);
-            if (result)
-            {
-                return Ok("Przywrócono ofertę");
-            }
-            else
-            {
-                return Problem("Wystąpił problem podczas przywracania oferty");
-            }
-        }
-
-        [HttpPost]
-        [Route("[action]")]
         public async Task<IActionResult> UserApply(int offerId)
         {
             bool result = await DatabaseManager.AssignUserToOffer(LoggedUser.Id, offerId);

@@ -11,11 +11,13 @@ namespace BeginnerWebApiRC1.Models.User
             Name = user.Name;
             Surname = user.Surname;
             Profession = user.ProfessionId1Navigation.Profession1;
+            CvFile = user.CvFile;
             StatusId = GetStatusId(user.EmployeeApplications);
         }
 
         public string Id { get; set; }
         public string Name { get; set; }
+        public string CvFile { get; set; }
         public string Surname { get; set; }
         public string Profession { get; set; }
         public int StatusId { get; set; }

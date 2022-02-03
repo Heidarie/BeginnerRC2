@@ -168,18 +168,17 @@ export default function OfferList(props) {
               </Row>
             </Col>
             <Col className="col-6 col-lg-3 text-start align-self-center">
-              <h6 className="ms-4 text-muted text-nowrap">
+              <h6 className="ms-4 mt-3 text-muted text-nowrap">
                 {offer_details.salaryFrom} - {offer_details.salaryTo} zł
               </h6>
             </Col>
-            {/* <Col className="col-6 col-lg-3 text-start align-self-center">
-              {offer_details["offer_text"][0].languages.map((lang, id) => (
+            <Col className="col-6 col-lg-3 text-start align-self-center">
+              {offer_details.languages.map((lang, id) => (
                 <Badge key={id} bg="info" className="text-nowrap me-2">
                   {lang.toUpperCase()}
                 </Badge>
               ))}
-            </Col> */}
-            <Col className="col-6 col-lg-3 text-start align-self-center"></Col>
+            </Col>
             <Col className="col-6 col-lg-2 text-end align-self-center">
               <h6 className="text-muted">
                 <FaCheck className="me-1" />

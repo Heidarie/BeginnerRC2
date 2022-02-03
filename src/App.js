@@ -10,6 +10,7 @@ import ConfirmNumber from "./Sessions/ConfirmNumber";
 import NotFound from "./Components/Pages/NotFound";
 import OfertyPracy from "./Components/Pages/OfertyPracy";
 import AddOffer from "./Components/Pages/AddOffer";
+import EditOffer from "./Components/Pages/EditOffer";
 import Offer from "./Components/Offers/Offer";
 import ProfileWorker from "./Components/Pages/ProfileWorker";
 import EditProfile from "./Components/Pages/EditProfile";
@@ -26,6 +27,7 @@ function App() {
         <Route exact path="/" element={<Dashboard />} />
         <Route path="/OfertyPracy" element={<OfertyPracy />} />
         <Route path="/AddOffer" element={<AddOffer />} />
+        <Route path="/EditOffer/:id" element={<EditOffer />} />
         <Route path="/Offer/:id" element={<Offer />} />
         <Route path="/User/:id" element={<ProfileWorker />} />
         <Route path="/User/Edit/:id" element={<EditProfile />} />

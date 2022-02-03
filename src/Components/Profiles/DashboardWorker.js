@@ -74,6 +74,25 @@ function Profile() {
       });
     }
   }
+  function renewOffer(id) {
+    console.log(currentUser.accessToken);
+    const config = { Authorization: `Bearer ${currentUser.accessToken}` };
+    axios
+      .post(
+        `https://localhost:44310/Employer/RenewOffer?offerId=${id}`,
+        {},
+        {
+          headers: config,
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        getEmployerOffers();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   useEffect(() => {
     getUser();
   }, []);
@@ -239,75 +258,90 @@ function Profile() {
                         {offer.salaryFrom} - {offer.salaryTo} zł
                       </h6>
                     </Col>
-                    <Col className="col-3 col-lg-3  mt-2  align-self-center">
-                      <Button
-                        className="btn btn-dark"
-                        style={{ maxWidth: "200px", minWidth: "150px" }}
-                        onClick={() =>
-                          navigate(`../Offer/${offer.id}`, {
-                            replace: true,
-                          })
-                        }
-                      >
-                        <FaCheck className="me-1" />
-                        Wyświetl ofertę
-                      </Button>
-                    </Col>
-                    <Col className="col-3 col-lg-3  mt-2  align-self-center ">
-                      {offer.offerStatus === 2 ? (
-                        <Button
-                          className="btn btn-dark"
-                          style={{ maxWidth: "200px", minWidth: "150px" }}
-                          onClick={() =>
-                            navigate(`../EditOffer/${offer.id}`, {
-                              replace: true,
-                            })
-                          }
-                        >
-                          <FaCheck className="me-1" />
-                          Edytuj ofertę
-                        </Button>
-                      ) : (
-                        <Button
-                          className="btn btn-dark"
-                          style={{ maxWidth: "200px", minWidth: "150px" }}
-                          disabled
-                          onClick={() =>
-                            navigate(`../EditOffer/${offer.id}`, {
-                              replace: true,
-                            })
-                          }
-                        >
-                          <FaCheck className="me-1" />
-                          Edytuj ofertę
-                        </Button>
-                      )}
-                    </Col>
+                    {offer.statusId === 2 ? (
+                      <div>
+                        <Col className="col-3 col-lg-3  mt-2  align-self-center">
+                          <Button
+                            className="btn btn-dark"
+                            style={{ maxWidth: "200px", minWidth: "150px" }}
+                            onClick={() =>
+                              navigate(`../Offer/${offer.id}`, {
+                                replace: true,
+                              })
+                            }
+                          >
+                            <FaCheck className="me-1" />
+                            Wyświetl ofertę
+                          </Button>
+                        </Col>
+                        <Col className="col-3 col-lg-3  mt-2  align-self-center ">
+                          <Button
+                            className="btn btn-dark"
+                            style={{ maxWidth: "200px", minWidth: "150px" }}
+                            onClick={() =>
+                              navigate(`../EditOffer/${offer.id}`, {
+                                replace: true,
+                              })
+                            }
+                          >
+                            <FaCheck className="me-1" />
+                            Edytuj ofertę
+                          </Button>
 
-                    <Col className="col-3 col-lg-3 mt-2 align-self-center ">
-                      <Button
-                        className="btn btn-dark"
-                        style={{ maxWidth: "200px", minWidth: "150px" }}
-                        onClick={() =>
-                          navigate(`../Offer/Applicants/${offer.id}`, {
-                            replace: true,
-                          })
-                        }
-                      >
-                        <FaCheck className="me-1" />
-                        Aplikanci
-                      </Button>
-                    </Col>
-                    <Col className="col-3 col-lg-3 mt-2 align-self-center ">
-                      <Button
-                        className="btn btn-dark m-0 pull-right"
-                        style={{ maxWidth: "200px", minWidth: "150px" }}
-                        onClick={() => finishOffer(offer.id)}
-                      >
-                        <FaCheck className="me-1" />
-                        Usuń ofertę
-                      </Button>
-                    </Col>
+                          <Button
+                            className="btn btn-dark"
+                            style={{ maxWidth: "200px", minWidth: "150px" }}
+                            disabled
+                            onClick={() =>
+                              navigate(`../EditOffer/${offer.id}`, {
+                                replace: true,
+                              })
+                            }
+                          >
+                            <FaCheck className="me-1" />
+                            Edytuj ofertę
+                          </Button>
+                        </Col>
+
+                        <Col className="col-3 col-lg-3 mt-2 align-self-center ">
+                          <Button
+                            className="btn btn-dark"
+                            style={{ maxWidth: "200px", minWidth: "150px" }}
+                            onClick={() =>
+                              navigate(`../Offer/Applicants/${offer.id}`, {
+                                replace: true,
+                              })
+                            }
+                          >
+                            <FaCheck className="me-1" />
+                            Aplikanci
+                          </Button>
+                        </Col>
+                        <Col className="col-3 col-lg-3 mt-2 align-self-center ">
+                          <Button
+                            className="btn btn-dark m-0 pull-right"
+                            style={{ maxWidth: "200px", minWidth: "150px" }}
+                            onClick={() => finishOffer(offer.id)}
+                          >
+                            <FaCheck className="me-1" />
+                            Usuń ofertę
+                          </Button>
+                        </Col>
+                      </div>
+                    ) : (
+                      <div>
+                        <Col className="col-12 col-lg-12 text-end mt-2  align-self-center">
+                          <Button
+                            className="btn btn-dark"
+                            style={{ maxWidth: "200px", minWidth: "150px" }}
+                            onClick={() => renewOffer(offer.id)}
+                          >
+                            <FaCheck className="me-1" />
+                            Odnów ofertę
+                          </Button>
+                        </Col>
+                      </div>
+                    )}
                   </Row>
                 ))}
             </div>

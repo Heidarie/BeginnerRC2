@@ -198,33 +198,55 @@ namespace BeginnerWebApiRC1
         
         public async Task<bool> FinishOffer(int offerId)
         {
-            Offer currentOffer = dbContext.Offers.FirstOrDefault(x => x.Id == offerId);
-            if(currentOffer != null)
+            try
             {
-                currentOffer.StatusId = 3;
-                currentOffer.Status = dbContext.Statuses.FirstOrDefault(s => s.Id == 3);
-                currentOffer.Md = DateTime.Today;
+                Offer currentOffer = dbContext.Offers.FirstOrDefault(x => x.Id == offerId);
+                dbContext.Offers.Remove(currentOffer);
                 int result = dbContext.SaveChanges();
-                return result >= 0 ? true : false;
-            }
-            return false;
-        }
-        public async Task<bool> RenewOffer(int offerId)
-        {
-            Offer currentOffer = dbContext.Offers.FirstOrDefault(x => x.Id == offerId);
-            if (currentOffer != null)
-            {
-                if (currentOffer.Fd < DateTime.Today)
+                if (result > 0)
                 {
-                    currentOffer.StatusId = 2;
-                    currentOffer.Status = dbContext.Statuses.FirstOrDefault(s => s.Id == 2);
+                    currentOffer.StatusId = 3;
+                    currentOffer.Status = dbContext.Statuses.FirstOrDefault(s => s.Id == 3);
                     currentOffer.Md = DateTime.Today;
-                    int result = dbContext.SaveChanges();
+                    dbContext.Offers.Add(currentOffer);
+                    result = dbContext.SaveChanges();
                     return result >= 0 ? true : false;
                 }
                 return false;
             }
-            return false;
+            catch(Exception ex)
+            {
+                Logger.Fatal("An error ocurred on finishing offer", ex);
+                return false;
+            }
+        }
+        public async Task<bool> RenewOffer(int offerId)
+        {
+            try
+            {
+                Offer currentOffer = dbContext.Offers.FirstOrDefault(x => x.Id == offerId);
+                if (currentOffer.Fd < DateTime.Today)
+                {
+                    dbContext.Offers.Remove(currentOffer);
+                    int result = dbContext.SaveChanges();
+                    if (result > 0)
+                    {
+                        currentOffer.StatusId = 2;
+                        currentOffer.Status = dbContext.Statuses.FirstOrDefault(s => s.Id == 2);
+                        currentOffer.Md = DateTime.Today;
+                        dbContext.Offers.Add(currentOffer);
+                        result = dbContext.SaveChanges();
+                        return result >= 0 ? true : false;
+                    }
+                    return false;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Logger.Fatal("An error ocurred on finishing offer", ex);
+                return false;
+            }
         }
 
         public async Task<bool> RenewFinishedOffer(int offerId)

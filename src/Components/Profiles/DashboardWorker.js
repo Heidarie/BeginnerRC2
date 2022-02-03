@@ -48,6 +48,25 @@ function Profile() {
         console.log(err);
       });
   }
+  function finishOffer(id) {
+    console.log(currentUser.accessToken);
+    const config = { Authorization: `Bearer ${currentUser.accessToken}` };
+    axios
+      .post(
+        `https://localhost:44310/Employer/FinishOffer?offerId=${id}`,
+        {},
+        {
+          headers: config,
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        getEmployerOffers();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   function checkToRedirect(data) {
     if (data === "") {
       navigate(`../404Page`, {
@@ -55,8 +74,6 @@ function Profile() {
       });
     }
   }
-  function editOffer(id) {}
-  function showOfferApplicants(id) {}
   useEffect(() => {
     getUser();
   }, []);
@@ -123,48 +140,70 @@ function Profile() {
               </h1>
             </Col>
           </Row>
-          <Row className="d-flex justify-content-between">
-            {userOffers.length !== 0 &&
-              userOffers.map((offer, id) => (
-                <Col
-                  style={{
-                    borderRadius: "25px",
-                  }}
-                  className="col-12 col-sm-5 m-3 col-xl-3 bg-light bg-gradient shadow"
-                  key={id}
-                >
-                  {console.log("jestem w pętli")}
-                  <Row className="text-center ">
-                    <Col className="col-12">
-                      <h2
-                        className="lead m-1 font-weight-bold"
-                        style={{ wordWrap: "break-word" }}
-                      >
-                        {offer.positionName}
-                      </h2>
-                    </Col>
-                    <Col className="col-12 overflow-hidden img-fluid">
-                      {offer.employerImage ? (
-                        <img
-                          src={`data:image/png;base64,${offer.employerImage}`}
-                          alt={id + 1}
-                          className="img-fluid border border-dark"
-                          width={250}
-                        />
-                      ) : (
-                        <FaCameraRetro style={{ fontSize: "50px" }} />
-                      )}
-                    </Col>
-                    <Col className="col-12">
-                      <Badge bg="success" className="text-nowrap m-2 px-4 py-2">
-                        {offer.applicationStatus}
-                      </Badge>
-                    </Col>
-                  </Row>
-                </Col>
-              ))}
-          </Row>
-
+          {user.isUserMainAccount && currentUser.userRole === "Employee" && (
+            <Row className="d-flex justify-content-between">
+              {userOffers.length !== 0 &&
+                userOffers.map((offer, id) => (
+                  <Col
+                    style={{
+                      borderRadius: "25px",
+                    }}
+                    className="col-12 col-sm-5 m-3 col-xl-3 bg-light bg-gradient shadow"
+                    key={id}
+                  >
+                    {console.log("jestem w pętli")}
+                    <Row className="text-center ">
+                      <Col className="col-12">
+                        <h2
+                          className="lead m-1 font-weight-bold"
+                          style={{ wordWrap: "break-word" }}
+                        >
+                          {offer.positionName}
+                        </h2>
+                      </Col>
+                      <Col className="col-12 overflow-hidden img-fluid">
+                        {offer.employerImage ? (
+                          <img
+                            src={`data:image/png;base64,${offer.employerImage}`}
+                            alt={id + 1}
+                            className="img-fluid border border-dark"
+                            width={250}
+                          />
+                        ) : (
+                          <FaCameraRetro style={{ fontSize: "50px" }} />
+                        )}
+                      </Col>
+                      <Col className="col-12">
+                        {offer.applicationStatus === "Zaaplikowano" && (
+                          <Badge
+                            bg="info"
+                            className="text-nowrap m-2 px-4 pt-2"
+                          >
+                            <h6>{offer.applicationStatus}</h6>
+                          </Badge>
+                        )}
+                        {offer.applicationStatus === "Rozpatrywana" && (
+                          <Badge
+                            bg="success"
+                            className="text-nowrap m-2 px-4 pt-2"
+                          >
+                            <h6>{offer.applicationStatus}</h6>
+                          </Badge>
+                        )}
+                        {offer.applicationStatus === "Odrzucona" && (
+                          <Badge
+                            bg="warning"
+                            className="text-nowrap m-2 px-4 pt-2"
+                          >
+                            <h6>{offer.applicationStatus}</h6>
+                          </Badge>
+                        )}
+                      </Col>
+                    </Row>
+                  </Col>
+                ))}
+            </Row>
+          )}
           {user.isUserMainAccount && currentUser.userRole === "Employer" && (
             <div>
               {employerOffer.length !== 0 &&
@@ -215,25 +254,45 @@ function Profile() {
                       </Button>
                     </Col>
                     <Col className="col-3 col-lg-3  mt-2  align-self-center ">
-                      <Button
-                        className="btn btn-dark"
-                        style={{ maxWidth: "200px", minWidth: "150px" }}
-                        onClick={() =>
-                          navigate(`../EditOffer/${offer.id}`, {
-                            replace: true,
-                          })
-                        }
-                      >
-                        <FaCheck className="me-1" />
-                        Edytuj ofertę
-                      </Button>
+                      {offer.offerStatus === 2 ? (
+                        <Button
+                          className="btn btn-dark"
+                          style={{ maxWidth: "200px", minWidth: "150px" }}
+                          disabled
+                          onClick={() =>
+                            navigate(`../EditOffer/${offer.id}`, {
+                              replace: true,
+                            })
+                          }
+                        >
+                          <FaCheck className="me-1" />
+                          Edytuj ofertę
+                        </Button>
+                      ) : (
+                        <Button
+                          className="btn btn-dark"
+                          style={{ maxWidth: "200px", minWidth: "150px" }}
+                          onClick={() =>
+                            navigate(`../EditOffer/${offer.id}`, {
+                              replace: true,
+                            })
+                          }
+                        >
+                          <FaCheck className="me-1" />
+                          Edytuj ofertę
+                        </Button>
+                      )}
                     </Col>
 
                     <Col className="col-3 col-lg-3 mt-2 align-self-center ">
                       <Button
                         className="btn btn-dark"
                         style={{ maxWidth: "200px", minWidth: "150px" }}
-                        onClick={() => showOfferApplicants(offer.id)}
+                        onClick={() =>
+                          navigate(`../Offer/Applicants/${offer.id}`, {
+                            replace: true,
+                          })
+                        }
                       >
                         <FaCheck className="me-1" />
                         Aplikanci
@@ -243,11 +302,7 @@ function Profile() {
                       <Button
                         className="btn btn-dark m-0 pull-right"
                         style={{ maxWidth: "200px", minWidth: "150px" }}
-                        onClick={() =>
-                          navigate(`../EditOffer/${offer.id}`, {
-                            replace: true,
-                          })
-                        }
+                        onClick={() => finishOffer(offer.id)}
                       >
                         <FaCheck className="me-1" />
                         Usuń ofertę

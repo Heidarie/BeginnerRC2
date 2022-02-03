@@ -1,5 +1,5 @@
 import Button from "@restart/ui/esm/Button";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useRef, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Container,
@@ -67,6 +67,7 @@ export default function Addoffer() {
     formState: { errors },
   } = useForm();
   const { user: currentUser } = useSelector((state) => state.auth);
+
   const onSubmit = async (data, e) => {
     console.log(data.lang);
     const langArray = data.lang.map((obj) => {
@@ -85,7 +86,7 @@ export default function Addoffer() {
       Profession: data.profession,
       //NOWE
       CompanySize: data.company_size,
-      DataExperience: data.experience,
+      Experience: data.experience,
       Duties: data.duties,
       Languages: langArray,
       Benefits: data.benefits,
@@ -107,6 +108,14 @@ export default function Addoffer() {
         console.log(err);
       });
   };
+  useEffect(() => {
+    if (currentUser.userRole !== "Employer") {
+      navigate(`../404Page`, {
+        replace: true,
+      });
+    }
+  }, []);
+
   return (
     <section style={{ backgroundColor: "#eee" }}>
       <Link to={"/"}>

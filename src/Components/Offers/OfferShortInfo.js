@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Button } from "react-bootstrap";
-import { FaPeopleArrows, FaBolt, FaClock, FaCheckCircle } from "react-icons/fa";
+import { Row, Col, Button, Badge } from "react-bootstrap";
+import {
+  FaPeopleArrows,
+  FaBolt,
+  FaClock,
+  FaCheckCircle,
+  FaHome,
+} from "react-icons/fa";
 import { useSelector } from "react-redux";
 import SkeletonOfert from "../Skeletons/SkeletonOfert";
 import { Link } from "react-router-dom";
@@ -25,6 +31,7 @@ export const OfferShortInfo = () => {
         }
       )
       .then((response) => {
+        getOfferDetails(offers);
         setInformation(response.data);
       })
       .catch((err) => {
@@ -52,7 +59,7 @@ export const OfferShortInfo = () => {
   useEffect(() => {
     getOfferDetails(offers);
   }, [offers]);
-
+  console.log(offerShow);
   return (
     <>
       {offers.loading && [1, 2, 3, 4, 5].map((n) => <SkeletonOfert key={n} />)}
@@ -80,25 +87,26 @@ export const OfferShortInfo = () => {
                   /> */}
                 </Col>
                 <Col className="col-9 text-start pt-2">
-                  <h6 className="display-6">{offer.offerName}</h6>
-                  <p className="lead mb-0">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  </p>
+                  <h2 className="display-6">{offer.offerName}</h2>
+                  <h6 className="lead mb-0">{offer.employerName}</h6>
                   <small className="text-muted">
                     {offer.street}
-                    {"  "}
+                    {", "}
                     {offer.city}
                   </small>
+                  <Badge bg="dark" className="text-nowrap ms-3 ">
+                    <FaHome className="me-1" />
+                    {offer.jobType}
+                  </Badge>
                 </Col>
+                <Col className="col-9 text-start pt-2"></Col>
                 <Col className="col-4 text-center my-2">
                   <FaPeopleArrows style={{ fontSize: "25px" }} />
                   <div
                     className="border border-dark rounded-pill text-nowrap"
                     style={{ wordBreak: "break-all" }}
                   >
-                    {/* <p className="lead mb-0">
-                      +-{offer["offer_text"][0].company_size}
-                    </p> */}
+                    <p className="lead mb-0">{offer.companySize}</p>
                     <small className="text-muted">Wielkość firmy</small>
                   </div>
                 </Col>
@@ -108,9 +116,7 @@ export const OfferShortInfo = () => {
                     className="border border-dark rounded-pill text-nowrap"
                     style={{ wordBreak: "break-all" }}
                   >
-                    {/* <p className="lead mb-0">
-                      {offer["offer_text"][0].experience}
-                    </p> */}
+                    <p className="lead mb-0">{offer.experience}</p>
                     <small className="text-muted">Doświadczenie</small>
                   </div>
                 </Col>
@@ -139,7 +145,7 @@ export const OfferShortInfo = () => {
                     </div>
                   </div>
                 </Col>
-                {/* <Col className="col-12">
+                <Col className="col-12">
                   <div
                     className="shadow-sm border border-light m-2 p-2"
                     style={{ borderRadius: "10px" }}
@@ -150,20 +156,10 @@ export const OfferShortInfo = () => {
                     </small>
 
                     <div className="ms-4">
-                      <p className="mb-0">• łatwo nawiązujesz relacje,</p>
-                      <p className="mb-0">
-                        • konsekwentnie dążysz do wyznaczonego celu,
-                      </p>
-                      <p className="mb-0">• cechuje Cię otwartość,</p>
-                      <p className="mb-0">
-                        • cenisz sobie współpracę i dobrą atmosferę w zespole,
-                      </p>
-                      <p className="mb-0">
-                        • masz minimum średnie wykształcenie.
-                      </p>
+                      <p className="mb-0">{offer.duties}</p>
                     </div>
                   </div>
-                </Col> */}
+                </Col>
                 <Col className="col-12">
                   <div
                     className="shadow-sm border border-light m-2 p-2 "
@@ -173,64 +169,32 @@ export const OfferShortInfo = () => {
 
                     <div className="d-flex ms-2">
                       <ul className="col-6 list-group list-group-flush justify-content-center ">
-                        <li className="list-group-item d-flex align-items-center">
-                          <FaCheckCircle
-                            style={{ color: "green", fontSize: "25px" }}
-                          />
-                          <p className="mb-0 ps-2">
-                            Stabilne zatrudnienie na umowie o pracę
-                          </p>
-                        </li>
-                        <li className="list-group-item d-flex align-items-center">
-                          <FaCheckCircle
-                            style={{ color: "green", fontSize: "25px" }}
-                          />
-                          <p className="mb-0 ps-2">
-                            Stabilne zatrudnienie na umowie o pracę
-                          </p>
-                        </li>
-                        <li className="list-group-item d-flex align-items-center">
-                          <FaCheckCircle
-                            style={{ color: "green", fontSize: "25px" }}
-                          />
-                          <p className="mb-0 ps-2">
-                            Stabilne zatrudnienie na umowie o pracę
-                          </p>
-                        </li>
-                        <li className="list-group-item d-flex align-items-center">
-                          <FaCheckCircle
-                            style={{ color: "green", fontSize: "25px" }}
-                          />
-                          <p className="mb-0 ps-2">
-                            Stabilne zatrudnienie na umowie o pracę
-                          </p>
-                        </li>
+                        {offer.length !== 0 &&
+                          offer.benefits.slice(0, 4).map((benefit, id) => (
+                            <li
+                              className="list-group-item d-flex align-items-center"
+                              key={id}
+                            >
+                              <FaCheckCircle
+                                style={{ color: "green", fontSize: "25px" }}
+                              />
+                              <p className="mb-0 ps-2">{benefit}</p>
+                            </li>
+                          ))}
                       </ul>
                       <ul className="col-6 list-group list-group-flush  ">
-                        <li className="list-group-item d-flex align-items-center">
-                          <FaCheckCircle
-                            style={{ color: "green", fontSize: "25px" }}
-                          />
-                          <p className="mb-0 ps-2">
-                            Stabilne zatrudnienie na umowie o pracę
-                          </p>
-                        </li>
-                        <li className="list-group-item d-flex align-items-center">
-                          <FaCheckCircle
-                            style={{ color: "green", fontSize: "25px" }}
-                          />
-                          <p className="mb-0 ps-2">
-                            Stabilne zatrudnienie na umowie o pracę
-                          </p>
-                        </li>
-                        <li className="list-group-item d-flex align-items-center">
-                          <FaCheckCircle
-                            style={{ color: "green", fontSize: "25px" }}
-                          />
-                          <p className="mb-0 ps-2">
-                            Stabilne zatrudnienie na umowie o pracę
-                          </p>
-                        </li>
+                        {offer.length !== 0 &&
+                          offer.benefits.slice(4, 8).map((benefit, id) => (
+                            <li
+                              className="list-group-item d-flex align-items-center"
+                              key={id + 4}
+                            >
+                              <FaCheckCircle
+                                style={{ color: "green", fontSize: "25px" }}
+                              />
+                              <p className="mb-0 ps-2">{benefit}</p>
+                            </li>
+                          ))}
                       </ul>
                     </div>
                   </div>
@@ -238,7 +202,7 @@ export const OfferShortInfo = () => {
                 <div className="d-grid col-6 mx-auto pb-2 ">
                   {isLoggedIn && currentUser.userRole === "Employee" ? (
                     <div>
-                      {offer.applicationStatus === "" && (
+                      {offer.applicationStatus === "Brak" && (
                         <Button
                           type="button"
                           className="btn btn-warning btn-outline-dark rounded-pill col-12"
@@ -247,31 +211,31 @@ export const OfferShortInfo = () => {
                           Aplikuj
                         </Button>
                       )}
-                      {offer.applicationStatus === "Applied" && (
+                      {offer.applicationStatus === "Zaaplikowano" && (
                         <Button
                           type="button"
-                          className="btn btn-warning btn-outline-dark rounded-pill col-12"
+                          className="btn btn-success btn-outline-dark rounded-pill col-12"
                           disabled
                         >
-                          Zaaplikowano
+                          {offer.applicationStatus}
                         </Button>
                       )}
-                      {offer.applicationStatus === "Denied" && (
+                      {offer.applicationStatus === "Odrzucona" && (
                         <Button
                           type="button"
                           className="btn btn-danger  rounded-pill col-12"
                           disabled
                         >
-                          Odrzucono
+                          {offer.applicationStatus}
                         </Button>
                       )}
-                      {offer.applicationStatus === "Confirmed" && (
+                      {offer.applicationStatus === "Rozpatrywana" && (
                         <Button
                           type="button"
-                          className="btn btn-success rounded-pill col-12"
+                          className="btn btn-warning rounded-pill col-12"
                           disabled
                         >
-                          Przyjęto!
+                          {offer.applicationStatus}
                         </Button>
                       )}
 

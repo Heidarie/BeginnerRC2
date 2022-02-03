@@ -63,6 +63,9 @@ export default function Navbartop() {
                 variant="dark"
                 onClick={() => {
                   logOut();
+                  navigate(`../`, {
+                    replace: true,
+                  });
                   window.location.reload();
                 }}
               >

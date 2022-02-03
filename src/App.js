@@ -12,6 +12,7 @@ import OfertyPracy from "./Components/Pages/OfertyPracy";
 import AddOffer from "./Components/Pages/AddOffer";
 import EditOffer from "./Components/Pages/EditOffer";
 import Offer from "./Components/Offers/Offer";
+import OfferApplicants from "./Components/Offers/OfferApplicants";
 import ProfileWorker from "./Components/Pages/ProfileWorker";
 import EditProfile from "./Components/Pages/EditProfile";
 import Foremka from "./Components/Profiles/Forms/FormsExp";
@@ -31,6 +32,7 @@ function App() {
         <Route path="/Offer/:id" element={<Offer />} />
         <Route path="/User/:id" element={<ProfileWorker />} />
         <Route path="/User/Edit/:id" element={<EditProfile />} />
+        <Route path="/Offer/Applicants/:id" element={<OfferApplicants />} />
         <Route path="/Foremka" element={<Foremka />} />
         <Route path="/ConfirmAccount" element={<ConfirmAccount />} />
         <Route path="/VerifyAccount" element={<Foremka />} />

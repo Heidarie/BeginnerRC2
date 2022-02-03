@@ -43,17 +43,19 @@ export const OfferShortInfo = () => {
     const config = !offers.offers && {
       headers: { Authorization: `Bearer ${currentUser.accessToken}` },
     };
-    axios
-      .get(
-        `https://localhost:44310/Offer/GetOfferDetails?offerId=${offerId}`,
-        config
-      )
-      .then((response) => {
-        setOfferShow([response.data]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (offers.selectedOffer !== 0) {
+      axios
+        .get(
+          `https://localhost:44310/Offer/GetOfferDetails?offerId=${offerId}`,
+          config
+        )
+        .then((response) => {
+          setOfferShow([response.data]);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   useEffect(() => {
@@ -202,7 +204,7 @@ export const OfferShortInfo = () => {
                 <div className="d-grid col-6 mx-auto pb-2 ">
                   {isLoggedIn && currentUser.userRole === "Employee" ? (
                     <div>
-                      {offer.applicationStatus === "Brak" && (
+                      {offer.applicationStatus === "Aplikuj" && (
                         <Button
                           type="button"
                           className="btn btn-warning btn-outline-dark rounded-pill col-12"

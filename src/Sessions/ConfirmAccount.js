@@ -7,9 +7,10 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 const ConfirmAccount = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
-  const { id, t } = useParams();
+  const { verify, t } = useParams();
   useEffect(() => {
-    const data = { User: id, Token: t };
+    const data = { UserId: verify, Token: t };
+    console.log(data);
     axios
       .post("https://localhost:44310/Account/ConfirmAccount", { data })
       .then((response) => {

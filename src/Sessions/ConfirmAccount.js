@@ -1,16 +1,17 @@
 import React, { useEffect } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { BiArrowBack } from "react-icons/bi";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router";
 const ConfirmAccount = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
-  const { verify, t } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const verify = searchParams.get("verify");
+  const t = searchParams.get("t");
+  console.log(verify, t);
   useEffect(() => {
-    const data = { UserId: verify, Token: t };
-    console.log(data);
+    const data = { UserId: t, Token: verify };
     axios
       .post("https://localhost:44310/Account/ConfirmAccount", { data })
       .then((response) => {

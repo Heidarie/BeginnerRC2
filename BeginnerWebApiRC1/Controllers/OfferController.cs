@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -33,7 +34,14 @@ namespace BeginnerWebApiRC1.Controllers
         public async Task<List<ShortOfferModel>> GetAllOffers()
         {
             List<ShortOfferModel> shortOfferModels = new List<ShortOfferModel>();
-            shortOfferModels = await DatabaseManager.GetAllOffers();
+            if (_cache.TryGetValue("OfferList", out shortOfferModels))
+            {
+                shortOfferModels = await DatabaseManager.GetAllOffers();
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                                            .SetSlidingExpiration(TimeSpan.FromMinutes(10));
+                _cache.Set("OfferList", shortOfferModels, cacheEntryOptions);
+            }
+
             return shortOfferModels;
         }
 
@@ -90,6 +98,36 @@ namespace BeginnerWebApiRC1.Controllers
                 }
             }
             return BadRequest();
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> FinishOffer(int offerId)
+        {
+            bool result = await DatabaseManager.FinishOffer(offerId);
+            if (result)
+            {
+                return Ok("Wyłączono ofertę");
+            }
+            else
+            {
+                return Problem("Wystąpił problem podczas wyłączania oferty");
+            }
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> RenewOffer(int offerId)
+        {
+            bool result = await DatabaseManager.RenewOffer(offerId);
+            if (result)
+            {
+                return Ok("Przywrócono ofertę");
+            }
+            else
+            {
+                return Problem("Wystąpił problem podczas przywracania oferty");
+            }
         }
 
         [HttpPost]

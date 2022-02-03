@@ -34,7 +34,7 @@ namespace BeginnerWebApiRC1
         public async Task<List<ShortOfferModel>> GetAllOffers()
         {
             List<ShortOfferModel> shortOfferModels = new List<ShortOfferModel>();
-            List<Offer> offers = dbContext.Offers.ToList();
+            List<Offer> offers = dbContext.Offers.Where(o => o.StatusId == 2).ToList();
             foreach(var offer in offers)
             {
                 BeginnerUser user = dbContext.Users.Where(p => p.Id == offer.UserId).FirstOrDefault();
@@ -47,7 +47,7 @@ namespace BeginnerWebApiRC1
         public async Task<List<ShortOfferModel>> GetAllOffers(string userId)
         {
             List<ShortOfferModel> shortOfferModels = new List<ShortOfferModel>();
-            List<Offer> offers = dbContext.Offers.Where(o => o.BeginnerUserId == userId).ToList();
+            List<Offer> offers = dbContext.Offers.Where(o => o.BeginnerUserId == userId).OrderByDescending(o => o.Cd).ToList();
             foreach (var offer in offers)
             {
                 BeginnerUser user = dbContext.Users.Where(p => p.Id == offer.UserId).FirstOrDefault();
@@ -172,14 +172,14 @@ namespace BeginnerWebApiRC1
                     City = offer.City,
                     Street = offer.Street,
                     ProfessionId = prof.Id,
-                    StatusId = 1,
+                    StatusId = 2,
                     CompanySize = offer.CompanySize,
                     ExperienceRequired = offer.Experience,
                     Duties = offer.Duties,
                     JobType = offer.JobType,
                     BeginnerUserId = userId,
                     Profession = prof,
-                    Status = dbContext.Statuses.FirstOrDefault(s => s.Id == 1)
+                    Status = dbContext.Statuses.FirstOrDefault(s => s.Id == 2)
 
                 };
                 dbOffer.AdditionalData = new OfferAdditionalData();
@@ -196,6 +196,55 @@ namespace BeginnerWebApiRC1
             }
         }
         
+        public async Task<bool> FinishOffer(int offerId)
+        {
+            Offer currentOffer = dbContext.Offers.FirstOrDefault(x => x.Id == offerId);
+            if(currentOffer != null)
+            {
+                currentOffer.StatusId = 3;
+                currentOffer.Status = dbContext.Statuses.FirstOrDefault(s => s.Id == 3);
+                currentOffer.Md = DateTime.Today;
+                int result = dbContext.SaveChanges();
+                return result >= 0 ? true : false;
+            }
+            return false;
+        }
+        public async Task<bool> RenewOffer(int offerId)
+        {
+            Offer currentOffer = dbContext.Offers.FirstOrDefault(x => x.Id == offerId);
+            if (currentOffer != null)
+            {
+                if (currentOffer.Fd < DateTime.Today)
+                {
+                    currentOffer.StatusId = 2;
+                    currentOffer.Status = dbContext.Statuses.FirstOrDefault(s => s.Id == 2);
+                    currentOffer.Md = DateTime.Today;
+                    int result = dbContext.SaveChanges();
+                    return result >= 0 ? true : false;
+                }
+                return false;
+            }
+            return false;
+        }
+
+        public async Task<bool> RenewFinishedOffer(int offerId)
+        {
+            Offer currentOffer = dbContext.Offers.FirstOrDefault(x => x.Id == offerId);
+            if (currentOffer != null)
+            {
+                if (currentOffer.Fd < DateTime.Today)
+                {
+                    currentOffer.StatusId = 2;
+                    currentOffer.Status = dbContext.Statuses.FirstOrDefault(s => s.Id == 2);
+                    currentOffer.Md = DateTime.Today;
+                    currentOffer.Fd = DateTime.Today.AddDays(14);
+                    int result = dbContext.SaveChanges();
+                    return result >= 0 ? true : false;
+                }
+                return false;
+            }
+            return false;
+        }
 
         public async Task<bool> UpdateOffer(OfferModel offer, string userId, string benefits, string languages)
         {

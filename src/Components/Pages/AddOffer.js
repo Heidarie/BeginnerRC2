@@ -77,7 +77,7 @@ export default function Addoffer() {
     const dataToSend = {
       OfferName: data.title,
       Description: data.requirements,
-      EmployerName: data.company_name,
+      // EmployerName: data.company_name,
       SalaryFrom: data.income_from,
       SalaryTo: data.income_to,
       //ApplicationStatus: data.apply_option,
@@ -199,35 +199,7 @@ export default function Addoffer() {
                         />
                       </Form.Group>
                     </Col>
-                    <Col className="col-12 col-lg-12 d-flex justify-content-center">
-                      <Form.Group
-                        className="mb-3"
-                        controlId="exampleForm.ControlInput1"
-                      >
-                        <Form.Label className="lead">Nazwa firmy</Form.Label>
-                        <Form.Control
-                          type="text"
-                          placeholder="Nazwa firmy"
-                          className="rounded rounded-pill border border-light text-center"
-                          {...register("company_name", {
-                            required: "Nazwa firmy jest wymagana",
-                            minLength: 2,
-                          })}
-                        />
-                        {errors?.company_name?.type === "minLength" && (
-                          <p>Nazwa ulicy nie może być krótsza niż 2 litery</p>
-                        )}
-                        {errors?.company_name?.type === "minLength" && (
-                          <p>Nazwa ulicy nie może być dłuższa niż 30 liter</p>
-                        )}
-                        {errors.company_name && (
-                          <p style={{ color: "red" }}>
-                            {errors.street.message}
-                          </p>
-                        )}
-                      </Form.Group>
-                    </Col>
-                    <Col className="col-12 col-lg-4 d-flex justify-content-center">
+                    <Col className="col-12 col-lg-6 d-flex justify-content-center">
                       <Form.Group
                         className="mb-3"
                         controlId="exampleForm.ControlInput1"
@@ -255,7 +227,7 @@ export default function Addoffer() {
                         )}
                       </Form.Group>
                     </Col>
-                    <Col className="col-12 col-lg-4 d-flex justify-content-center">
+                    <Col className="col-12 col-lg-6 d-flex justify-content-center">
                       <Form.Group
                         className="mb-3"
                         controlId="exampleForm.ControlInput1"
@@ -279,38 +251,6 @@ export default function Addoffer() {
                         )}
                         {errors.city && (
                           <p style={{ color: "red" }}>{errors.city.message}</p>
-                        )}
-                      </Form.Group>
-                    </Col>
-                    <Col className="col-12 col-lg-4 d-flex justify-content-center">
-                      <Form.Group
-                        className="mb-3"
-                        controlId="exampleForm.ControlInput1"
-                      >
-                        <Form.Label className="lead text-nowrap">
-                          Kod pocztowy
-                        </Form.Label>
-                        <Form.Control
-                          type="text"
-                          placeholder="Kod pocztowy"
-                          className="rounded rounded-pill border border-light text-center"
-                          {...register("postal_code", {
-                            required: "Kod pocztowy jest wymagany",
-                            minLength: 4,
-                            maxLength: 6,
-                            pattern: /^\d{2}-\d{3}$/i,
-                          })}
-                        />
-                        {errors?.postal_code?.type === "minLength" && (
-                          <p>Kod pocztowy nie może być krótszy niż 4 cyfry</p>
-                        )}
-                        {errors?.postal_code?.type === "maxLength" && (
-                          <p>Kod pocztowy nie może być dłuższy niż 2-3 cyfr</p>
-                        )}
-                        {errors.postal_code && (
-                          <p style={{ color: "red" }}>
-                            {errors.postal_code.message}
-                          </p>
                         )}
                       </Form.Group>
                     </Col>
@@ -417,7 +357,7 @@ export default function Addoffer() {
                     </Col>
                   </Row>
                 </Col>
-                <Col className="col-12 col-xl-6 text-center my-2">
+                {/* <Col className="col-12 col-xl-6 text-center my-2">
                   <FaClock className="mb-1" style={{ fontSize: "25px" }} />
                   <Row className="shadow border border-dark rounded-pill text-nowrap pb-2 mx-1 h-75">
                     <Col className="col-12">
@@ -439,8 +379,8 @@ export default function Addoffer() {
                       </Form.Group>
                     </Col>
                   </Row>
-                </Col>
-                <Col className="col-12 col-xl-6 text-center my-2">
+                </Col> */}
+                {/* <Col className="col-12 col-xl-6 text-center my-2">
                   <FaClock className="mb-1" style={{ fontSize: "25px" }} />
                   <Row className="shadow border border-dark rounded-pill text-nowrap pb-2 mx-1 h-75">
                     <Col className="col-12">
@@ -463,7 +403,7 @@ export default function Addoffer() {
                       </Form.Group>
                     </Col>
                   </Row>
-                </Col>
+                </Col> */}
                 {/* BŁEDY */}
                 {errors.income_from && (
                   <p style={{ color: "red" }}>{errors.income_from.message}</p>

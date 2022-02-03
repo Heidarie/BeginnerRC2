@@ -19,6 +19,7 @@ namespace BeginnerWebApiRC1.Models.Offer
             Profession = profession.Profession1;
             Languages = offer.AdditionalData != null ? new List<string>(offer.AdditionalData.Languages.Split(";")) : null;
             FinishDate = offer.Fd.ToLongDateString();
+            OfferStatus = offer.StatusId;
         }
         public int Id { get; set; }
         public string PositionName { get; set; }
@@ -29,6 +30,7 @@ namespace BeginnerWebApiRC1.Models.Offer
         public string CreationDate { get; set; }
         public string FinishDate { get; set; }
         public string Profession { get; set; }
+        public int OfferStatus { get; set; }
         public List<string> Languages { get; set; }
     }
 }

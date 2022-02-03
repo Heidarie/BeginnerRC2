@@ -4,16 +4,14 @@ import { Link } from "react-router-dom";
 import { BiArrowBack } from "react-icons/bi";
 import axios from "axios";
 import { useSelector } from "react-redux";
-
+import { useParams } from "react-router";
 const ConfirmAccount = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
-
+  const { id, t } = useParams();
   useEffect(() => {
-    const config = { Authorization: `Bearer ${currentUser.accessToken}` };
+    const data = { User: id, Token: t };
     axios
-      .get("https://localhost:44310/Account/ConfirmAccount", {
-        headers: config,
-      })
+      .post("https://localhost:44310/Account/ConfirmAccount", { data })
       .then((response) => {
         console.log(response);
       })

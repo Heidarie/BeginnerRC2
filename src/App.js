@@ -35,7 +35,6 @@ function App() {
         <Route path="/Offer/Applicants/:id" element={<OfferApplicants />} />
         <Route path="/Foremka" element={<Foremka />} />
         <Route path="/ConfirmAccount" element={<ConfirmAccount />} />
-        <Route path="/VerifyAccount" element={<Foremka />} />
         <Route path="/DlaPracodawcow" />
         <Route path="/MapaPracy" />
         <Route path="/O-Nas" />

@@ -11,9 +11,9 @@ const ConfirmAccount = () => {
   const t = searchParams.get("t");
   console.log(verify, t);
   useEffect(() => {
-    const data = { UserId: t, Token: verify };
+    const data = { UserId: verify, Token: t };
     axios
-      .post("https://localhost:44310/Account/ConfirmAccount", { data })
+      .post("https://localhost:44310/Account/ConfirmAccount", data)
       .then((response) => {
         console.log(response);
       })

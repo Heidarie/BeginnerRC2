@@ -162,7 +162,7 @@ export default function OfferList(props) {
               </Row>
             </Col>
             <Col className="col-6 col-lg-3 text-start align-self-center">
-              <h6 className="ms-4 mt-3 text-muted text-nowrap">
+              <h6 className="ms-4  text-muted text-nowrap">
                 {offer_details.salaryFrom} - {offer_details.salaryTo} zł
               </h6>
             </Col>

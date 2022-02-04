@@ -1,7 +1,7 @@
 export const NavbarItems = [
   {
     id: 1,
-    title: "Dodaj Oferte",
+    title: "Dodaj ofertę",
     url: "/AddOffer",
   },
   // {

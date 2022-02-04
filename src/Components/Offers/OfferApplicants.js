@@ -141,8 +141,7 @@ export default function OfferApplicants() {
                         {applicant.statusId === 2 && (
                           <Col className="col-12 col-lg-6 text-end  align-self-center">
                             <Badge className="bg-success">
-                              <FaCheck className="me-1" />
-                              <h6>Zaakceptowano</h6>
+                              <h6><FaCheck className="me-1" />Zaakceptowano</h6>
                             </Badge>
                           </Col>
                         )}

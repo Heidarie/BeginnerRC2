@@ -81,12 +81,14 @@ export const OfferShortInfo = () => {
                 }}
               >
                 <Col className="col-3 d-flex ps-4 align-items-center justify-content-center">
-                  {/* <img
-                    src={offer["offer_text"][0].company_image}
-                    alt={offer["offer_text"][0].company_name}
-                    width="110"
-                    className="d-block"
-                  /> */}
+                    <Link to={`../User/${offer.employerId}`}>
+                      <img
+                        src={`data:image/png;base64,${offer.image}`}
+                        alt={offer.employerId}
+                        className="img-fluid border border-dark"
+                        width={150}
+                      />
+                    </Link>
                 </Col>
                 <Col className="col-9 text-start pt-2">
                   <h2 className="display-6">{offer.offerName}</h2>

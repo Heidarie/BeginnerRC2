@@ -72,9 +72,15 @@ export default function EditProfile() {
   }
 
   useEffect(() => {
+    if (currentUser.isLoggedIn !== true) {
+      navigate(`../`, {
+        replace: true,
+      });
+      window.location.reload();
+    }
     getUserLogged();
   }, []);
-  return( 
+  return (
     <section style={{ backgroundColor: "#eee" }}>
       <Link to={`/User/${id}`}>
         <BiArrowBack className="back-arrow" />
@@ -117,175 +123,184 @@ export default function EditProfile() {
                   </Row>
                 </Col>
                 {currentUser.userRole === "Employee" && (
-                <Col className="col-12 col-lg-6 d-flex align-items-center justify-content-center">
-                  <Row>
-                    <Col className="col-12 text-center justify-content-lg-start">
-                      <h6 className="display-6">CV (PDF)</h6>
-                    </Col>
-                    <Col className="col-12 text-center justify-content-lg-start">
-                      <FaCameraRetro style={{ fontSize: "50px" }} />
-                    </Col>
-                    <Col className="col-12 text-center justify-content-start">
-                      <input
-                        type="file"
-                        className="form-control-file rounded rounded-pill border border-dark text-center p-2"
-                        id="exampleFormControlFile1"
-                        onChange={(e) => setSelectedCV(e.target.files[0])}
+                  <Col className="col-12 col-lg-6 d-flex align-items-center justify-content-center">
+                    <Row>
+                      <Col className="col-12 text-center justify-content-lg-start">
+                        <h6 className="display-6">CV (PDF)</h6>
+                      </Col>
+                      <Col className="col-12 text-center justify-content-lg-start">
+                        <FaCameraRetro style={{ fontSize: "50px" }} />
+                      </Col>
+                      <Col className="col-12 text-center justify-content-start">
+                        <input
+                          type="file"
+                          className="form-control-file rounded rounded-pill border border-dark text-center p-2"
+                          id="exampleFormControlFile1"
+                          onChange={(e) => setSelectedCV(e.target.files[0])}
+                        />
+                      </Col>
+                    </Row>
+                  </Col>
+                )}
+                {currentUser.userRole === "Employee" && (
+                  <Col className="col-12 justify-content-center justify-content-lg-start">
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
+                      <Form.Label className="display-6">Imię</Form.Label>
+                      <Form.Control
+                        type="text"
+                        size="lg"
+                        defaultValue={user.name}
+                        name="name"
+                        placeholder="Imię"
+                        className="rounded rounded-pill border border-light text-center"
+                        {...register("name", {
+                          required:
+                            "Imię jest wymagane do poprawnej zmiany danych",
+                          minLength: 3,
+                        })}
                       />
-                    </Col>
-                  </Row>
-                </Col>)}
+                    </Form.Group>
+                  </Col>
+                )}
                 {currentUser.userRole === "Employee" && (
-                <Col className="col-12 justify-content-center justify-content-lg-start">
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="display-6">Imię</Form.Label>
-                    <Form.Control
-                      type="text"
-                      size="lg"
-                      defaultValue={user.name}
-                      name="name"
-                      placeholder="Imię"
-                      className="rounded rounded-pill border border-light text-center"
-                      {...register("name", {
-                        required:
-                          "Imię jest wymagane do poprawnej zmiany danych",
-                        minLength: 3,
-                      })}
-                    />
-                  </Form.Group>
-                </Col>)}
+                  <Col className="col-12 justify-content-center justify-content-lg-start">
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
+                      <Form.Label className="display-6">Nazwisko</Form.Label>
+                      <Form.Control
+                        type="text"
+                        size="lg"
+                        defaultValue={user.surname}
+                        name="surname"
+                        placeholder="Nazwisko"
+                        className="rounded rounded-pill border border-light text-center"
+                        {...register("surname", {
+                          required:
+                            "Nazwisko jest wymagane do poprawnej zmiany danych",
+                          minLength: 3,
+                        })}
+                      />
+                    </Form.Group>
+                  </Col>
+                )}
                 {currentUser.userRole === "Employee" && (
-                <Col className="col-12 justify-content-center justify-content-lg-start">
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="display-6">Nazwisko</Form.Label>
-                    <Form.Control
-                      type="text"
-                      size="lg"
-                      defaultValue={user.surname}
-                      name="surname"
-                      placeholder="Nazwisko"
-                      className="rounded rounded-pill border border-light text-center"
-                      {...register("surname", {
-                        required:
-                          "Nazwisko jest wymagane do poprawnej zmiany danych",
-                        minLength: 3,
-                      })}
-                    />
-                  </Form.Group>
-                </Col>)}
+                  <Col className="col-12 justify-content-center justify-content-lg-start">
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
+                      <Form.Label className="display-6">Profesja</Form.Label>
+                      <Form.Control
+                        type="text"
+                        size="lg"
+                        defaultValue={user.profession}
+                        placeholder="Profesja"
+                        className="rounded rounded-pill border border-light text-center"
+                        {...register("profession", {
+                          required:
+                            "Profesja jest wymagane do poprawnej zmiany danych",
+                          minLength: 3,
+                        })}
+                      />
+                    </Form.Group>
+                  </Col>
+                )}
                 {currentUser.userRole === "Employee" && (
-                <Col className="col-12 justify-content-center justify-content-lg-start">
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="display-6">Profesja</Form.Label>
-                    <Form.Control
-                      type="text"
-                      size="lg"
-                      defaultValue={user.profession}
-                      placeholder="Profesja"
-                      className="rounded rounded-pill border border-light text-center"
-                      {...register("profession", {
-                        required:
-                          "Profesja jest wymagane do poprawnej zmiany danych",
-                        minLength: 3,
-                      })}
-                    />
-                  </Form.Group>
-                </Col>)}
+                  <Col className="col-12 justify-content-center justify-content-lg-start">
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
+                      <Form.Label className="display-6">O mnie</Form.Label>
+                      <Form.Control
+                        type="text"
+                        size="lg"
+                        defaultValue={user.aboutMe}
+                        placeholder="O mnie"
+                        className="rounded rounded-pill border border-light text-center"
+                        {...register("aboutMe", {
+                          required:
+                            "'O mnie' jest wymagane do poprawnej zmiany danych",
+                          minLength: 3,
+                        })}
+                      />
+                    </Form.Group>
+                  </Col>
+                )}
                 {currentUser.userRole === "Employee" && (
-                <Col className="col-12 justify-content-center justify-content-lg-start">
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="display-6">O mnie</Form.Label>
-                    <Form.Control
-                      type="text"
-                      size="lg"
-                      defaultValue={user.aboutMe}
-                      placeholder="O mnie"
-                      className="rounded rounded-pill border border-light text-center"
-                      {...register("aboutMe", {
-                        required:
-                          "'O mnie' jest wymagane do poprawnej zmiany danych",
-                        minLength: 3,
-                      })}
-                    />
-                  </Form.Group>
-                </Col>)}
-                {currentUser.userRole === "Employee" && (
-                <Col className="col-12 justify-content-center justify-content-lg-start">
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="display-6">Doświadczenie</Form.Label>
-                    <Form.Control
-                      type="text"
-                      size="lg"
-                      defaultValue={user.userExperience}
-                      placeholder="Doświadczenie"
-                      className="rounded rounded-pill border border-light text-center"
-                      {...register("userExperience", {
-                        required:
-                          "Krótka informacja o doświadczeniu jest wymagane do poprawnej zmiany danych",
-                        minLength: 3,
-                      })}
-                    />
-                  </Form.Group>
-                </Col>)}
-                {currentUser.userRole === "Employer" && (
-                <Col className="col-12 justify-content-center justify-content-lg-start">
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <Form.Label className="display-6">Nazwa firmy</Form.Label>
-                  <Form.Control
-                    type="text"
-                    size="lg"
-                    defaultValue={user.name}
-                    name="name"
-                    placeholder="Nazwa firmy"
-                    className="rounded rounded-pill border border-light text-center"
-                    {...register("name", {
-                      required:
-                        "Imię jest wymagane do poprawnej zmiany danych",
-                      minLength: 3,
-                    })}
-                  />
-                </Form.Group>
-              </Col>
+                  <Col className="col-12 justify-content-center justify-content-lg-start">
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
+                      <Form.Label className="display-6">
+                        Doświadczenie
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        size="lg"
+                        defaultValue={user.userExperience}
+                        placeholder="Doświadczenie"
+                        className="rounded rounded-pill border border-light text-center"
+                        {...register("userExperience", {
+                          required:
+                            "Krótka informacja o doświadczeniu jest wymagane do poprawnej zmiany danych",
+                          minLength: 3,
+                        })}
+                      />
+                    </Form.Group>
+                  </Col>
                 )}
                 {currentUser.userRole === "Employer" && (
                   <Col className="col-12 justify-content-center justify-content-lg-start">
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="display-6">O firmie</Form.Label>
-                    <Form.Control
-                      type="text"
-                      size="lg"
-                      defaultValue={user.aboutMe}
-                      placeholder="O firmie"
-                      className="rounded rounded-pill border border-light text-center"
-                      {...register("aboutMe", {
-                        required:
-                          "'O mnie' jest wymagane do poprawnej zmiany danych",
-                        minLength: 3,
-                      })}
-                    />
-                  </Form.Group>
-                </Col>)}
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
+                      <Form.Label className="display-6">Nazwa firmy</Form.Label>
+                      <Form.Control
+                        type="text"
+                        size="lg"
+                        defaultValue={user.name}
+                        name="name"
+                        placeholder="Nazwa firmy"
+                        className="rounded rounded-pill border border-light text-center"
+                        {...register("name", {
+                          required:
+                            "Imię jest wymagane do poprawnej zmiany danych",
+                          minLength: 3,
+                        })}
+                      />
+                    </Form.Group>
+                  </Col>
+                )}
+                {currentUser.userRole === "Employer" && (
+                  <Col className="col-12 justify-content-center justify-content-lg-start">
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
+                      <Form.Label className="display-6">O firmie</Form.Label>
+                      <Form.Control
+                        type="text"
+                        size="lg"
+                        defaultValue={user.aboutMe}
+                        placeholder="O firmie"
+                        className="rounded rounded-pill border border-light text-center"
+                        {...register("aboutMe", {
+                          required:
+                            "'O mnie' jest wymagane do poprawnej zmiany danych",
+                          minLength: 3,
+                        })}
+                      />
+                    </Form.Group>
+                  </Col>
+                )}
                 <Col className="col-12 justify-content-center justify-content-lg-start">
                   <Button
                     type="submit"
@@ -305,5 +320,5 @@ export default function EditProfile() {
         </Form>
       </Container>
     </section>
-  )
+  );
 }

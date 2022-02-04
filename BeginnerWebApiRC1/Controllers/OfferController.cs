@@ -34,14 +34,7 @@ namespace BeginnerWebApiRC1.Controllers
         public async Task<List<ShortOfferModel>> GetAllOffers()
         {
             List<ShortOfferModel> shortOfferModels = new List<ShortOfferModel>();
-            if (!_cache.TryGetValue("OfferList", out shortOfferModels))
-            {
-                shortOfferModels = await DatabaseManager.GetAllOffers();
-                var cacheEntryOptions = new MemoryCacheEntryOptions()
-                                            .SetSlidingExpiration(TimeSpan.FromMinutes(10));
-                _cache.Set("OfferList", shortOfferModels, cacheEntryOptions);
-            }
-
+            shortOfferModels = await DatabaseManager.GetAllOffers();
             return shortOfferModels;
         }
 

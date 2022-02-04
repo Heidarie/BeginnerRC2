@@ -30,7 +30,7 @@ namespace BeginnerWebApiRC1.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ApplicationStatuses");
+                    b.ToTable("ApplicationStatuses", (string)null);
                 });
 
             modelBuilder.Entity("BeginnerWebApiRC1.Beginner.EmployeeApplication", b =>
@@ -62,7 +62,7 @@ namespace BeginnerWebApiRC1.Migrations
 
                     b.HasIndex("PersonId1");
 
-                    b.ToTable("EmployeeApplications");
+                    b.ToTable("EmployeeApplications", (string)null);
                 });
 
             modelBuilder.Entity("BeginnerWebApiRC1.Beginner.Message", b =>
@@ -97,7 +97,7 @@ namespace BeginnerWebApiRC1.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Messages", (string)null);
                 });
 
             modelBuilder.Entity("BeginnerWebApiRC1.Beginner.Offer", b =>
@@ -183,7 +183,7 @@ namespace BeginnerWebApiRC1.Migrations
 
                     b.HasIndex("StatusId");
 
-                    b.ToTable("Offers");
+                    b.ToTable("Offers", (string)null);
                 });
 
             modelBuilder.Entity("BeginnerWebApiRC1.Beginner.Participant", b =>
@@ -210,7 +210,7 @@ namespace BeginnerWebApiRC1.Migrations
 
                     b.HasIndex("PersonId1");
 
-                    b.ToTable("Participants");
+                    b.ToTable("Participants", (string)null);
                 });
 
             modelBuilder.Entity("BeginnerWebApiRC1.Beginner.Person", b =>
@@ -267,7 +267,7 @@ namespace BeginnerWebApiRC1.Migrations
 
                     b.HasIndex("SubscriptionTypesId");
 
-                    b.ToTable("Person");
+                    b.ToTable("Person", (string)null);
                 });
 
             modelBuilder.Entity("BeginnerWebApiRC1.Beginner.Profession", b =>
@@ -281,7 +281,7 @@ namespace BeginnerWebApiRC1.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Professions");
+                    b.ToTable("Professions", (string)null);
                 });
 
             modelBuilder.Entity("BeginnerWebApiRC1.Beginner.Status", b =>
@@ -295,7 +295,7 @@ namespace BeginnerWebApiRC1.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Statuses");
+                    b.ToTable("Statuses", (string)null);
                 });
 
             modelBuilder.Entity("BeginnerWebApiRC1.Beginner.SubscriptionType", b =>
@@ -309,7 +309,7 @@ namespace BeginnerWebApiRC1.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SubscriptionTypes");
+                    b.ToTable("SubscriptionTypes", (string)null);
                 });
 
             modelBuilder.Entity("BeginnerWebApiRC1.Beginner.UserRole", b =>
@@ -323,7 +323,7 @@ namespace BeginnerWebApiRC1.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserRole");
+                    b.ToTable("UserRole", (string)null);
                 });
 
             modelBuilder.Entity("BeginnerWebApiRC1.Models.BeginnerUser", b =>
@@ -454,7 +454,7 @@ namespace BeginnerWebApiRC1.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RefreshTokens");
+                    b.ToTable("RefreshTokens", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

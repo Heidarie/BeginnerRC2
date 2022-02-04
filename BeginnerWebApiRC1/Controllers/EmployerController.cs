@@ -60,7 +60,7 @@ namespace BeginnerWebApiRC1.Controllers
         [Route("[action]")]
         public async Task<IActionResult> FinishOffer(int offerId)
         {
-            bool result = await DatabaseManager.FinishOffer(offerId);
+            bool result = await DatabaseManager.FinishOffer(offerId, LoggedUser);
             if (result)
             {
                 List<ShortOfferModel> shortOfferModels = new List<ShortOfferModel>();

@@ -18,6 +18,7 @@ namespace BeginnerWebApiRC1.Models.User
             this.UserExperience = user.PersonData.UserExperience;
             this.IsUserMainAccount = userMain;
             this.CvFileConverted = user.CvFile;
+            this.UserType = ((Roles)user.RoleId).ToString();
         }
 
         public string Name { get; set; }
@@ -31,6 +32,7 @@ namespace BeginnerWebApiRC1.Models.User
         public string AboutMe { get; set; }
         public string UserExperience { get; set; }
         public bool IsUserMainAccount { get; set; }
+        public string UserType { get; set; }
         public List<ShortApplicationModel> EmployeeApplications { get; set; }
     }
 }

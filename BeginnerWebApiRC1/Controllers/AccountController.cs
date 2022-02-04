@@ -147,12 +147,7 @@ namespace BeginnerWebApiRC1.Controllers
                             string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                             MailFactory.ResendConfirmationMail(user.Email, user.Name, user.Id ,token);
 
-                            return Ok(new
-                            {
-                                accessToken = TokenManager.GenerateVerificationAccessToken(user, token),
-                                refreshToken = refreshToken.refreshToken,
-                                path = "/ConfirmAccount"
-                            }); // redirect to confirm account
+                            return Conflict("Konto nie zostało zweryfikowane");
                         }
 
                         var identityRole = await _userManager.GetRolesAsync(user);
@@ -171,7 +166,7 @@ namespace BeginnerWebApiRC1.Controllers
                             UserId = user.Id  
                         }); 
                     }
-                    return Conflict("Błędne hasło");
+                    return Conflict(new { message = "Błędne hasło" });
                 }
                 return Conflict("Nie istnieje użytkownik o podanym mailu");
             }
@@ -181,7 +176,7 @@ namespace BeginnerWebApiRC1.Controllers
         [EnableCors]
         [HttpPost]
         [Route("ConfirmAccount")]
-        public async Task<IActionResult> ConfirmAccount(VerificationModel model)
+        public async Task<IActionResult> ConfirmAccount([FromBody] VerificationModel model)
         {
             BeginnerUser newBeginner = await _userManager.FindByIdAsync(model.UserId);
             var result = await _userManager.ConfirmEmailAsync(newBeginner, model.Token);
@@ -189,7 +184,6 @@ namespace BeginnerWebApiRC1.Controllers
             {
                 newBeginner.StatusId = 2;
                 bool dbResult = await DatabaseManager.ActivateUser(newBeginner.Id, newBeginner.StatusId);
-                this.ReloadUserData();
                 return Ok();
             }
             return ValidationProblem();

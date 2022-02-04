@@ -98,11 +98,15 @@ namespace BeginnerWebApiRC1.Controllers
             try
             {
                 model.CvFileConverted = FileHelper.ConvertPDF(model.CvFile);
-                FileHelper.UploadImage(model.UserPicture, LoggedUser.Id);
+                if(model.UserPicture != null)
+                    FileHelper.UploadImage(model.UserPicture, LoggedUser.Id);
                 bool result = await DatabaseManager.EditUserProfile(LoggedUser.Id, model);
                 if (result)
                 {
+                    _cache.Remove("BeginnerUser");
+                    _cache.Remove("UserProfile");
                     this.ReloadUserData();
+                    _cache.Set("BeginnerUser", LoggedUser);
                     return Ok("Pomyślnie edytowano dane!");
                 }
                 else

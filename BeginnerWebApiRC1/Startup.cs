@@ -59,7 +59,7 @@ namespace BeginnerWebApiRC1
                     ValidateAudience = true,
                     ValidAudience = audience,
                     ValidateLifetime = true, //validate the expiration and not before values in the token
-                    ClockSkew = TimeSpan.FromMinutes(10), //10 minute tolerance for the expiration date,
+                    ClockSkew = TimeSpan.FromMinutes(3000), //10 minute tolerance for the expiration date,
                 };
                 if (audience == "access")
                 {
@@ -113,6 +113,7 @@ namespace BeginnerWebApiRC1
             services.AddIdentity<BeginnerUser, IdentityRole>(options =>
             {
                 options.Password.RequireNonAlphanumeric = false;
+                options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
             }).AddSignInManager<SignInManager<BeginnerUser>>().AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 

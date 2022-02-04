@@ -50,7 +50,7 @@ namespace BeginnerWebApiRC1.Helpers
         public static string ConvertPDF(IFormFile file)
         {
             string fileBytes = "";
-            if (file.Length > 0)
+            if (file != null && file.Length > 0)
             {
                 using (var ms = new MemoryStream())
                 {

@@ -58,8 +58,9 @@ namespace BeginnerWebApiRC1.Controllers
 
         public void ReloadUserData()
         {
-            beginnerUser = null;
-            DatabaseManager.RefreshLoggedUser(beginnerUser);
+            string id = beginnerUser.Id;
+
+            beginnerUser = DatabaseManager.RefreshLoggedUser(id);
             DatabaseManager.SetUpLoggedUser(beginnerUser);
         }
 

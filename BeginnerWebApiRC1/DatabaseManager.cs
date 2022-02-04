@@ -93,9 +93,11 @@ namespace BeginnerWebApiRC1
                 
         }
 
-        public void RefreshLoggedUser(BeginnerUser user)
+        public BeginnerUser RefreshLoggedUser(string userId)
         {
-            user = dbContext.Users.FirstOrDefault(u => u.Id == user.Id);
+            BeginnerUser user = null;
+            user = dbContext.Users.FirstOrDefault(u => u.Id == userId);
+            return user;
         }
 
         public async Task<ChangedStatusNotification> ChangeApplicationStatus(string userId,int offerId, int statusId)
@@ -196,7 +198,7 @@ namespace BeginnerWebApiRC1
             }
         }
         
-        public async Task<bool> FinishOffer(int offerId)
+        public async Task<bool> FinishOffer(int offerId, BeginnerUser user)
         {
             try
             {
@@ -206,8 +208,10 @@ namespace BeginnerWebApiRC1
                 if (result > 0)
                 {
                     currentOffer.StatusId = 3;
-                    currentOffer.Status = dbContext.Statuses.FirstOrDefault(s => s.Id == 3);
                     currentOffer.Md = DateTime.Today;
+                    currentOffer.Status = dbContext.Statuses.FirstOrDefault(s => s.Id == 3);
+                    currentOffer.Profession = dbContext.Professions.Where(x => x.Id == currentOffer.ProfessionId).FirstOrDefault();
+                    //currentOffer.BeginnerUserId = user.Id;
                     dbContext.Offers.Add(currentOffer);
                     result = dbContext.SaveChanges();
                     return result >= 0 ? true : false;
@@ -225,7 +229,7 @@ namespace BeginnerWebApiRC1
             try
             {
                 Offer currentOffer = dbContext.Offers.FirstOrDefault(x => x.Id == offerId);
-                if (currentOffer.Fd < DateTime.Today)
+                if (currentOffer.Fd > DateTime.Today)
                 {
                     dbContext.Offers.Remove(currentOffer);
                     int result = dbContext.SaveChanges();

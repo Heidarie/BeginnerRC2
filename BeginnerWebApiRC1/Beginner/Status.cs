@@ -7,8 +7,7 @@ namespace BeginnerWebApiRC1.Beginner
     {
         public Status()
         {
-            Offers = new HashSet<Offer>();
-            People = new HashSet<Person>();
+            
         }
 
         public int Id { get; set; }

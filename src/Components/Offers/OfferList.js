@@ -122,12 +122,6 @@ export default function OfferList(props) {
           </FloatingLabel>
         </Col>
       </Row>
-      <OfferPagination
-        page={page}
-        setPage={setPage}
-        offersPerPage={offersPerPage}
-        totalOffers={offers.offers.length}
-      />
       {/*Wyświetlanie ofert na podstawie FORMA*/}
       {offers.loading && [1, 2, 3, 4, 5].map((n) => <SkeletonOfert key={n} />)}
       {offers.error ? (

@@ -60,13 +60,13 @@ export default function Offer() {
                     boxShadow: "0px 15px 10px -15px #111",
                   }}
                 >
-                  <Col className="col-3 d-flex ps-4 align-items-center justify-content-center overflow-hidden img-fluid">
+                  <Col className="col-3 d-flex ps-4 pt-2 align-items-center justify-content-center overflow-hidden img-fluid">
                     <Link to={`../User/${offer.employerId}`}>
                       <img
                         src={`data:image/png;base64,${offer.image}`}
                         alt={offer.employerId}
                         className="img-fluid border border-dark"
-                        width={250}
+                        width={150}
                       />
                     </Link>
                   </Col>
@@ -102,7 +102,7 @@ export default function Offer() {
                       className="border border-dark rounded-pill text-nowrap"
                       style={{ wordBreak: "break-all" }}
                     >
-                      <p className="lead mb-0">+- {offer.companySize}</p>
+                      <p className="lead mb-0">{offer.companySize}</p>
                       <small className="text-muted">Wielkość firmy</small>
                     </div>
                   </Col>

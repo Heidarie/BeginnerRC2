@@ -118,7 +118,7 @@ function Profile() {
                 <FaCameraRetro style={{ fontSize: "50px" }} />
               )}
             </Col>
-            <Col className="col-12 col-lg-7  text-start pt-2">
+            {user.userType === "Employee" && (<Col className="col-12 col-lg-7  text-start pt-2">
               <Row className="m-3">
                 <Col className="col-12 col-xxl-10 ">
                   <h6 className="display-6">
@@ -139,7 +139,21 @@ function Profile() {
                   </p>
                 </Col>
               </Row>
-            </Col>
+            </Col>)}
+            {user.userType === "Employer" && (<Col className="col-12 col-lg-7  text-start pt-2">
+              <Row className="m-3">
+                <Col className="col-12 col-xxl-10 ">
+                  <h6 className="display-6">
+                    {user.name}
+                  </h6>
+                </Col>
+                <Col className="col-12 col-xxl-2"></Col>
+                <Col className="col-12">
+                  <p className="lead mb-0">O firmie: {user.aboutMe}</p>
+                </Col>
+              </Row>
+            </Col>)}
+            
             <Col className="col-12 col-lg-2 text-end">
               {user.isUserMainAccount && (
                 <Button
@@ -152,13 +166,14 @@ function Profile() {
               )}
             </Col>
           </Row>
+          {user.isUserMainAccount && (
           <Row>
             <Col className="col-12 text-center pt-2">
               <h1 className="lead text-muted">
                 Tu są wyświetlanie twoje oferty wraz z ich statusem
               </h1>
             </Col>
-          </Row>
+          </Row>)}
           {user.isUserMainAccount && currentUser.userRole === "Employee" && (
             <Row className="d-flex justify-content-between">
               {userOffers.length !== 0 &&
@@ -258,9 +273,9 @@ function Profile() {
                         {offer.salaryFrom} - {offer.salaryTo} zł
                       </h6>
                     </Col>
-                    {offer.statusId === 2 ? (
-                      <div>
-                        <Col className="col-3 col-lg-3  mt-2  align-self-center">
+                    {offer.offerStatus === 2 ? (
+                      <div className="col-12 col-lg-12 mt-2 text-end">
+                        <span className="col-3 col-lg-3 mt-2">
                           <Button
                             className="btn btn-dark"
                             style={{ maxWidth: "200px", minWidth: "150px" }}
@@ -273,8 +288,8 @@ function Profile() {
                             <FaCheck className="me-1" />
                             Wyświetl ofertę
                           </Button>
-                        </Col>
-                        <Col className="col-3 col-lg-3  mt-2  align-self-center ">
+                        </span>
+                        <span className="col-3 col-lg-3 mt-2">
                           <Button
                             className="btn btn-dark"
                             style={{ maxWidth: "200px", minWidth: "150px" }}
@@ -287,23 +302,9 @@ function Profile() {
                             <FaCheck className="me-1" />
                             Edytuj ofertę
                           </Button>
+                        </span>
 
-                          <Button
-                            className="btn btn-dark"
-                            style={{ maxWidth: "200px", minWidth: "150px" }}
-                            disabled
-                            onClick={() =>
-                              navigate(`../EditOffer/${offer.id}`, {
-                                replace: true,
-                              })
-                            }
-                          >
-                            <FaCheck className="me-1" />
-                            Edytuj ofertę
-                          </Button>
-                        </Col>
-
-                        <Col className="col-3 col-lg-3 mt-2 align-self-center ">
+                        <span className="col-3 col-lg-3 mt-2">
                           <Button
                             className="btn btn-dark"
                             style={{ maxWidth: "200px", minWidth: "150px" }}
@@ -316,8 +317,8 @@ function Profile() {
                             <FaCheck className="me-1" />
                             Aplikanci
                           </Button>
-                        </Col>
-                        <Col className="col-3 col-lg-3 mt-2 align-self-center ">
+                        </span>
+                        <span className="col-3 col-lg-3 mt-2">
                           <Button
                             className="btn btn-dark m-0 pull-right"
                             style={{ maxWidth: "200px", minWidth: "150px" }}
@@ -326,7 +327,7 @@ function Profile() {
                             <FaCheck className="me-1" />
                             Usuń ofertę
                           </Button>
-                        </Col>
+                        </span>
                       </div>
                     ) : (
                       <div>

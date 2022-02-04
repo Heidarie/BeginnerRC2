@@ -8,7 +8,7 @@ const ConfirmAccount = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
   const [searchParams, setSearchParams] = useSearchParams();
   const verify = searchParams.get("verify");
-  const t = searchParams.get("t");
+  const t = searchParams.get("t").toString();
   console.log(verify, t);
   useEffect(() => {
     const data = { UserId: verify, Token: t };

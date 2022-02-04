@@ -74,7 +74,7 @@ export default function EditProfile() {
   useEffect(() => {
     getUserLogged();
   }, []);
-  return (
+  return( 
     <section style={{ backgroundColor: "#eee" }}>
       <Link to={`/User/${id}`}>
         <BiArrowBack className="back-arrow" />
@@ -116,6 +116,7 @@ export default function EditProfile() {
                     </Col>
                   </Row>
                 </Col>
+                {currentUser.userRole === "Employee" && (
                 <Col className="col-12 col-lg-6 d-flex align-items-center justify-content-center">
                   <Row>
                     <Col className="col-12 text-center justify-content-lg-start">
@@ -133,7 +134,8 @@ export default function EditProfile() {
                       />
                     </Col>
                   </Row>
-                </Col>
+                </Col>)}
+                {currentUser.userRole === "Employee" && (
                 <Col className="col-12 justify-content-center justify-content-lg-start">
                   <Form.Group
                     className="mb-3"
@@ -154,7 +156,8 @@ export default function EditProfile() {
                       })}
                     />
                   </Form.Group>
-                </Col>
+                </Col>)}
+                {currentUser.userRole === "Employee" && (
                 <Col className="col-12 justify-content-center justify-content-lg-start">
                   <Form.Group
                     className="mb-3"
@@ -175,7 +178,8 @@ export default function EditProfile() {
                       })}
                     />
                   </Form.Group>
-                </Col>
+                </Col>)}
+                {currentUser.userRole === "Employee" && (
                 <Col className="col-12 justify-content-center justify-content-lg-start">
                   <Form.Group
                     className="mb-3"
@@ -195,7 +199,8 @@ export default function EditProfile() {
                       })}
                     />
                   </Form.Group>
-                </Col>
+                </Col>)}
+                {currentUser.userRole === "Employee" && (
                 <Col className="col-12 justify-content-center justify-content-lg-start">
                   <Form.Group
                     className="mb-3"
@@ -215,7 +220,8 @@ export default function EditProfile() {
                       })}
                     />
                   </Form.Group>
-                </Col>
+                </Col>)}
+                {currentUser.userRole === "Employee" && (
                 <Col className="col-12 justify-content-center justify-content-lg-start">
                   <Form.Group
                     className="mb-3"
@@ -235,7 +241,51 @@ export default function EditProfile() {
                       })}
                     />
                   </Form.Group>
-                </Col>
+                </Col>)}
+                {currentUser.userRole === "Employer" && (
+                <Col className="col-12 justify-content-center justify-content-lg-start">
+                <Form.Group
+                  className="mb-3"
+                  controlId="exampleForm.ControlInput1"
+                >
+                  <Form.Label className="display-6">Nazwa firmy</Form.Label>
+                  <Form.Control
+                    type="text"
+                    size="lg"
+                    defaultValue={user.name}
+                    name="name"
+                    placeholder="Nazwa firmy"
+                    className="rounded rounded-pill border border-light text-center"
+                    {...register("name", {
+                      required:
+                        "Imię jest wymagane do poprawnej zmiany danych",
+                      minLength: 3,
+                    })}
+                  />
+                </Form.Group>
+              </Col>
+                )}
+                {currentUser.userRole === "Employer" && (
+                  <Col className="col-12 justify-content-center justify-content-lg-start">
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <Form.Label className="display-6">O firmie</Form.Label>
+                    <Form.Control
+                      type="text"
+                      size="lg"
+                      defaultValue={user.aboutMe}
+                      placeholder="O firmie"
+                      className="rounded rounded-pill border border-light text-center"
+                      {...register("aboutMe", {
+                        required:
+                          "'O mnie' jest wymagane do poprawnej zmiany danych",
+                        minLength: 3,
+                      })}
+                    />
+                  </Form.Group>
+                </Col>)}
                 <Col className="col-12 justify-content-center justify-content-lg-start">
                   <Button
                     type="submit"
@@ -255,5 +305,5 @@ export default function EditProfile() {
         </Form>
       </Container>
     </section>
-  );
+  )
 }

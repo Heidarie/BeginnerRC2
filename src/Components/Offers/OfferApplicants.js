@@ -125,7 +125,7 @@ export default function OfferApplicants() {
                                 changeStatus(offer.id, applicant.id, 2)
                               }
                             >
-                              Akcpetuj
+                              Akceptuj
                             </Button>
                             <Button
                               className="btn btn-danger"

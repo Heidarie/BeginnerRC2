@@ -42,6 +42,7 @@ const Login = (setUser) => {
         window.location.reload();
       })
       .catch((error) => {
+        console.log(error.message);
         setSuccessful(false);
         setInformation("Błędne hasło lub email.");
         setLoading(false);

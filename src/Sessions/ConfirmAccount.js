@@ -4,14 +4,16 @@ import { Link, useSearchParams } from "react-router-dom";
 import { BiArrowBack } from "react-icons/bi";
 import axios from "axios";
 import { useSelector } from "react-redux";
+
 const ConfirmAccount = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
   const [searchParams, setSearchParams] = useSearchParams();
+
   const verify = searchParams.get("verify");
-  const t = searchParams.get("t").toString();
-  console.log(verify, t);
+  const tokenData = searchParams.get("t").toString();
+
   useEffect(() => {
-    const data = { UserId: verify, Token: t };
+    const data = { UserId: verify, Token: tokenData };
     axios
       .post("https://localhost:44310/Account/ConfirmAccount", data)
       .then((response) => {
@@ -46,4 +48,5 @@ const ConfirmAccount = () => {
     </section>
   );
 };
+
 export default ConfirmAccount;

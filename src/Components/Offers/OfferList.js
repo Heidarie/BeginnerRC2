@@ -31,6 +31,7 @@ export default function OfferList(props) {
     indexOfFirstOffer,
     indexOfLastOffer
   );
+
   //Function to show shortInfo Of selectefOffer
   function setVisible(id) {
     //TODO IMPROVE IF
@@ -43,6 +44,7 @@ export default function OfferList(props) {
       }
     }
   }
+
   function search(rows) {
     if (searchTerm !== "" && searchCity === "") {
       return rows.filter(
@@ -55,8 +57,7 @@ export default function OfferList(props) {
     }
     return rows;
   }
-  console.log(currentOffers);
-  // SPRAWDZAJ CZY NASTEPNA STRONA MA WARTOSCI JESLI SA TO WYSWIETL KOLEJNA STRONE W WYBORZE
+
   return (
     <Col
       className={`col-12 border border-dark ${

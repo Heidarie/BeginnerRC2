@@ -14,6 +14,7 @@ export default function offerPagination({
   for (let i = 0; i < Math.ceil(totalOffers / offersPerPage); i++) {
     pageNumbers.push(i);
   }
+
   return (
     <Pagination>
       {page !== 1 && <Pagination.Prev onClick={() => adjustPage(-1)} />}

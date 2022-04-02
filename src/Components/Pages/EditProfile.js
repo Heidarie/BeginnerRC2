@@ -12,17 +12,17 @@ export default function EditProfile() {
   const navigate = useNavigate();
   const { user: currentUser } = useSelector((state) => state.auth);
   const [user, setUser] = useState({});
-  console.log(user);
   const [information, setInformation] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedCV, setSelectedCV] = useState(null);
+  const { register, handleSubmit, setValue } = useForm();
+  const { id } = useParams();
+
   function fileUploadHandler() {
     setValue("userPicture", selectedImage);
     setValue("cvFile", selectedCV);
   }
-  const { register, handleSubmit, setValue } = useForm();
-  console.log(register);
-  const { id } = useParams();
+
   const onSubmit = async (data, e) => {
     e.preventDefault();
     let formData = new FormData();
@@ -56,6 +56,7 @@ export default function EditProfile() {
         console.log(err);
       });
   };
+
   function getUserLogged() {
     const config = {
       headers: { Authorization: `Bearer ${currentUser.accessToken}` },
@@ -80,6 +81,10 @@ export default function EditProfile() {
     }
     getUserLogged();
   }, []);
+
+  console.log(user);
+  console.log(register);
+
   return (
     <section style={{ backgroundColor: "#eee" }}>
       <Link to={`/User/${id}`}>

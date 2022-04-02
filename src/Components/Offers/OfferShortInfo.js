@@ -19,6 +19,7 @@ export const OfferShortInfo = () => {
   const [offerShow, setOfferShow] = useState([]);
   const [information, setInformation] = useState("");
   const { user: currentUser } = useSelector((state) => state.auth);
+
   const applyForOffer = async (id) => {
     const offerId = id;
     const config = { Authorization: `Bearer ${currentUser.accessToken}` };
@@ -38,6 +39,7 @@ export const OfferShortInfo = () => {
         console.log(err);
       });
   };
+
   const getOfferDetails = async (offers) => {
     const offerId = offers.selectedOffer;
     const config = !offers.offers && {
@@ -61,7 +63,7 @@ export const OfferShortInfo = () => {
   useEffect(() => {
     getOfferDetails(offers);
   }, [offers]);
-  console.log(offerShow);
+
   return (
     <>
       {offers.loading && [1, 2, 3, 4, 5].map((n) => <SkeletonOfert key={n} />)}
@@ -81,14 +83,14 @@ export const OfferShortInfo = () => {
                 }}
               >
                 <Col className="col-3 d-flex ps-4 align-items-center justify-content-center">
-                    <Link to={`../User/${offer.employerId}`}>
-                      <img
-                        src={`data:image/png;base64,${offer.image}`}
-                        alt={offer.employerId}
-                        className="img-fluid border border-dark"
-                        width={150}
-                      />
-                    </Link>
+                  <Link to={`../User/${offer.employerId}`}>
+                    <img
+                      src={`data:image/png;base64,${offer.image}`}
+                      alt={offer.employerId}
+                      className="img-fluid border border-dark"
+                      width={150}
+                    />
+                  </Link>
                 </Col>
                 <Col className="col-9 text-start pt-2">
                   <h2 className="display-6">{offer.offerName}</h2>
@@ -286,4 +288,5 @@ export const OfferShortInfo = () => {
     </>
   );
 };
+
 export default OfferShortInfo;

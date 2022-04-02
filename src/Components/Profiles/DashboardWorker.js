@@ -9,12 +9,12 @@ import { FaHome, FaCheck } from "react-icons/fa";
 import axios from "axios";
 function Profile() {
   const navigate = useNavigate();
-
   const { id } = useParams();
   const [user, setUser] = useState("");
   const [userOffers, setUserOffers] = useState([]);
   const { user: currentUser } = useSelector((state) => state.auth);
   const [employerOffer, setEmployerOffers] = useState([]);
+
   function getUser() {
     axios
       .get(`https://localhost:44310/User/GetUserProfile?userId=${id}`)
@@ -34,6 +34,7 @@ function Profile() {
         console.log(err);
       });
   }
+
   function getEmployerOffers() {
     const config = { Authorization: `Bearer ${currentUser.accessToken}` };
     axios
@@ -48,6 +49,7 @@ function Profile() {
         console.log(err);
       });
   }
+
   function finishOffer(id) {
     console.log(currentUser.accessToken);
     const config = { Authorization: `Bearer ${currentUser.accessToken}` };
@@ -67,6 +69,7 @@ function Profile() {
         console.log(err);
       });
   }
+
   function checkToRedirect(data) {
     if (data === "") {
       navigate(`../404Page`, {
@@ -74,6 +77,7 @@ function Profile() {
       });
     }
   }
+
   function renewOffer(id) {
     console.log(currentUser.accessToken);
     const config = { Authorization: `Bearer ${currentUser.accessToken}` };
@@ -93,9 +97,11 @@ function Profile() {
         console.log(err);
       });
   }
+
   useEffect(() => {
     getUser();
   }, []);
+
   return (
     <div>
       <div className="Profile_Section">
@@ -118,42 +124,44 @@ function Profile() {
                 <FaCameraRetro style={{ fontSize: "50px" }} />
               )}
             </Col>
-            {user.userType === "Employee" && (<Col className="col-12 col-lg-7  text-start pt-2">
-              <Row className="m-3">
-                <Col className="col-12 col-xxl-10 ">
-                  <h6 className="display-6">
-                    {user.name + " " + user.surname}
-                  </h6>
-                  <p className="lead mb-0">{user.profession}</p>
-                </Col>
-                <Col className="col-12 col-xxl-2"></Col>
-                <Col className="col-12">
-                  <h4 className="text-muted">EMAIL: {user.email}</h4>
-                </Col>
-                <Col className="col-12">
-                  <p className="lead mb-0">O mnie : {user.aboutMe}</p>
-                </Col>
-                <Col className="col-12">
-                  <p className="lead mb-0">
-                    Doświadczenie : {user.userExperience}
-                  </p>
-                </Col>
-              </Row>
-            </Col>)}
-            {user.userType === "Employer" && (<Col className="col-12 col-lg-7  text-start pt-2">
-              <Row className="m-3">
-                <Col className="col-12 col-xxl-10 ">
-                  <h6 className="display-6">
-                    {user.name}
-                  </h6>
-                </Col>
-                <Col className="col-12 col-xxl-2"></Col>
-                <Col className="col-12">
-                  <p className="lead mb-0">O firmie: {user.aboutMe}</p>
-                </Col>
-              </Row>
-            </Col>)}
-            
+            {user.userType === "Employee" && (
+              <Col className="col-12 col-lg-7  text-start pt-2">
+                <Row className="m-3">
+                  <Col className="col-12 col-xxl-10 ">
+                    <h6 className="display-6">
+                      {user.name + " " + user.surname}
+                    </h6>
+                    <p className="lead mb-0">{user.profession}</p>
+                  </Col>
+                  <Col className="col-12 col-xxl-2"></Col>
+                  <Col className="col-12">
+                    <h4 className="text-muted">EMAIL: {user.email}</h4>
+                  </Col>
+                  <Col className="col-12">
+                    <p className="lead mb-0">O mnie : {user.aboutMe}</p>
+                  </Col>
+                  <Col className="col-12">
+                    <p className="lead mb-0">
+                      Doświadczenie : {user.userExperience}
+                    </p>
+                  </Col>
+                </Row>
+              </Col>
+            )}
+            {user.userType === "Employer" && (
+              <Col className="col-12 col-lg-7  text-start pt-2">
+                <Row className="m-3">
+                  <Col className="col-12 col-xxl-10 ">
+                    <h6 className="display-6">{user.name}</h6>
+                  </Col>
+                  <Col className="col-12 col-xxl-2"></Col>
+                  <Col className="col-12">
+                    <p className="lead mb-0">O firmie: {user.aboutMe}</p>
+                  </Col>
+                </Row>
+              </Col>
+            )}
+
             <Col className="col-12 col-lg-2 text-end">
               {user.isUserMainAccount && (
                 <Button
@@ -167,13 +175,14 @@ function Profile() {
             </Col>
           </Row>
           {user.isUserMainAccount && (
-          <Row>
-            <Col className="col-12 text-center pt-2">
-              <h1 className="lead text-muted">
-                Tu są wyświetlanie twoje oferty wraz z ich statusem
-              </h1>
-            </Col>
-          </Row>)}
+            <Row>
+              <Col className="col-12 text-center pt-2">
+                <h1 className="lead text-muted">
+                  Tu są wyświetlanie twoje oferty wraz z ich statusem
+                </h1>
+              </Col>
+            </Row>
+          )}
           {user.isUserMainAccount && currentUser.userRole === "Employee" && (
             <Row className="d-flex justify-content-between">
               {userOffers.length !== 0 &&

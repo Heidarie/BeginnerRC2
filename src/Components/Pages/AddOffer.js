@@ -24,6 +24,7 @@ import {
 import data from "../data/languages.json";
 import ReactTags from "react-tag-autocomplete";
 import "./ReactTags.css";
+
 export default function Addoffer() {
   const navigate = useNavigate();
   const reactTags = useRef();
@@ -32,28 +33,12 @@ export default function Addoffer() {
   const [benefits, setBenefits] = useState([]);
   const [radioJobValue, setRadioJobValue] = useState("Zdalnie");
   const [information, setInformation] = useState("");
+  const { user: currentUser } = useSelector((state) => state.auth);
   const radiosJob = [
     { name: "Stacjonarnie", value: "Stacjonarnie" },
     { name: "Zdalnie", value: "Zdalnie" },
     { name: "Stacjonarnie+Zdalnie", value: "Stacjonarnie+Zdalnie" },
   ];
-  function removeBenefit(name) {
-    const newBenefits = benefits.filter((item) => item !== name);
-    setBenefits(newBenefits);
-  }
-  const onDelete = useCallback(
-    (tagIndex) => {
-      setTags(tags.filter((_, i) => i !== tagIndex));
-    },
-    [tags]
-  );
-  const onAddition = useCallback(
-    (newTag) => {
-      setTags([...tags, newTag]);
-    },
-    [tags]
-  );
-
   const {
     register,
     handleSubmit,
@@ -61,7 +46,25 @@ export default function Addoffer() {
     getValues,
     formState: { errors },
   } = useForm();
-  const { user: currentUser } = useSelector((state) => state.auth);
+
+  function removeBenefit(name) {
+    const newBenefits = benefits.filter((item) => item !== name);
+    setBenefits(newBenefits);
+  }
+
+  const onDelete = useCallback(
+    (tagIndex) => {
+      setTags(tags.filter((_, i) => i !== tagIndex));
+    },
+    [tags]
+  );
+
+  const onAddition = useCallback(
+    (newTag) => {
+      setTags([...tags, newTag]);
+    },
+    [tags]
+  );
 
   const onSubmit = async (data, e) => {
     console.log(data.lang);
@@ -103,6 +106,7 @@ export default function Addoffer() {
         console.log(err);
       });
   };
+
   useEffect(() => {
     if (currentUser.userRole !== "Employer") {
       navigate(`../404Page`, {

@@ -10,4 +10,5 @@ export const SkeletonOfert = () => {
     </div>
   );
 };
+
 export default SkeletonOfert;

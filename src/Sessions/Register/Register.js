@@ -16,7 +16,7 @@ const Register = () => {
   const navigate = useNavigate();
   useEffect(() => {
     dispatch(clearMessage());
-  }, []);
+  }, [dispatch]);
 
   const {
     handleSubmit,
@@ -102,7 +102,7 @@ const Register = () => {
           }, 3000);
         })
         .catch((error) => {
-          console.log("tutaj", error);
+          console.log(error);
           setInformation("Użytkownik o takim emailu już istnieje.");
           setSuccessful(false);
           setLoading(false);

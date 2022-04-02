@@ -4,7 +4,7 @@ import Footer from "../Footer/Footer";
 import Navbartop from "../Navbar/Navbartop";
 import DashboardWorker from "../Profiles/DashboardWorker";
 export default function NewPage() {
-  // NOT SURE ABOUT USER LOGGED
+  // WHAT FOR IS THAT????
 
   return (
     <>

@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+
 const ConfirmNumber = () => {
   const navigate = useNavigate();
   const {
@@ -8,6 +9,7 @@ const ConfirmNumber = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const onSubmit = (data, e) => {
     const code =
       data["firstDigit"] +
@@ -19,6 +21,7 @@ const ConfirmNumber = () => {
     e.target.reset();
     navigate({ pathname: "/Login" });
   };
+
   return (
     <section
       className="gradient-form rounded-25"
@@ -108,4 +111,5 @@ const ConfirmNumber = () => {
     </section>
   );
 };
+
 export default ConfirmNumber;

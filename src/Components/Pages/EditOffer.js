@@ -17,20 +17,19 @@ import {
   FaCameraRetro,
   FaPeopleArrows,
   FaBolt,
-  FaClock,
   FaCheckCircle,
   FaCoins,
   FaMinusSquare,
 } from "react-icons/fa";
 import data from "../data/languages.json";
 import { useParams } from "react-router";
-
 import ReactTags from "react-tag-autocomplete";
 import "./ReactTags.css";
+
 export default function Addoffer() {
   const navigate = useNavigate();
   const reactTags = useRef();
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null); // unused for now
   const [tags, setTags] = useState([]);
   let input;
   const [offerShow, setOfferShow] = useState([]);
@@ -42,16 +41,28 @@ export default function Addoffer() {
     { name: "Zdalnie", value: "Zdalnie" },
     { name: "Stacjonarnie+Zdalnie", value: "Stacjonarnie+Zdalnie" },
   ];
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    getValues,
+    formState: { errors },
+  } = useForm();
+  const { id } = useParams();
+  const { user: currentUser } = useSelector((state) => state.auth);
+
   function removeBenefit(name) {
     const newBenefits = benefits.filter((item) => item !== name);
     setBenefits(newBenefits);
   }
+
   const onDelete = useCallback(
     (tagIndex) => {
       setTags(tags.filter((_, i) => i !== tagIndex));
     },
     [tags]
   );
+
   const onAddition = useCallback(
     (newTag) => {
       setTags([...tags, newTag]);
@@ -62,16 +73,7 @@ export default function Addoffer() {
   function fileUploadHandler() {
     setValue("image", selectedFile);
   }
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    getValues,
-    formState: { errors },
-  } = useForm();
 
-  const { id } = useParams();
-  const { user: currentUser } = useSelector((state) => state.auth);
   const getOfferDetails = async (offers) => {
     const config = {
       headers: { Authorization: `Bearer ${currentUser.accessToken}` },
@@ -91,6 +93,7 @@ export default function Addoffer() {
         console.log(err);
       });
   };
+
   function getLanguages(dataLang, offerLang) {
     let res = [];
     for (let i = 0; i < dataLang.length; i++) {
@@ -102,6 +105,7 @@ export default function Addoffer() {
     }
     return res;
   }
+
   const onSubmit = async (data, e) => {
     console.log(data.lang);
     const langArray = data.lang.map((obj) => {
@@ -143,6 +147,7 @@ export default function Addoffer() {
         console.log(err);
       });
   };
+
   useEffect(() => {
     if (currentUser.userRole !== "Employer") {
       navigate(`../404Page`, {

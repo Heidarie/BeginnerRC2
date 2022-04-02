@@ -8,9 +8,11 @@ import { fetchAsyncOffers } from "../../Redux/Offers/offerSlice";
 
 export default function OfertyPracy() {
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(fetchAsyncOffers());
   }, [dispatch]);
+
   return (
     <>
       <Navbartop />

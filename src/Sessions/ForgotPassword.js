@@ -12,12 +12,14 @@ const ForgotPassword = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const onSubmit = (data, e) => {
     e.preventDefault();
     alert(JSON.stringify(data));
     e.target.reset();
     navigate({ pathname: "/Login" });
   };
+
   return (
     <section
       className="gradient-form rounded-25"
@@ -76,4 +78,5 @@ const ForgotPassword = () => {
     </section>
   );
 };
+
 export default ForgotPassword;

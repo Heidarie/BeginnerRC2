@@ -7,19 +7,23 @@ import EventBus from "../../common/EventBus";
 import { logout } from "../../Redux/User/auth";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+
 export default function Navbartop() {
   const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   function logoutUser() {
     axios.get("https://localhost:44310/Account/Logout", {
       headers: { Authorization: `Bearer ${currentUser.accessToken}` },
     });
   }
+
   const logOut = useCallback(() => {
     logoutUser();
     dispatch(logout());
   }, [dispatch]);
+
   useEffect(() => {
     EventBus.on("logout", () => {
       logOut();

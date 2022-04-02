@@ -10,17 +10,13 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../../Redux/User/auth";
 import { clearMessage } from "../../Redux/User/message";
 
-const Login = (setUser) => {
+const Login = () => {
   const [loading, setLoading] = useState(false);
   const [successful, setSuccessful] = useState("");
   const [information, setInformation] = useState("");
   const { isLoggedIn } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(clearMessage());
-  }, [dispatch]);
 
   const {
     register,
@@ -48,9 +44,14 @@ const Login = (setUser) => {
         setLoading(false);
       });
   };
+
   if (isLoggedIn) {
     navigate("/");
   }
+
+  useEffect(() => {
+    dispatch(clearMessage());
+  }, [dispatch]);
 
   return (
     <section
@@ -189,4 +190,5 @@ const Login = (setUser) => {
     </section>
   );
 };
+
 export default Login;

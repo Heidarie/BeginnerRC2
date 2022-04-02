@@ -10,12 +10,15 @@ import { Row, Container } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchAsyncOffers, getAllOffers } from "../../Redux/Offers/offerSlice";
 import { setMessage } from "../../Redux/User/message";
+
 const Dashboard = () => {
   const dispatch = useDispatch();
   const offers = useSelector(getAllOffers);
+
   useEffect(() => {
     dispatch(fetchAsyncOffers(), setMessage());
   }, [dispatch]);
+
   return (
     <>
       <Navbartop />
@@ -41,4 +44,5 @@ const Dashboard = () => {
     </>
   );
 };
+
 export default Dashboard;

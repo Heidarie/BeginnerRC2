@@ -32,6 +32,7 @@ export default function OfferApplicants() {
         console.log(err);
       });
   }
+
   function changeStatus(offerId, applicantId, status) {
     const config = { Authorization: `Bearer ${currentUser.accessToken}` };
     axios
@@ -42,19 +43,14 @@ export default function OfferApplicants() {
           headers: config,
         }
       )
-      .then((response) => {
-        // const updatedApplicants = offerApplicants.map((applicant) => {
-        //   if (applicant.id === applicantId) {
-        //     applicant.statusId = status;
-        //   }
-        //   setOfferApplicants(updatedApplicants);
-        // });
+      .then(() => {
         showOfferApplicants(id);
       })
       .catch((err) => {
         console.log(err);
       });
   }
+
   function getEmployerOffers(id) {
     const config = { Authorization: `Bearer ${currentUser.accessToken}` };
     axios
@@ -67,7 +63,6 @@ export default function OfferApplicants() {
             return offer;
           }
         });
-
         console.log("Offer call", res);
         setSelectedOffer(res);
       })
@@ -75,6 +70,7 @@ export default function OfferApplicants() {
         console.log(err);
       });
   }
+
   useEffect(() => {
     showOfferApplicants(id);
     getEmployerOffers(id);
@@ -85,6 +81,7 @@ export default function OfferApplicants() {
       window.location.reload();
     }
   }, []);
+
   return (
     <section style={{ backgroundColor: "#eee" }}>
       <Link to={"/"}>
@@ -141,7 +138,10 @@ export default function OfferApplicants() {
                         {applicant.statusId === 2 && (
                           <Col className="col-12 col-lg-6 text-end  align-self-center">
                             <Badge className="bg-success">
-                              <h6><FaCheck className="me-1" />Zaakceptowano</h6>
+                              <h6>
+                                <FaCheck className="me-1" />
+                                Zaakceptowano
+                              </h6>
                             </Badge>
                           </Col>
                         )}

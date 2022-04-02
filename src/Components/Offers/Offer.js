@@ -35,6 +35,7 @@ export default function Offer() {
         console.log(err);
       });
   };
+
   useEffect(() => {
     getOfferDetails();
   }, []);
